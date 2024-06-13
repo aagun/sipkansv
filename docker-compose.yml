@@ -1,22 +1,22 @@
 services:
     mysql:
-        container_name: sipkpsv_mysql
+        container_name: sipkansv_mysql
         image: mysql:8
         ports:
             - "${DB_PORT}:3306"
         volumes:
-            - sipkpsv_db_data:/var/lib/mysql
+            - sipkansv_db_data:/var/lib/mysql
         environment:
             - MYSQL_DATABASE=${DB_DATABASE}
             - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
         networks:
-            - sipkpsv
+            - sipkansv
 
 volumes:
-    sipkpsv_db_data:
-        name: sipkpsv_db_data
+    sipkansv_db_data:
+        name: sipkansv_db_data
 
 networks:
-    sipkpsv:
-        name: sipkpsv
+    sipkansv:
+        name: sipkansv
         driver: bridge
