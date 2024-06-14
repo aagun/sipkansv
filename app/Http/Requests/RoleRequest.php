@@ -7,6 +7,13 @@ use App\Models\Role;
 
 class RoleRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => strtoupper($this->name)]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -15,7 +22,7 @@ class RoleRequest extends BaseRequest
                 'string',
                 'min:4',
                 'max:15',
-                'starts_with:RO_,ro_,rO_,Ro_',
+                'starts_with:RO_',
                 Rule::unique(Role::class, 'name')
             ],
             'description' => [
