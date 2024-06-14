@@ -8,12 +8,22 @@
 Sistem Informasi Pengawasan Kelautan dan Perikanan Pemerintah Daerah Provinsi Jawa Barat (SIPKAN)
 
 ## Requirements
-* **MySQL 8**
-* **PHP 8**
+* **MySQL 8.4**
+* **PHP 8.2**
 * **Composer 2.7.8**
 
 ## Setup Project
 1. Jalankan database MySQL
+    * Jika menggunakan docker bisa menjalanakan perintah berikut:
+      * Menjalankan docker compose
+        ```bash
+        docker-compose up -d
+        ```
+      * Memberhentikan docker compose
+        ```bash
+        docker-compose down -v --remove-orphans
+        ```
+        
 2. Install Dependencies
    ```bash
     composer install

@@ -22,9 +22,6 @@ restart: stop start ## Restart all containers
 destroy: stop ## Remove all containers
 	@docker compose down -v --remove-orphans
 
-purge: destroy ## Remove all containers and remove local data
-	@sudo rm -rf ./docker/mysql/volumes/
-
 # Artisan
 artisan-service: ## Create laravel service
 	@php artisan make:interface "Services/$(name)Service"
