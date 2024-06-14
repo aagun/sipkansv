@@ -11,4 +11,5 @@ Route::prefix('roles')
     ->controller(RoleController::class)
     ->group(function () {
         Route::post('/', 'createRole');
+        Route::post('/search', 'searchRole');
     });

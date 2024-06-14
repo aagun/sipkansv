@@ -8,6 +8,7 @@ use App\Services\RoleService;
 use Illuminate\Http\Response;
 use App\Models\Role;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Database\Seeders\RoleSeeder;
 
 class RoleControllerTest extends TestCase
 {
@@ -111,5 +112,33 @@ class RoleControllerTest extends TestCase
             ->etc()
         );
         $response->assertValid(['name', 'description']);
+    }
+
+    public function testSearchRoleSuccess()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $payload = [];
+        $response = $this->post('roles/search', $payload);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
+            ->where('errors', null)
+            ->count('data', 4)
+        );
+    }
+
+    public function testSearchRoleFilteredByName()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $payload = [
+            'name' => 'adm'
+        ];
+        $response = $this->post('roles/search', $payload);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
+            ->where('errors', null)
+            ->count('data', 1)
+        );
     }
 }
