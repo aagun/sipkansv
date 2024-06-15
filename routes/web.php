@@ -31,4 +31,5 @@ Route::prefix('ranks')
     ->controller(RankController::class)
     ->group(function () {
         Route::post('/', 'create');
+        Route::post('/search', 'search');
     });

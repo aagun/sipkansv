@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Services\RankService;
 use App\Http\Requests\RankCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
+use Illuminate\Http\Request;
 
 class RankController extends Controller
 {
@@ -25,5 +26,12 @@ class RankController extends Controller
             new SuccessResponseResource($rank),
             Response::HTTP_CREATED
         );
+    }
+
+    public function search(Request $request): Response
+    {
+        $filter = $request->only(['name', 'description']);
+        $collection = $this->rankService->search($filter);
+        return response(new SuccessResponseResource($collection));
     }
 }
