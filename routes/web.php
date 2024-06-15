@@ -21,4 +21,5 @@ Route::prefix('positions')
     ->controller(PositionController::class)
     ->group(function () {
         Route::post('/', 'create');
+        Route::put('/', 'update');
     });
