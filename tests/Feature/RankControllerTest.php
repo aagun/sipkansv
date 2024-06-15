@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Rank;
 use Database\Seeders\RankSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 class RankControllerTest extends TestCase
 {
@@ -57,6 +58,22 @@ class RankControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name field is required.']);
+    }
+
+    public function testSearch()
+    {
+        $this->seed(RankSeeder::class);
+
+        $response = $this->post('/ranks/search', [
+            'name' => 'penata',
+            'description' => 'muda'
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->count('data', 2)
+            ->etc()
+        );
     }
 
 }
