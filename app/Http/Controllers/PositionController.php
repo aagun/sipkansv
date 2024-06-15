@@ -46,7 +46,6 @@ class PositionController extends Controller
 
     public function delete(int $id): Response
     {
-        var_dump("id: $id");
         if (!$this->positionService->exists($id)) {
             $errors = ['id' => ["The selected $id is invalid."]];
             throw new HttpResponseException(response(

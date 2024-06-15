@@ -8,6 +8,8 @@ use App\Http\Requests\RankCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\RankUpdateRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Resources\ErrorResponseResource;
 
 class RankController extends Controller
 {
@@ -41,5 +43,19 @@ class RankController extends Controller
         $payload = $request->validated();
         $saved = $this->rankService->update($payload);
         return response(new SuccessResponseResource($saved));
+    }
+
+    public function delete(int $id): Response
+    {
+        if (!$this->rankService->exists($id)) {
+            $errors = ['id' => ["The selected $id is invalid."]];
+            throw new HttpResponseException(response(
+                new ErrorResponseResource($errors),
+                Response::HTTP_NOT_FOUND
+            ));
+        }
+
+        $this->rankService->delete($id);
+        return response(new SuccessResponseResource(null));
     }
 }
