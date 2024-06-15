@@ -25,4 +25,6 @@ interface RoleService
     public function delete(int $id): bool;
 
     public function searchRole(array $filter): Collection;
+
+    public function exist(int $id): bool;
 }
