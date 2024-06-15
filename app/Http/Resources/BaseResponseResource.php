@@ -9,10 +9,14 @@ use App\Enums\HttpResponseStatus;
 class BaseResponseResource extends JsonResource
 {
     public HttpResponseStatus $status;
-    public string $message;
+    public ?string $message;
     public mixed $errors;
 
-    public function __construct(HttpResponseStatus $status, string $message, mixed $errors = null, $resource = null)
+    public function __construct(
+        HttpResponseStatus $status,
+        ?string $message,
+        mixed $errors = null,
+        $resource = null)
     {
         parent::__construct($resource);
 

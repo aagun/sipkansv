@@ -18,16 +18,8 @@ class RoleServiceTest extends TestCase
     {
         parent::setUp();
 
+        DB::delete('delete from roles');
         $this->roleService = $this->app->make(RoleService::class);
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('roles')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     public function testSaveRole()
@@ -44,6 +36,8 @@ class RoleServiceTest extends TestCase
 
     public function testSaveAllRoles()
     {
+        $this->testSaveRole();
+
         $roles = [
             [
                 'name' => 'RO_TEST_PENGAWAS',
@@ -66,6 +60,8 @@ class RoleServiceTest extends TestCase
 
     public function testFindOne()
     {
+        $this->testSaveAllRoles();
+
         $role_id = $this->roleService->findOneByName(self::TEST_ADMIN)['id'];
         $role = $this->roleService->findOne($role_id);
         self::assertNotNull($role);
@@ -73,12 +69,16 @@ class RoleServiceTest extends TestCase
 
     public function testFindAll()
     {
+        $this->testSaveAllRoles();
+
         $roles = $this->roleService->findAll();
         self::assertEquals(4, $roles->count());
     }
 
     public function testUpdate()
     {
+        $this->testSaveAllRoles();
+
         $role_id = $this->roleService->findOneByName('RO_TEST_PENGAWAS')['id'];
         $role = [
             'id' => $role_id,
@@ -94,6 +94,8 @@ class RoleServiceTest extends TestCase
 
     public function testRoleUsers()
     {
+        $this->testSaveAllRoles();
+
         $role_id = $this->roleService->findOneByName(self::TEST_ADMIN)['id'];
         $role = $this->roleService->findOne($role_id);
         $users = $role->users();
@@ -102,6 +104,8 @@ class RoleServiceTest extends TestCase
 
     public function testDelete()
     {
+        $this->testSaveAllRoles();
+
         $role_id = $this->roleService->findOneByName(self::TEST_ADMIN)['id'];
         $is_deleted = $this->roleService->delete($role_id);
 
