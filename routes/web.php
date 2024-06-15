@@ -33,4 +33,5 @@ Route::prefix('ranks')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
+        Route::delete('/{id}', 'delete');
     });

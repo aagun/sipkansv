@@ -135,4 +135,26 @@ class RankControllerTest extends TestCase
         );
     }
 
+    public function testDeleteSuccess()
+    {
+        $this->seed(RankSeeder::class);
+
+        $rank_id = Rank::query()->first()->id;
+
+        $response = $this->delete("/ranks/$rank_id");
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseCount(Rank::class, 3);
+    }
+
+    public function testDeleteFailed()
+    {
+        $this->seed(RankSeeder::class);
+
+        $rank_id = 10;
+
+        $response = $this->delete("/ranks/$rank_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The selected $rank_id is invalid."]);
+    }
 }
