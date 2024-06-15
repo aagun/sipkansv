@@ -7,32 +7,33 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Position;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Collection;
 
 class PositionServiceImpl implements PositionService
 {
     public function findOne(int $id): Model | Builder
     {
-        // TODO: Implement findOne() method.
+        return new Position();
     }
 
     public function findByName(string $name): Model | Builder
     {
-        // TODO: Implement findByName() method.
+        return new Position();
     }
 
     public function exist(int $id): bool
     {
-        // TODO: Implement exist() method.
+        return false;
     }
 
     public function existByName(string $name): bool
     {
-        // TODO: Implement existByName() method.
+        return false;
     }
 
     public function delete(int $id): bool
     {
-        // TODO: Implement delete() method.
+        return false;
     }
 
     public function update(array $position): bool
@@ -42,9 +43,20 @@ class PositionServiceImpl implements PositionService
             ->update($position);
     }
 
-    public function search(array $position)
+    public function search(array $filter): Collection
     {
-        // TODO: Implement search() method.
+        return Position::query()
+            ->when($filter, function (Builder $query, array $filter) {
+                if (isset($filter['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+                }
+
+                if (isset($filter['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$filter['description']]);
+                }
+            })
+            ->orderByRaw("id asc")
+            ->get();
     }
 
     public function save(array $position): Model | Builder
