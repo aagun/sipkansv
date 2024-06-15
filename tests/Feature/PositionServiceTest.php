@@ -68,4 +68,15 @@ class PositionServiceTest extends TestCase
         $this->assertDatabaseHas(Position::class, ['name' => 'updated']);
     }
 
+    public function testPositionDelete()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $id = Position::query()->first()->id;
+
+        $this->positionService->delete($id);
+
+        $this->assertDatabaseCount(Position::class, 3);
+    }
+
 }

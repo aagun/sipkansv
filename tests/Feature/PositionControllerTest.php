@@ -135,4 +135,28 @@ class PositionControllerTest extends TestCase
             ->etc()
         );
     }
+
+    public function testDeleteSuccess()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $position_id = Position::query()->first()->id;
+
+        $response = $this->delete("/positions/$position_id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseCount(Position::class, 3);
+    }
+
+    public function testDeleteFailed()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $position_id = 10;
+
+        $response = $this->delete("/positions/$position_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The selected $position_id is invalid."]);
+    }
 }

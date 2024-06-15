@@ -11,29 +11,31 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PositionServiceImpl implements PositionService
 {
-    public function findOne(int $id): Model | Builder
+    public function findOne(int $id): Model | Builder | null
     {
-        return new Position();
+        return Position::query()->where('id', $id)->first();
     }
 
-    public function findByName(string $name): Model | Builder
+    public function findByName(string $name): Model | Builder | null
     {
-        return new Position();
+        return Position::query()->where('name', $name)->first();
     }
 
-    public function exist(int $id): bool
+    public function exists(int $id): bool
     {
-        return false;
+        return Position::query()->where('id', $id)->exists();
     }
 
-    public function existByName(string $name): bool
+    public function existsByName(string $name): bool
     {
-        return false;
+        return Position::query()->where('name', $name)->exists();
     }
 
     public function delete(int $id): bool
     {
-        return false;
+        return Position::query()
+            ->where('id', $id)
+            ->delete();
     }
 
     public function update(array $position): bool
