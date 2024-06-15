@@ -13,27 +13,29 @@ class PositionServiceImpl implements PositionService
 {
     public function findOne(int $id): Model | Builder
     {
-        return new Position();
+        return Position::query()->findOrFail($id)->first();
     }
 
     public function findByName(string $name): Model | Builder
     {
-        return new Position();
+        return Position::query()->where('name', $name)->first();
     }
 
-    public function exist(int $id): bool
+    public function exists(int $id): bool
     {
-        return false;
+        return $this->findOne($id)->exists();
     }
 
-    public function existByName(string $name): bool
+    public function existsByName(string $name): bool
     {
-        return false;
+        return $this->findByName($name)->exists();
     }
 
     public function delete(int $id): bool
     {
-        return false;
+        return Position::query()
+            ->where('id', $id)
+            ->delete();
     }
 
     public function update(array $position): bool

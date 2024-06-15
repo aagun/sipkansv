@@ -12,9 +12,9 @@ interface PositionService
 
     public function findByName(string $name): Model | Builder;
 
-    public function exist(int $id): bool;
+    public function exists(int $id): bool;
 
-    public function existByName(string $name): bool;
+    public function existsByName(string $name): bool;
 
     public function delete(int $id): bool;
 
