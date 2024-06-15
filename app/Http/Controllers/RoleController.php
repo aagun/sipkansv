@@ -52,7 +52,7 @@ class RoleController extends Controller
         return response(new SuccessResponseResource(null));
     }
 
-    public function updateRole(int $id): Response
+    public function deleteRole(int $id): Response
     {
         if (!$this->roleService->exists($id)) {
             $errors = ['id' => ["The id $id does not exist"]];
