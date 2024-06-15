@@ -176,4 +176,26 @@ class RoleControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name', 'description']);
     }
+
+    public function testUpdateRoleSuccess()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
+        $response = $this->delete("/roles/$role_id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing(Role::class, ['id' => $role_id]);
+    }
+
+    public function testUpdateRoleNotFound()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $role_id = 1;
+        $response = $this->delete("/roles/$role_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The id $role_id does not exist"]);
+    }
 }
