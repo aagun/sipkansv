@@ -21,6 +21,7 @@ Route::prefix('positions')
     ->controller(PositionController::class)
     ->group(function () {
         Route::post('/', 'create');
-        Route::put('/', 'update');
         Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::delete('/{id}', 'delete');
     });

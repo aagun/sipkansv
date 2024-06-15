@@ -8,6 +8,8 @@ use App\Http\Resources\SuccessResponseResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\PositionUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Resources\ErrorResponseResource;
 
 class PositionController extends Controller
 {
@@ -40,5 +42,19 @@ class PositionController extends Controller
         $filter = $request->only(['name', 'description']);
         $collection = $this->positionService->search($filter);
         return response(new SuccessResponseResource($collection));
+    }
+
+    public function delete(int $id): Response
+    {
+        if (!$this->positionService->exists($id)) {
+            $errors = ['id' => ["The selected $id is invalid."]];
+            throw new HttpResponseException(response(
+                new ErrorResponseResource($errors),
+                Response::HTTP_NOT_FOUND
+            ));
+        }
+
+        $this->positionService->delete($id);
+        return response(new SuccessResponseResource(null));
     }
 }
