@@ -12,11 +12,13 @@ use Database\Seeders\RoleSeeder;
 
 class RoleControllerTest extends TestCase
 {
+    private RoleService $roleService;
+
     protected function setUp(): void
     {
         parent::setUp();
         DB::delete('delete from roles');
-        $this->app->make(RoleService::class);
+        $this->roleService = $this->app->make(RoleService::class);
     }
 
     public function testCreateRole()
@@ -140,5 +142,38 @@ class RoleControllerTest extends TestCase
             ->where('errors', null)
             ->count('data', 1)
         );
+    }
+
+    public function testEditRoleSuccess()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
+        $response = $this->put("/roles/$role_id", ['name' => 'RO_ADMIN_UPDATED']);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseHas(Role::class, ['name' => 'RO_ADMIN_UPDATED']);
+    }
+
+    public function testEditRoleNotFound()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $role_id = 1;
+        $response = $this->put("/roles/$role_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The id $role_id does not exist"]);
+    }
+
+    public function testEditRoleFailed()
+    {
+        $this->seed(RoleSeeder::class);
+
+        $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
+        $response = $this->put("/roles/$role_id", ['name' => ' ', 'description' => ' ']);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['name', 'description']);
     }
 }
