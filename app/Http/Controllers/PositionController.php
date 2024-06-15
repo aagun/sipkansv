@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\PositionService;
 use App\Http\Requests\PositionCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 use App\Http\Requests\PositionUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -46,11 +46,12 @@ class PositionController extends Controller
 
     public function delete(int $id): Response
     {
+        var_dump("id: $id");
         if (!$this->positionService->exists($id)) {
             $errors = ['id' => ["The selected $id is invalid."]];
             throw new HttpResponseException(response(
-                new ErrorResponseResource($errors),
-                Response::HTTP_NOT_FOUND
+                    new ErrorResponseResource($errors),
+                    Response::HTTP_NOT_FOUND
             ));
         }
 
