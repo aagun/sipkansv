@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Role;
 
-class RoleRequest extends BaseRequest
+class RoleUpdateRequest extends BaseRequest
 {
     protected function prepareForValidation(): void
     {
@@ -18,6 +19,7 @@ class RoleRequest extends BaseRequest
     {
         return [
             'name' => [
+                'sometimes',
                 'required',
                 'string',
                 'min:4',
@@ -26,6 +28,7 @@ class RoleRequest extends BaseRequest
                 Rule::unique(Role::class, 'name')
             ],
             'description' => [
+                'sometimes',
                 'required',
                 'string'
             ]

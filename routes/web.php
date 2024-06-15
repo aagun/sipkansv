@@ -12,4 +12,5 @@ Route::prefix('roles')
     ->group(function () {
         Route::post('/', 'createRole');
         Route::post('/search', 'searchRole');
+        Route::put('/{id}', 'editRole');
     });
