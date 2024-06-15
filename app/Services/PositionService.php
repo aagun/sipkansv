@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\PositionSearchRequest;
+use Illuminate\Database\Eloquent\Collection;
 
 interface PositionService
 {
@@ -20,7 +20,7 @@ interface PositionService
 
     public function update(array $position): bool;
 
-    public function search(array $position);
+    public function search(array $filter): Collection;
 
     public function save(array $position): Model | Builder;
 

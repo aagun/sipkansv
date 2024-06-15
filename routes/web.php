@@ -22,4 +22,5 @@ Route::prefix('positions')
     ->group(function () {
         Route::post('/', 'create');
         Route::put('/', 'update');
+        Route::post('/search', 'search');
     });
