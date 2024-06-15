@@ -11,8 +11,6 @@ use Database\Seeders\PositionSeeder;
 
 class PositionControllerTest extends TestCase
 {
-    private PositionService $positionService;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -58,6 +56,66 @@ class PositionControllerTest extends TestCase
         $response = $this->post('/positions', $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['name' => 'The name field is required.']);
+    }
+
+    public function testUpdateSuccess()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $position_id = Position::query()->first()->id;
+        $payload = [
+            'id' => $position_id,
+            'name' => 'UPDATE_NAME'
+        ];
+
+        $response = $this->put('/positions', $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseHas(Position::class, ['name' => 'UPDATE_NAME']);
+    }
+
+    public function testUpdateNotExistError()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $position_id = 1;
+        $payload = [
+            'id' => $position_id,
+            'name' => 'UPDATE_NAME'
+        ];
+
+        $response = $this->put('/positions', $payload);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['id' => 'The selected id is invalid.']);
+    }
+
+    public function testUpdateUniqueError()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $current_position = Position::query()->first();
+
+        $payload = [
+            'id' => $current_position->id,
+            'name' => $current_position->name
+        ];
+
+        $response = $this->put('/positions', $payload);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['name' => 'The name has already been taken.']);
+    }
+
+    public function testUpdateMandatoryError()
+    {
+        $payload = [];
+
+        $response = $this->put('/positions', $payload);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['id' => 'The id field is required.']);
         $response->assertInvalid(['name' => 'The name field is required.']);
     }
 }
