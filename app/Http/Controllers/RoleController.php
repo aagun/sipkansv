@@ -54,7 +54,7 @@ class RoleController extends Controller
 
     public function updateRole(int $id): Response
     {
-        if (!$this->roleService->exist($id)) {
+        if (!$this->roleService->exists($id)) {
             $errors = ['id' => ["The id $id does not exist"]];
             throw new HttpResponseException(response(
                 new ErrorResponseResource($errors),
