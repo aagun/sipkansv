@@ -37,7 +37,9 @@ class RankServiceImpl implements RankService
 
     public function update(array $rank): bool
     {
-        return false;
+        return Rank::query()
+            ->where('id', $rank['id'])
+            ->update($rank);
     }
 
     public function search(array $filter): Collection
