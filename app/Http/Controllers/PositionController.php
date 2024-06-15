@@ -7,6 +7,7 @@ use App\Http\Requests\PositionCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\PositionUpdateRequest;
+use Illuminate\Http\Request;
 
 class PositionController extends Controller
 {
@@ -32,5 +33,12 @@ class PositionController extends Controller
         $payload = $request->validated();
         $saved = $this->positionService->update($payload);
         return response(new SuccessResponseResource($saved));
+    }
+
+    public function search(Request $request): Response
+    {
+        $filter = $request->only(['name', 'description']);
+        $collection = $this->positionService->search($filter);
+        return response(new SuccessResponseResource($collection));
     }
 }

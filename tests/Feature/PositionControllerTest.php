@@ -8,6 +8,7 @@ use App\Services\PositionService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Position;
 use Database\Seeders\PositionSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 class PositionControllerTest extends TestCase
 {
@@ -117,5 +118,21 @@ class PositionControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
         $response->assertInvalid(['name' => 'The name field is required.']);
+    }
+
+    public function testSearch()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $response = $this->post('/positions/search', [
+            'name' => 'pengawas',
+            'description' => 'muda'
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->count('data', 1)
+            ->etc()
+        );
     }
 }
