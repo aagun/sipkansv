@@ -15,7 +15,7 @@ Route::prefix('roles')
         Route::post('/', 'createRole');
         Route::post('/search', 'searchRole');
         Route::put('/{id}', 'editRole');
-        Route::delete('/{id}', 'updateRole');
+        Route::delete('/{id}', 'deleteRole');
     });
 
 Route::prefix('positions')
