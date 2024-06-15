@@ -37,7 +37,9 @@ class PositionServiceImpl implements PositionService
 
     public function update(array $position): bool
     {
-        // TODO: Implement update() method.
+        return Position::query()
+            ->where('id', $position['id'])
+            ->update($position);
     }
 
     public function search(array $position)

@@ -2,13 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Services\Impl\PositionServiceImpl;
 use App\Services\PositionService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Position;
+use Database\Seeders\PositionSeeder;
 
 class PositionServiceTest extends TestCase
 {
@@ -54,5 +52,20 @@ class PositionServiceTest extends TestCase
         $this->assertDatabaseCount(Position::class, 2);
     }
 
+    public function testPositionsUpdate()
+    {
+        $this->seed(PositionSeeder::class);
+
+        $position_id = Position::query()->first()->id;
+        $position = [
+            'id' => $position_id,
+            'name' => 'updated'
+        ];
+
+        $is_success = $this->positionService->update($position);
+
+        self::assertTrue($is_success);
+        $this->assertDatabaseHas(Position::class, ['name' => 'updated']);
+    }
 
 }
