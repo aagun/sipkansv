@@ -8,10 +8,8 @@ use App\Http\Resources\SuccessResponseResource;
 use App\Http\Resources\BaseResponseResource;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
 use App\Http\Resources\ErrorResponseResource;
 use App\Http\Requests\RoleUpdateRequest;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RoleController extends Controller
@@ -42,7 +40,7 @@ class RoleController extends Controller
     {
         $data = $roleRequest->validated();
 
-        if (!$this->roleService->exist($id)) {
+        if (!$this->roleService->exists($id)) {
             $errors = ['id' => ["The id $id does not exist"]];
             throw new HttpResponseException(response(
                 new ErrorResponseResource($errors),
