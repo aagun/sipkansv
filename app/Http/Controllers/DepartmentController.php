@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Services\DepartmentService;
 use App\Http\Requests\DepartmentCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
@@ -21,5 +22,12 @@ class DepartmentController extends Controller
         $payload = $request->validated();
         $this->departmentService->save($payload);
         return response(new SuccessResponseResource(null), Response::HTTP_CREATED);
+    }
+
+    public function search(Request $request)
+    {
+        $filter = $request->only(['name', 'description']);
+        $collection = $this->departmentService->search($filter);
+        return response(new SuccessResponseResource($collection), Response::HTTP_OK);
     }
 }

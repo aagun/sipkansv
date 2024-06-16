@@ -41,4 +41,5 @@ Route::prefix('departments')
     ->controller(DepartmentController::class)
     ->group(function () {
         Route::post('/', 'create');
+        Route::post('/search', 'search');
     });

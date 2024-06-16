@@ -42,7 +42,18 @@ class DepartmentServiceImpl implements DepartmentService
 
     public function search(array $filter): Collection
     {
-        return new Collection();
+        return Department::query()
+            ->when($filter, function (Builder $query, array $filter) {
+                if (isset($filter['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+                }
+
+                if (isset($filter['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$filter['description']]);
+                }
+            })
+            ->orderByRaw("id asc")
+            ->get();
     }
 
     public function save(array $department): Model | Builder
