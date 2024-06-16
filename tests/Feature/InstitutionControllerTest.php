@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Services\InstitutionService;
 use App\Models\Institution;
 use Database\Seeders\InstitutionSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 class InstitutionControllerTest extends TestCase
 {
@@ -58,5 +59,21 @@ class InstitutionControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name field is required.']);
+    }
+
+    public function testSearch()
+    {
+        $this->seed(InstitutionSeeder::class);
+
+        $filter = ['name' => 'jawa barat'];
+
+        $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->count('data', 1)
+            ->etc()
+        );
     }
 }
