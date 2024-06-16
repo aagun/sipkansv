@@ -76,4 +76,65 @@ class InstitutionControllerTest extends TestCase
             ->etc()
         );
     }
+
+    public function testUpdateSuccess()
+    {
+        $this->seed(InstitutionSeeder::class);
+
+        $id = Institution::query()->first()->id;
+        $payload = [
+            'id' => $id,
+            'name' => 'UPDATED_NAME'
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Institution::class, ['name' => 'UPDATED_NAME']);
+    }
+
+    public function testUpdateNotExistError()
+    {
+        $this->seed(InstitutionSeeder::class);
+
+        $id = 1000;
+        $payload = [
+            'id' => $id,
+            'name' => 'UPDATE_NAME'
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['id' => 'The selected id is invalid.']);
+    }
+
+    public function testUpdateUniqueError()
+    {
+        $this->seed(InstitutionSeeder::class);
+
+        $current_data = Institution::query()->first();
+
+        $payload = [
+            'id' => $current_data->id,
+            'name' => $current_data->name
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['name' => 'The name has already been taken.']);
+    }
+
+    public function testUpdateMandatoryError()
+    {
+        $payload = [];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['id' => 'The id field is required.']);
+        $response->assertInvalid(['name' => 'The name field is required.']);
+    }
 }
