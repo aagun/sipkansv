@@ -37,7 +37,12 @@ class DepartmentServiceImpl implements DepartmentService
 
     public function update(array $department): bool
     {
-        return false;
+        $id = $department['id'];
+        unset($department['id']);
+
+        return Department::query()
+                ->where('id', $id)
+                ->update($department);
     }
 
     public function search(array $filter): Collection
