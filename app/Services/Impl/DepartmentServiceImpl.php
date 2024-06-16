@@ -12,27 +12,27 @@ class DepartmentServiceImpl implements DepartmentService
 {
     public function findOne(int $id): Model | Builder | null
     {
-        return null;
+        return Department::query()->where('id', $id)->first();
     }
 
     public function findByName(string $name): Model | Builder | null
     {
-        return null;
+        return Department::query()->where('name', $name)->first();
     }
 
     public function exists(int $id): bool
     {
-        return false;
+        return Department::query()->where('id', $id)->exists();
     }
 
     public function existsByName(string $name): bool
     {
-        return false;
+        return Department::query()->where('name', $name)->exists();
     }
 
     public function delete(int $id): bool
     {
-        return false;
+        return Department::query()->where('id', $id)->delete();
     }
 
     public function update(array $department): bool

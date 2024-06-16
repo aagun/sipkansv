@@ -38,4 +38,11 @@ class DepartmentController extends Controller
         $this->departmentService->update($payload);
         return response(new SuccessResponseResource(null));
     }
+
+    public function delete(int $id): Response
+    {
+        validateExistenceDataById($id, $this->departmentService);
+        $this->departmentService->delete($id);
+        return response(new SuccessResponseResource(null));
+    }
 }
