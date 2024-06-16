@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Requests\InstitutionCreateRequest;
 use App\Services\InstitutionService;
 use App\Http\Resources\SuccessResponseResource;
+use App\Http\Requests\InstitutionUpdateRequest;
 
 class InstitutionController extends Controller
 {
@@ -38,5 +39,16 @@ class InstitutionController extends Controller
             null,
             __('messages.success.retrieve'))
         );
+    }
+
+    public function update(InstitutionUpdateRequest $request): Response
+    {
+        $payload = $request->validated();
+        $this->institutionService->update($payload);
+        return response(new SuccessResponseResource(
+            null,
+            null,
+            __('messages.success.updated')
+        ));
     }
 }

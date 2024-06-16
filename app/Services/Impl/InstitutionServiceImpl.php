@@ -37,7 +37,12 @@ class InstitutionServiceImpl implements InstitutionService
 
     public function update(array $institution): bool
     {
-        return false;
+        $id = $institution[ 'id' ];
+        unset($institution[ 'id' ]);
+
+        return Institution::query()
+            ->where('id', $id)
+            ->update($institution);
     }
 
     public function search(array $filter): Collection

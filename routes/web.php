@@ -52,4 +52,5 @@ Route::prefix('institutions')
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
+        Route::put('/', 'update');
     });
