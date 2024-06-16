@@ -8,6 +8,7 @@ use App\Services\DepartmentService;
 use Illuminate\Http\Response;
 use App\Models\Department;
 use Database\Seeders\DepartmentSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 class DepartmentControllerTest extends TestCase
 {
@@ -59,5 +60,22 @@ class DepartmentControllerTest extends TestCase
         $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
+    public function testSearch()
+    {
+        $this->seed(DepartmentSeeder::class);
+
+        $filter = [
+            'name' => 'psdkp',
+            'description' => 'unit pelaksana'
+        ];
+
+        $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->count('data', 2)
+            ->etc()
+        );
+    }
 
 }
