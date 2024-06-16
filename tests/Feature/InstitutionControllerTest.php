@@ -137,4 +137,27 @@ class InstitutionControllerTest extends TestCase
         $response->assertInvalid(['id' => 'The id field is required.']);
         $response->assertInvalid(['name' => 'The name field is required.']);
     }
+
+    public function testDeleteSuccess()
+    {
+        $this->seed(InstitutionSeeder::class);
+
+        $id = Institution::query()->first()->id;
+
+        $response = $this->delete(self::BASE_ENDPOINT . '/' . $id);
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseCount(Institution::class, 0);
+    }
+
+    public function testDeleteFailed()
+    {
+        $this->seed(InstitutionSeeder::class);
+
+        $id = 10;
+
+        $response = $this->delete(self::BASE_ENDPOINT .  '/' . $id);
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The selected $id is invalid."]);
+    }
 }
