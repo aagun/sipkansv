@@ -31,6 +31,12 @@ class InstitutionController extends Controller
 
     public function search(Request $request): Response
     {
-        return response();
+        $filter = $request->only(['name', 'description']);
+        $collection = $this->institutionService->search($filter);
+        return response(new SuccessResponseResource(
+            $collection,
+            null,
+            __('messages.success.retrieve'))
+        );
     }
 }

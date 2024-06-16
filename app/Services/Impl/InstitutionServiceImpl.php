@@ -42,7 +42,18 @@ class InstitutionServiceImpl implements InstitutionService
 
     public function search(array $filter): Collection
     {
-        return new Collection();
+        return Institution::query()
+            ->when($filter, function (Builder $query, array $filter) {
+                if (isset($filter['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+                }
+
+                if (isset($filter['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$filter['description']]);
+                }
+            })
+            ->orderByRaw("id asc")
+            ->get();
     }
 
     public function save(array $institution): Model | Builder
