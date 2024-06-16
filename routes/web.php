@@ -5,6 +5,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\InstitutionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +40,15 @@ Route::prefix('ranks')
 
 Route::prefix('departments')
     ->controller(DepartmentController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::delete('/{id}', 'delete');
+    });
+
+Route::prefix('institutions')
+    ->controller(InstitutionController::class)
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
