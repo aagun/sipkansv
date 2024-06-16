@@ -53,4 +53,5 @@ Route::prefix('institutions')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
+        Route::delete('/{id}', 'delete');
     });

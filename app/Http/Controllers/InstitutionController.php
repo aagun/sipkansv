@@ -51,4 +51,11 @@ class InstitutionController extends Controller
             __('messages.success.updated')
         ));
     }
+
+    public function delete(int $id): Response
+    {
+        validateExistenceDataById($id, $this->institutionService);
+        $this->institutionService->delete($id);
+        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+    }
 }

@@ -32,7 +32,7 @@ class InstitutionServiceImpl implements InstitutionService
 
     public function delete(int $id): bool
     {
-        return false;
+        return Institution::query()->where('id', $id)->delete();
     }
 
     public function update(array $institution): bool
