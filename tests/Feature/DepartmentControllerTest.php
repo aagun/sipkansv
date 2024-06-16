@@ -138,4 +138,27 @@ class DepartmentControllerTest extends TestCase
         $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
+    public function testDeleteSuccess()
+    {
+        $this->seed(DepartmentSeeder::class);
+
+        $id = Department::query()->first()->id;
+
+        $response = $this->delete(self::BASE_ENDPOINT . '/' . $id);
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseCount(Department::class, 2);
+    }
+
+    public function testDeleteFailed()
+    {
+        $this->seed(DepartmentSeeder::class);
+
+        $id = 10;
+
+        $response = $this->delete(self::BASE_ENDPOINT .  '/' . $id);
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The selected $id is invalid."]);
+    }
+
 }
