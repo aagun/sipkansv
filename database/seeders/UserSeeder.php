@@ -11,16 +11,24 @@ use App\Services\RoleService;
 use App\Enums\UserStatus;
 use App\Enums\Gender;
 use App\Models\User;
+use App\Services\RankService;
 
 class UserSeeder extends Seeder
 {
     private RoleService $roleService;
     private PositionService $positionService;
 
-    public function __construct(PositionService $positionService, RoleService $roleService)
+    private RankService $rankService;
+
+    public function __construct(
+        PositionService $positionService,
+        RoleService $roleService,
+        RankService $rankService
+    )
     {
         $this->positionService = $positionService;
         $this->roleService = $roleService;
+        $this->rankService = $rankService;
     }
 
 
@@ -43,6 +51,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
             ],
             [
                 'name' => 'Suharni,S.St.Pi',
@@ -57,6 +66,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
             ],
             [
                 'name' => 'Andri Afiandri, SH',
@@ -71,6 +81,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Pertama'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Penata Muda Tk.I'])->first()->id,
             ],
             [
                 'name' => 'Agung Wigomi, A.Md. Tra',
@@ -85,6 +96,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
             ],
             [
                 'name' => 'Yadi Supriadi',
@@ -99,6 +111,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Petugas Pengambil Contoh'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Penata Muda'])->first()->id,
             ],
 
 
@@ -115,6 +128,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_HEAD'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Kepala UPTD Pengawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Pembina'])->first()->id,
             ],
             [
                 'name' => 'Jajang',
@@ -129,6 +143,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_HEAD'])->first()->id,
                 'position_id' => null,
+                'rank_id' => null,
             ],
             [
                 'name' => 'Anwar',
@@ -143,6 +158,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_HEAD'])->first()->id,
                 'position_id' => null,
+                'rank_id' => null,
             ],
 
 
@@ -160,6 +176,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_OPERATOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
             ],
             [
                 'name' => 'Budi Yulianto, A.Md',
@@ -174,6 +191,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_OPERATOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
             ],
             [
                 'name' => 'Asep Sopyan Yahya, A.Md',
@@ -188,6 +206,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_OPERATOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
+                'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
             ],
             [
                 'name' => 'Siti Marwah Waraswati, S.Kel',
@@ -202,6 +221,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_OPERATOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Tenaga Teknis'])->first()->id,
+                'rank_id' => null,
             ],
             [
                 'name' => 'Yuni Kartika, S.T',
@@ -216,6 +236,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_OPERATOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Tenaga Teknis'])->first()->id,
+                'rank_id' => null,
             ],
             [
                 'name' => 'Genta Fabiyanto, S. St. Pi',
@@ -230,6 +251,7 @@ class UserSeeder extends Seeder
                 'status' => UserStatus::ACTIVE,
                 'role_id' => $this->roleService->searchRole(['name' => 'RO_OPERATOR'])->first()->id,
                 'position_id' => $this->positionService->search(['name' => 'Tenaga Teknis'])->first()->id,
+                'rank_id' => null,
             ],
         ];
 
