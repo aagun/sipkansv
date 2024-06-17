@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\Department;
 use Database\Seeders\DepartmentSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Database\Seeders\UserSeeder;
 
 class DepartmentControllerTest extends TestCase
 {
@@ -18,6 +19,7 @@ class DepartmentControllerTest extends TestCase
         parent::setUp();
 
         DB::delete('delete from departments');
+        DB::delete('delete from users');
 
         $this->app->make(DepartmentService::class);
     }
@@ -32,6 +34,7 @@ class DepartmentControllerTest extends TestCase
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
         $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(Department::class, ['name' => $department_name]);
     }
 
@@ -62,7 +65,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testSearch()
     {
-        $this->seed(DepartmentSeeder::class);
+        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
 
         $filter = [
             'name' => 'psdkp',
@@ -72,6 +75,7 @@ class DepartmentControllerTest extends TestCase
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->count('data', 2)
             ->etc()
@@ -80,7 +84,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testUpdateSuccess()
     {
-        $this->seed(DepartmentSeeder::class);
+        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
 
         $id = Department::query()->first()->id;
         $payload = [
@@ -91,12 +95,13 @@ class DepartmentControllerTest extends TestCase
         $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Department::class, ['name' => 'UPDATED_NAME']);
     }
 
     public function testUpdateNotExistError()
     {
-        $this->seed(DepartmentSeeder::class);
+        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
 
         $id = 1000;
         $payload = [
@@ -112,7 +117,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testUpdateUniqueError()
     {
-        $this->seed(DepartmentSeeder::class);
+        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
 
         $current_data = Department::query()->first();
 
@@ -140,21 +145,19 @@ class DepartmentControllerTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed(DepartmentSeeder::class);
+        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
 
         $id = Department::query()->first()->id;
 
         $response = $this->delete(self::BASE_ENDPOINT . '/' . $id);
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
         $this->assertDatabaseCount(Department::class, 2);
     }
 
     public function testDeleteFailed()
     {
-        $this->seed(DepartmentSeeder::class);
-
         $id = 10;
-
         $response = $this->delete(self::BASE_ENDPOINT .  '/' . $id);
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
