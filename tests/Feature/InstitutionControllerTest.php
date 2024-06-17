@@ -65,7 +65,7 @@ class InstitutionControllerTest extends TestCase
     {
         $this->seed(InstitutionSeeder::class);
 
-        $filter = ['name' => 'jawa barat'];
+        $filter = ['description' => 'jawa barat'];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
 
