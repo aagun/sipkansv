@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Services\RankService;
+use Database\Seeders\DatabaseSeeder;
 
 class RankServiceTest extends TestCase
 {
@@ -17,6 +18,7 @@ class RankServiceTest extends TestCase
 
     public function testRankUsers()
     {
+        $this->seed(DatabaseSeeder::class);
         $rank = $this->rankService->findByName('Pengatur');
         self::assertEquals(4, $rank->users->count());
     }

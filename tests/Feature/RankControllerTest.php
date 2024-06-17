@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Services\RankService;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Rank;
 use Database\Seeders\RankSeeder;
@@ -15,8 +14,6 @@ class RankControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        DB::delete('delete from ranks');
 
         $this->app->make(RankService::class);
     }
