@@ -32,6 +32,7 @@ class PositionControllerTest extends TestCase
         $response = $this->post('/positions', $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(Position::class, ['name' => $position_name]);
     }
 
@@ -73,6 +74,7 @@ class PositionControllerTest extends TestCase
         $response = $this->put('/positions', $payload);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Position::class, ['name' => 'UPDATE_NAME']);
     }
 
@@ -145,6 +147,7 @@ class PositionControllerTest extends TestCase
         $response = $this->delete("/positions/$position_id");
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
         $this->assertDatabaseCount(Position::class, 3);
     }
 

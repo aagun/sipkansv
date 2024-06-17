@@ -8,8 +8,6 @@ use App\Http\Resources\SuccessResponseResource;
 use Illuminate\Http\Response;
 use App\Http\Requests\PositionUpdateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Http\Resources\ErrorResponseResource;
 
 class PositionController extends Controller
 {
@@ -25,7 +23,7 @@ class PositionController extends Controller
         $payload = $request->validated();
         $saved = $this->positionService->save($payload);
         return response(
-            new SuccessResponseResource($saved),
+            new SuccessResponseResource($saved, null, __('messages.success.created')),
             Response::HTTP_CREATED
         );
     }
@@ -34,27 +32,20 @@ class PositionController extends Controller
     {
         $payload = $request->validated();
         $saved = $this->positionService->update($payload);
-        return response(new SuccessResponseResource($saved));
+        return response(new SuccessResponseResource($saved, null, __('messages.success.updated')));
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->positionService->search($filter);
-        return response(new SuccessResponseResource($collection));
+        return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
     }
 
     public function delete(int $id): Response
     {
-        if (!$this->positionService->exists($id)) {
-            $errors = ['id' => ["The selected $id is invalid."]];
-            throw new HttpResponseException(response(
-                    new ErrorResponseResource($errors),
-                    Response::HTTP_NOT_FOUND
-            ));
-        }
-
+        validateExistenceDataById($id, $this->positionService);
         $this->positionService->delete($id);
-        return response(new SuccessResponseResource(null));
+        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
     }
 }
