@@ -31,6 +31,7 @@ class RankControllerTest extends TestCase
 
         $response = $this->post('/ranks', $payload);
         $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(Rank::class, ['name' => $rank_name]);
     }
 
@@ -72,6 +73,7 @@ class RankControllerTest extends TestCase
         $response = $this->put('/ranks', $payload);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Rank::class, ['name' => 'UPDATED_NAME']);
     }
 
@@ -130,6 +132,7 @@ class RankControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('message', __('messages.success.retrieve'))
             ->count('data', 2)
             ->etc()
         );
@@ -143,7 +146,8 @@ class RankControllerTest extends TestCase
 
         $response = $this->delete("/ranks/$rank_id");
         $response->assertStatus(Response::HTTP_OK);
-        $this->assertDatabaseCount(Rank::class, 3);
+        $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
+        $this->assertDatabaseCount(Rank::class, 4);
     }
 
     public function testDeleteFailed()

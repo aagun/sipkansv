@@ -8,8 +8,6 @@ use App\Http\Requests\RankCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\RankUpdateRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Http\Resources\ErrorResponseResource;
 
 class RankController extends Controller
 {
@@ -26,7 +24,7 @@ class RankController extends Controller
         $payload = $request->validated();
         $rank = $this->rankService->save($payload);
         return response(
-            new SuccessResponseResource($rank),
+            new SuccessResponseResource($rank, null, __('messages.success.created')),
             Response::HTTP_CREATED
         );
     }
@@ -35,27 +33,20 @@ class RankController extends Controller
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->rankService->search($filter);
-        return response(new SuccessResponseResource($collection));
+        return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
     }
 
     public function update(RankUpdateRequest $request): Response
     {
         $payload = $request->validated();
         $saved = $this->rankService->update($payload);
-        return response(new SuccessResponseResource($saved));
+        return response(new SuccessResponseResource($saved, null, __('messages.success.updated')));
     }
 
     public function delete(int $id): Response
     {
-        if (!$this->rankService->exists($id)) {
-            $errors = ['id' => ["The selected $id is invalid."]];
-            throw new HttpResponseException(response(
-                new ErrorResponseResource($errors),
-                Response::HTTP_NOT_FOUND
-            ));
-        }
-
+        validateExistenceDataById($id, $this->rankService);
         $this->rankService->delete($id);
-        return response(new SuccessResponseResource(null));
+        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
     }
 }
