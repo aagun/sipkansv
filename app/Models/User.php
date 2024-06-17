@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Rank::class, 'rank_id', 'id');
     }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
 }
