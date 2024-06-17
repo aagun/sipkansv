@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\Department;
 use Database\Seeders\DepartmentSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Database\Seeders\UserSeeder;
+use Database\Seeders\DatabaseSeeder;
 
 class DepartmentControllerTest extends TestCase
 {
@@ -65,7 +65,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testSearch()
     {
-        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
+        $this->seed(DatabaseSeeder::class);
 
         $filter = [
             'name' => 'psdkp',
@@ -84,7 +84,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testUpdateSuccess()
     {
-        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
+        $this->seed(DatabaseSeeder::class);
 
         $id = Department::query()->first()->id;
         $payload = [
@@ -101,7 +101,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testUpdateNotExistError()
     {
-        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
+        $this->seed(DatabaseSeeder::class);
 
         $id = 1000;
         $payload = [
@@ -117,7 +117,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testUpdateUniqueError()
     {
-        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
+        $this->seed(DatabaseSeeder::class);
 
         $current_data = Department::query()->first();
 
@@ -145,7 +145,7 @@ class DepartmentControllerTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed([DepartmentSeeder::class, UserSeeder::class]);
+        $this->seed(DatabaseSeeder::class);
 
         $id = Department::query()->first()->id;
 
