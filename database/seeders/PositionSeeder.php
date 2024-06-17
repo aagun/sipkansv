@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Position;
 use Illuminate\Support\Carbon;
@@ -28,7 +27,7 @@ class PositionSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => 'Pengelola Data',
+                'name' => 'Pengolah Data',
                 'description' => 'Pengelola Data',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -36,6 +35,18 @@ class PositionSeeder extends Seeder
             [
                 'name' => 'Petugas Pengambil Contoh',
                 'description' => 'Petugas Pengambil Contoh',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'Kepala UPTD Pengawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan',
+                'description' => 'Kepala UPTD Pengawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'Tenaga Teknis',
+                'description' => 'Tenaga Teknis',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

@@ -7,6 +7,7 @@ use App\Services\PositionService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Position;
 use Database\Seeders\PositionSeeder;
+use Database\Seeders\DatabaseSeeder;
 
 class PositionServiceTest extends TestCase
 {
@@ -17,6 +18,8 @@ class PositionServiceTest extends TestCase
         parent::setUp();
 
         DB::delete('delete from positions');
+        DB::delete('delete from roles');
+        DB::delete('delete from users');
 
         $this->positionService = $this->app->make(PositionService::class);
     }
@@ -79,4 +82,12 @@ class PositionServiceTest extends TestCase
         $this->assertDatabaseCount(Position::class, 3);
     }
 
+    public function testPositionUsers()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $name = 'Pengolah Data';
+        $position = $this->positionService->findByName($name);
+        self::assertEquals(4, $position->users->count() );
+    }
 }
