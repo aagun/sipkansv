@@ -14,10 +14,10 @@ Route::get('/', function () {
 Route::prefix('roles')
     ->controller(RoleController::class)
     ->group(function () {
-        Route::post('/', 'createRole');
-        Route::post('/search', 'searchRole');
-        Route::put('/{id}', 'editRole');
-        Route::delete('/{id}', 'deleteRole');
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/{id}', 'edit');
+        Route::delete('/{id}', 'delete');
     });
 
 Route::prefix('positions')
