@@ -38,6 +38,12 @@ class RankSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
+            [
+                'name' => 'Pembina',
+                'description' => 'Pembina',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
         ];
 
         Rank::query()->insert($ranks);

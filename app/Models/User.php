@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Position::class, 'position_id', 'id');
     }
+
+    public function rank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class, 'rank_id', 'id');
+    }
 }
