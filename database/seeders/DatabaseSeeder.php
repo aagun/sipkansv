@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
             RankSeeder::class,
             DepartmentSeeder::class,
+            InstitutionSeeder::class,
             UserSeeder::class
         ]);
     }
