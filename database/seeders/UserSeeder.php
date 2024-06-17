@@ -13,6 +13,7 @@ use App\Enums\Gender;
 use App\Models\User;
 use App\Services\RankService;
 use App\Services\DepartmentService;
+use App\Services\InstitutionService;
 
 class UserSeeder extends Seeder
 {
@@ -20,18 +21,21 @@ class UserSeeder extends Seeder
     private PositionService $positionService;
     private RankService $rankService;
     private DepartmentService $departmentService;
+    private InstitutionService $institutionService;
 
     public function __construct(
         PositionService $positionService,
         RoleService $roleService,
         RankService $rankService,
-        DepartmentService $departmentService
+        DepartmentService $departmentService,
+        InstitutionService $institutionService
     )
     {
         $this->positionService = $positionService;
         $this->roleService = $roleService;
         $this->rankService = $rankService;
         $this->departmentService = $departmentService;
+        $this->institutionService = $institutionService;
     }
 
 
@@ -56,6 +60,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Suharni,S.St.Pi',
@@ -72,6 +77,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Andri Afiandri, SH',
@@ -88,6 +94,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Pertama'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Penata Muda Tk.I'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Agung Wigomi, A.Md. Tra',
@@ -104,6 +111,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'Bidang PSDKP'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Yadi Supriadi',
@@ -120,6 +128,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Petugas Pengambil Contoh'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Penata Muda'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
 
 
@@ -138,6 +147,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Kepala UPTD Pengawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Pembina'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Jajang',
@@ -154,6 +164,7 @@ class UserSeeder extends Seeder
                 'position_id' => null,
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Anwar',
@@ -170,6 +181,7 @@ class UserSeeder extends Seeder
                 'position_id' => null,
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'Bidang PSDKP'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
 
 
@@ -189,6 +201,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'Bidang PSDKP'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Budi Yulianto, A.Md',
@@ -205,6 +218,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Asep Sopyan Yahya, A.Md',
@@ -221,6 +235,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Pengolah Data'])->first()->id,
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Siti Marwah Waraswati, S.Kel',
@@ -237,6 +252,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Tenaga Teknis'])->first()->id,
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Yuni Kartika, S.T',
@@ -253,6 +269,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Tenaga Teknis'])->first()->id,
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
             [
                 'name' => 'Genta Fabiyanto, S. St. Pi',
@@ -269,6 +286,7 @@ class UserSeeder extends Seeder
                 'position_id' => $this->positionService->search(['name' => 'Tenaga Teknis'])->first()->id,
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
+                'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
             ],
         ];
 

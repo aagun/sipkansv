@@ -14,7 +14,7 @@ class InstitutionSeeder extends Seeder
     public function run(): void
     {
         $institutions = [
-            'name' => 'Dinas Kelautan dan Perikanan Provinsi Jawa Barat',
+            'name' => 'DKPP JABAR',
             'description' => 'Dinas Kelautan dan Perikanan Provinsi Jawa Barat',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
