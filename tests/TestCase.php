@@ -16,6 +16,7 @@ abstract class TestCase extends BaseTestCase
         DB::delete('delete from ranks');
         DB::delete('delete from departments');
         DB::delete('delete from institutions');
+        DB::delete('delete from grade_levels');
         DB::delete('delete from users');
     }
 
