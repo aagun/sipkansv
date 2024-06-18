@@ -6,6 +6,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\GradeLevelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,4 +55,10 @@ Route::prefix('institutions')
         Route::post('/search', 'search');
         Route::put('/', 'update');
         Route::delete('/{id}', 'delete');
+    });
+
+Route::prefix('grade-levels')
+    ->controller(GradeLevelController::class)
+    ->group(function () {
+        Route::post('/', 'create');
     });
