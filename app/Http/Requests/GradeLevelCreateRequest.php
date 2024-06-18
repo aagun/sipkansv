@@ -37,7 +37,7 @@ class GradeLevelCreateRequest extends BaseRequest
             'description' => [
                 'required',
                 'string',
-                Rule::unique(GradeLevel::class, 'name')
+                Rule::unique(GradeLevel::class, 'description')
             ],
         ];
     }

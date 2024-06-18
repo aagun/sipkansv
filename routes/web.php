@@ -61,4 +61,5 @@ Route::prefix('grade-levels')
     ->controller(GradeLevelController::class)
     ->group(function () {
         Route::post('/', 'create');
+        Route::post('/search', 'search');
     });

@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Http\Resources\SuccessResponseResource;
 use App\Services\GradeLevelService;
 use App\Http\Requests\GradeLevelCreateRequest;
+use Illuminate\Http\Request;
 
 class GradeLevelController extends Controller
 {
@@ -24,5 +25,16 @@ class GradeLevelController extends Controller
             new SuccessResponseResource(null, null, __('messages.success.created')),
             Response::HTTP_CREATED
         );
+    }
+
+    public function search(Request $request): Response
+    {
+        $filter = $request->only(['name', 'description']);
+        $collection = $this->gradeLevelService->search($filter);
+        return response(new SuccessResponseResource(
+            $collection,
+            null,
+            __('messages.success.retrieve')
+        ));
     }
 }
