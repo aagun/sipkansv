@@ -3,20 +3,17 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 use App\Services\PositionService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Position;
-use Database\Seeders\PositionSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Database\Seeders\DatabaseSeeder;
 
 class PositionControllerTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-
-        DB::delete('delete from positions');
 
         $this->positionService = $this->app->make(PositionService::class);
     }
@@ -38,7 +35,7 @@ class PositionControllerTest extends TestCase
 
     public function testCreateUniqueError()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $payload = [
             'name' => 'pengawas perikanan ahli muda',
@@ -63,7 +60,7 @@ class PositionControllerTest extends TestCase
 
     public function testUpdateSuccess()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $position_id = Position::query()->first()->id;
         $payload = [
@@ -80,7 +77,7 @@ class PositionControllerTest extends TestCase
 
     public function testUpdateNotExistError()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $position_id = 1;
         $payload = [
@@ -96,7 +93,7 @@ class PositionControllerTest extends TestCase
 
     public function testUpdateUniqueError()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $current_position = Position::query()->first();
 
@@ -124,7 +121,7 @@ class PositionControllerTest extends TestCase
 
     public function testSearch()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $response = $this->post('/positions/search', [
             'name' => 'pengawas',
@@ -140,7 +137,7 @@ class PositionControllerTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $position_id = Position::query()->first()->id;
 
@@ -148,12 +145,12 @@ class PositionControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
-        $this->assertDatabaseCount(Position::class, 3);
+        $this->assertDatabaseCount(Position::class, 5);
     }
 
     public function testDeleteFailed()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $position_id = 10;
 
@@ -162,4 +159,6 @@ class PositionControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => "The selected $position_id is invalid."]);
     }
+
+
 }
