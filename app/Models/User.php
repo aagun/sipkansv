@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Institution::class, 'institution_id', 'id');
     }
+
+    public function gradeLevel(): BelongsTo
+    {
+        return $this->belongsTo(GradeLevel::class, 'grade_level', 'name');
+    }
 }

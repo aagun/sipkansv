@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Services\RankService;
 use App\Services\DepartmentService;
 use App\Services\InstitutionService;
+use App\Services\GradeLevelService;
 
 class UserSeeder extends Seeder
 {
@@ -23,12 +24,15 @@ class UserSeeder extends Seeder
     private DepartmentService $departmentService;
     private InstitutionService $institutionService;
 
+    private GradeLevelService $gradeLevelService;
+
     public function __construct(
         PositionService $positionService,
         RoleService $roleService,
         RankService $rankService,
         DepartmentService $departmentService,
-        InstitutionService $institutionService
+        InstitutionService $institutionService,
+        GradeLevelService $gradeLevelService
     )
     {
         $this->positionService = $positionService;
@@ -36,6 +40,7 @@ class UserSeeder extends Seeder
         $this->rankService = $rankService;
         $this->departmentService = $departmentService;
         $this->institutionService = $institutionService;
+        $this->gradeLevelService = $gradeLevelService;
     }
 
 
@@ -61,6 +66,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '3D'])->first()->name,
             ],
             [
                 'name' => 'Suharni,S.St.Pi',
@@ -78,6 +84,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '3D'])->first()->name,
             ],
             [
                 'name' => 'Andri Afiandri, SH',
@@ -95,6 +102,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Penata Muda Tk.I'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '3B'])->first()->name,
             ],
             [
                 'name' => 'Agung Wigomi, A.Md. Tra',
@@ -112,6 +120,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'Bidang PSDKP'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '2C'])->first()->name,
             ],
             [
                 'name' => 'Yadi Supriadi',
@@ -129,6 +138,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Penata Muda'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '3A'])->first()->name,
             ],
 
 
@@ -148,6 +158,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Pembina'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '4A'])->first()->name,
             ],
             [
                 'name' => 'Jajang',
@@ -165,6 +176,7 @@ class UserSeeder extends Seeder
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_leve' => null,
             ],
             [
                 'name' => 'Anwar',
@@ -182,6 +194,7 @@ class UserSeeder extends Seeder
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'Bidang PSDKP'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level' => null,
             ],
 
 
@@ -202,6 +215,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'Bidang PSDKP'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '2C'])->first()->name,
             ],
             [
                 'name' => 'Budi Yulianto, A.Md',
@@ -219,6 +233,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '2C'])->first()->name,
             ],
             [
                 'name' => 'Asep Sopyan Yahya, A.Md',
@@ -236,6 +251,7 @@ class UserSeeder extends Seeder
                 'rank_id' => $this->rankService->search(['name' => 'Pengatur'])->first()->id,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level'=> $this->gradeLevelService->search(['name' => '2C'])->first()->name,
             ],
             [
                 'name' => 'Siti Marwah Waraswati, S.Kel',
@@ -253,6 +269,7 @@ class UserSeeder extends Seeder
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level' => null,
             ],
             [
                 'name' => 'Yuni Kartika, S.T',
@@ -270,6 +287,7 @@ class UserSeeder extends Seeder
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWU'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level' => null,
             ],
             [
                 'name' => 'Genta Fabiyanto, S. St. Pi',
@@ -287,6 +305,7 @@ class UserSeeder extends Seeder
                 'rank_id' => null,
                 'department_id' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
                 'institution_id' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
+                'grade_level' => null,
             ],
         ];
 
