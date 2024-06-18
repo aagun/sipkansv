@@ -14,6 +14,10 @@ Route::prefix("/dashboard")
         Route::get("/", function() {
             return view("components.dashboard.dashboard-layout");
         })->name("index");
+
+        Route::get("/users", function() {
+            return view("components.dashboard.users.dashboard-users");
+        })->name("users");
     });
 
 Route::name("auth.")
