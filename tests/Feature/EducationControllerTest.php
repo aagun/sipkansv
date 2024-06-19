@@ -169,7 +169,7 @@ class EducationControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $response = $this->get(self::BASE_ENDPOINT);
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->where('data', null)
             ->etc()

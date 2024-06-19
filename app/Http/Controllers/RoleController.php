@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
 use App\Services\RoleService;
-use App\Http\Resources\SuccessResponseResource;
-use App\Http\Resources\BaseResponseResource;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleUpdateRequest;
@@ -19,11 +17,11 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function create(RoleRequest $request): BaseResponseResource
+    public function create(RoleRequest $request): Response
     {
         $data = $request->validated();
         $saved = $this->roleService->save($data);
-        return new SuccessResponseResource($saved, null, __('messages.success.created'));
+        return created(__('messages.success.created'), $saved);
     }
 
     public function search(Request $request): Response
@@ -31,7 +29,7 @@ class RoleController extends Controller
         $filter = $request->only(['name', 'description']);
 
         $data = $this->roleService->searchRole($filter);
-        return response(new SuccessResponseResource($data, null, __('messages.success.retrieve')));
+        return ok(__('messages.success.retrieve'), $data);
     }
 
     public function edit(RoleUpdateRequest $roleRequest, int $id): Response
@@ -39,13 +37,21 @@ class RoleController extends Controller
         $data = $roleRequest->validated();
         validateExistenceDataById($id, $this->roleService);
         $this->roleService->update([...$data, 'id' => $id]);
-        return response(new SuccessResponseResource(null, null, __('messages.success.updated')));
+        return ok(__('messages.success.updated'));
     }
 
-    public function delete(int $id): Response
+    public function delete(?int $id): Response
     {
+        validateId($id);
         validateExistenceDataById($id, $this->roleService);
         $this->roleService->delete($id);
-        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+        return ok(__('messages.success.deleted'));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        validateId($id);
+        $institution = $this->roleService->findOne($id);
+        return ok(__('messages.success.retrieve'), $institution);
     }
 }

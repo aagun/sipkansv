@@ -19,8 +19,9 @@ Route::prefix('roles')
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
-        Route::put('/{id}', 'edit');
-        Route::delete('/{id}', 'delete');
+        Route::put('/{id?}', 'edit');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('positions')
@@ -29,7 +30,8 @@ Route::prefix('positions')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
-        Route::delete('/{id}', 'delete');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('ranks')
@@ -38,7 +40,8 @@ Route::prefix('ranks')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
-        Route::delete('/{id}', 'delete');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('departments')
@@ -47,7 +50,8 @@ Route::prefix('departments')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
-        Route::delete('/{id}', 'delete');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('institutions')
@@ -56,7 +60,8 @@ Route::prefix('institutions')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
-        Route::delete('/{id}', 'delete');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('grade-levels')
@@ -65,7 +70,8 @@ Route::prefix('grade-levels')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
-        Route::delete('/{id}', 'delete');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('educations')
@@ -74,8 +80,8 @@ Route::prefix('educations')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
-        Route::delete('/{id?}', 'delete');
         Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 Route::prefix('users')

@@ -3,21 +3,22 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 use App\Services\RoleService;
 use Illuminate\Http\Response;
 use App\Models\Role;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Database\Seeders\RoleSeeder;
+use Database\Seeders\DatabaseSeeder;
 
 class RoleControllerTest extends TestCase
 {
+    private const BASE_ENDPOINT = '/roles';
     private RoleService $roleService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        DB::delete('delete from roles');
+
         $this->roleService = $this->app->make(RoleService::class);
     }
 
@@ -29,7 +30,7 @@ class RoleControllerTest extends TestCase
           'description' => 'Test admin role'
         ];
 
-        $response = $this->post('roles', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonFragment(['message' => __('messages.success.created')]);
@@ -41,7 +42,7 @@ class RoleControllerTest extends TestCase
         $role_name = 'RO_TEST_ADMIN';
         $payload = [];
 
-        $response = $this->post('roles', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertJson(fn (AssertableJson $json) => $json
@@ -65,7 +66,7 @@ class RoleControllerTest extends TestCase
             'description' => 'Test admin role'
         ];
 
-        $response = $this->post('roles', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertJson(fn (AssertableJson $json) => $json
@@ -86,7 +87,7 @@ class RoleControllerTest extends TestCase
             'description' => 'Test admin role'
         ];
 
-        $response = $this->post('roles', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertJson(fn (AssertableJson $json) => $json
@@ -107,7 +108,7 @@ class RoleControllerTest extends TestCase
             'description' => 'Test admin role'
         ];
 
-        $response = $this->post('roles', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->hasAll(['status', 'message', 'data', 'errors'])
@@ -122,7 +123,7 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $payload = [];
-        $response = $this->post('roles/search', $payload);
+        $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
@@ -138,7 +139,7 @@ class RoleControllerTest extends TestCase
         $payload = [
             'name' => 'adm'
         ];
-        $response = $this->post('roles/search', $payload);
+        $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
             ->where('errors', null)
@@ -151,7 +152,7 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
-        $response = $this->put("/roles/$role_id", ['name' => 'RO_ADMIN_UPDATED']);
+        $response = $this->put(self::BASE_ENDPOINT . "/$role_id", ['name' => 'RO_ADMIN_UPDATED']);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
@@ -163,7 +164,7 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $id = 1;
-        $response = $this->put("/roles/$id");
+        $response = $this->put(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => ["The selected id is invalid."]]);
     }
@@ -173,7 +174,7 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
-        $response = $this->put("/roles/$role_id", ['name' => ' ', 'description' => ' ']);
+        $response = $this->put(self::BASE_ENDPOINT . "/$role_id", ['name' => ' ', 'description' => ' ']);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name', 'description']);
@@ -184,7 +185,7 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
-        $response = $this->delete("/roles/$role_id");
+        $response = $this->delete(self::BASE_ENDPOINT . "/$role_id");
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
@@ -196,9 +197,35 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $id = 1;
-        $response = $this->delete("/roles/$id");
+        $response = $this->delete(self::BASE_ENDPOINT . "/$id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => "The selected id is invalid."]);
+    }
+
+    public function testInstitutionDetail()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $response = $this->get(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('data', null)
+            ->etc()
+        );
+    }
+
+    public function testInstitutionDetailSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = Role::query()->first()->id;
+
+        $response = $this->get(self::BASE_ENDPOINT . "/$id");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->whereNot('data', null)
+            ->etc()
+        );
     }
 }

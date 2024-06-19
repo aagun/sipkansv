@@ -4,13 +4,16 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Services\RankService;
-use Symfony\Component\HttpFoundation\Response;
 use App\Models\Rank;
 use Database\Seeders\RankSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Database\Seeders\DatabaseSeeder;
+use Illuminate\Http\Response;
 
 class RankControllerTest extends TestCase
 {
+    private const BASE_ENDPOINT = '/ranks';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,7 +29,7 @@ class RankControllerTest extends TestCase
             'description' => 'RANK_DESCRIPTION_TEST'
         ];
 
-        $response = $this->post('/ranks', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(Rank::class, ['name' => $rank_name]);
@@ -41,7 +44,7 @@ class RankControllerTest extends TestCase
             'description' => 'pengatur'
         ];
 
-        $response = $this->post('/ranks', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name has already been taken.']);
@@ -51,7 +54,7 @@ class RankControllerTest extends TestCase
     {
         $payload = [];
 
-        $response = $this->post('/ranks', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name field is required.']);
@@ -67,7 +70,7 @@ class RankControllerTest extends TestCase
             'name' => 'UPDATED_NAME'
         ];
 
-        $response = $this->put('/ranks', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
@@ -84,7 +87,7 @@ class RankControllerTest extends TestCase
             'name' => 'UPDATE_NAME'
         ];
 
-        $response = $this->put('/ranks', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The selected id is invalid.']);
@@ -101,7 +104,7 @@ class RankControllerTest extends TestCase
             'name' => $current_rank->name
         ];
 
-        $response = $this->put('/ranks', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name has already been taken.']);
@@ -111,7 +114,7 @@ class RankControllerTest extends TestCase
     {
         $payload = [];
 
-        $response = $this->put('/ranks', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
@@ -122,7 +125,7 @@ class RankControllerTest extends TestCase
     {
         $this->seed(RankSeeder::class);
 
-        $response = $this->post('/ranks/search', [
+        $response = $this->post(self::BASE_ENDPOINT . '/search', [
             'name' => 'penata',
             'description' => 'muda'
         ]);
@@ -141,7 +144,7 @@ class RankControllerTest extends TestCase
 
         $rank_id = Rank::query()->first()->id;
 
-        $response = $this->delete("/ranks/$rank_id");
+        $response = $this->delete(self::BASE_ENDPOINT . "/$rank_id");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
         $this->assertDatabaseCount(Rank::class, 4);
@@ -153,9 +156,35 @@ class RankControllerTest extends TestCase
 
         $rank_id = 10;
 
-        $response = $this->delete("/ranks/$rank_id");
+        $response = $this->delete(self::BASE_ENDPOINT . "/$rank_id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => "The selected id is invalid."]);
+    }
+
+    public function testInstitutionDetail()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $response = $this->get(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('data', null)
+            ->etc()
+        );
+    }
+
+    public function testInstitutionDetailSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = Rank::query()->first()->id;
+
+        $response = $this->get(self::BASE_ENDPOINT . "/$id");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->whereNot('data', null)
+            ->etc()
+        );
     }
 }
