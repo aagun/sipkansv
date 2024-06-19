@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\EducationService;
 use App\Http\Requests\EducationCreateRequest;
-use App\Http\Resources\SuccessResponseResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\EducationUpdateRequest;
 use Illuminate\Http\Request;
@@ -22,24 +21,21 @@ class EducationController extends Controller
     {
         $payload = $request->validated();
         $saved = $this->educationService->save($payload);
-        return response(
-            new SuccessResponseResource($saved, null, __('messages.success.created')),
-            Response::HTTP_CREATED
-        );
+        return created(__('messages.success.created'), $saved);
     }
 
     public function update(EducationUpdateRequest $request): Response
     {
         $payload = $request->validated();
         $saved = $this->educationService->update($payload);
-        return response(new SuccessResponseResource($saved, null, __('messages.success.updated')));
+        return ok(__('messages.success.updated'), $saved);
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->educationService->search($filter);
-        return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function delete(?int $id = null): Response
@@ -47,17 +43,13 @@ class EducationController extends Controller
         if (!isset($id)) exceptionIdNotFound();
         validateExistenceDataById($id, $this->educationService);
         $this->educationService->delete($id);
-        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+        return ok(__('messages.success.deleted'));
     }
 
     public function detail(?int $id = null): Response
     {
-        $education = null;
-
-        if (isset($id)) {
-            $education = $this->educationService->findOne($id);
-        }
-
-        return response(new SuccessResponseResource($education, null, __('messages.success.retrieve')));
+        validateId($id);
+        $education = $this->educationService->findOne($id);
+        return ok(__('messages.success.retrieve'), $education);
     }
 }

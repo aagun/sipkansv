@@ -164,4 +164,10 @@ class DepartmentControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
+    public function testDetailFailed()
+    {
+        $response = $this->delete(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
 }

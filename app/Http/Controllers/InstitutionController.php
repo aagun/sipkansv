@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\InstitutionCreateRequest;
 use App\Services\InstitutionService;
-use App\Http\Resources\SuccessResponseResource;
 use App\Http\Requests\InstitutionUpdateRequest;
 
 class InstitutionController extends Controller
@@ -22,40 +21,36 @@ class InstitutionController extends Controller
     public function create(InstitutionCreateRequest $request): Response
     {
         $payload = $request->validated();
-        $this->institutionService->save($payload);
-
-        return response(
-            new SuccessResponseResource(null, null, __('messages.success.created')),
-            Response::HTTP_CREATED
-        );
+        $saved = $this->institutionService->save($payload);
+        return created(__('messages.success.created'), $saved);
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->institutionService->search($filter);
-        return response(new SuccessResponseResource(
-            $collection,
-            null,
-            __('messages.success.retrieve'))
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(InstitutionUpdateRequest $request): Response
     {
         $payload = $request->validated();
         $this->institutionService->update($payload);
-        return response(new SuccessResponseResource(
-            null,
-            null,
-            __('messages.success.updated')
-        ));
+        return ok(__('messages.success.updated'));
     }
 
-    public function delete(int $id): Response
+    public function delete(?int $id = null): Response
     {
+        validateId($id);
         validateExistenceDataById($id, $this->institutionService);
         $this->institutionService->delete($id);
-        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+        return ok(__('messages.success.deleted'));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        validateId($id);
+        $institution = $this->institutionService->findOne($id);
+        return ok(__('messages.success.retrieve'), $institution);
     }
 }

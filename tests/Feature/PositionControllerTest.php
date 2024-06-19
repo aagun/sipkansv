@@ -4,13 +4,15 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Services\PositionService;
-use Symfony\Component\HttpFoundation\Response;
 use App\Models\Position;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Http\Response;
 
 class PositionControllerTest extends TestCase
 {
+    private const BASE_ENDPOINT = '/positions';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,7 +28,7 @@ class PositionControllerTest extends TestCase
             'description' => 'POSITION_DESCRIPTION_TEST'
         ];
 
-        $response = $this->post('/positions', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonFragment(['message' => __('messages.success.created')]);
@@ -42,7 +44,7 @@ class PositionControllerTest extends TestCase
             'description' => 'Pengawas Perikanan Ahli Muda'
         ];
 
-        $response = $this->post('/positions', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name has already been taken.']);
@@ -52,7 +54,7 @@ class PositionControllerTest extends TestCase
     {
         $payload = [];
 
-        $response = $this->post('/positions', $payload);
+        $response = $this->post(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name field is required.']);
@@ -68,7 +70,7 @@ class PositionControllerTest extends TestCase
             'name' => 'UPDATE_NAME'
         ];
 
-        $response = $this->put('/positions', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
@@ -85,7 +87,7 @@ class PositionControllerTest extends TestCase
             'name' => 'UPDATE_NAME'
         ];
 
-        $response = $this->put('/positions', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The selected id is invalid.']);
@@ -102,7 +104,7 @@ class PositionControllerTest extends TestCase
             'name' => $current_position->name
         ];
 
-        $response = $this->put('/positions', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name has already been taken.']);
@@ -112,7 +114,7 @@ class PositionControllerTest extends TestCase
     {
         $payload = [];
 
-        $response = $this->put('/positions', $payload);
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
@@ -123,7 +125,7 @@ class PositionControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $response = $this->post('/positions/search', [
+        $response = $this->post(self::BASE_ENDPOINT . '/search', [
             'name' => 'pengawas',
             'description' => 'muda'
         ]);
@@ -141,7 +143,7 @@ class PositionControllerTest extends TestCase
 
         $position_id = Position::query()->first()->id;
 
-        $response = $this->delete("/positions/$position_id");
+        $response = $this->delete(self::BASE_ENDPOINT . "/$position_id");
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
@@ -154,11 +156,35 @@ class PositionControllerTest extends TestCase
 
         $position_id = 10;
 
-        $response = $this->delete("/positions/$position_id");
+        $response = $this->delete(self::BASE_ENDPOINT . "/$position_id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
+    public function testInstitutionDetail()
+    {
+        $this->seed(DatabaseSeeder::class);
 
+        $response = $this->get(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('data', null)
+            ->etc()
+        );
+    }
+
+    public function testInstitutionDetailSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = Position::query()->first()->id;
+
+        $response = $this->get(self::BASE_ENDPOINT . "/$id");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->whereNot('data', null)
+            ->etc()
+        );
+    }
 }

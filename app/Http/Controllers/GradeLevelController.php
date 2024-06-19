@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use App\Http\Resources\SuccessResponseResource;
 use App\Services\GradeLevelService;
 use App\Http\Requests\GradeLevelCreateRequest;
 use Illuminate\Http\Request;
@@ -21,43 +20,36 @@ class GradeLevelController extends Controller
     public function create(GradeLevelCreateRequest $request): Response
     {
         $payload = $request->validated();
-        $this->gradeLevelService->save($payload);
-        return response(
-            new SuccessResponseResource(null, null, __('messages.success.created')),
-            Response::HTTP_CREATED
-        );
+        $saved = $this->gradeLevelService->save($payload);
+        return created(__('messages.success.created'), $saved);
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->gradeLevelService->search($filter);
-        return response(new SuccessResponseResource(
-            $collection,
-            null,
-            __('messages.success.retrieve')
-        ));
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(GradeLevelUpdateRequest $request): Response
     {
         $payload = $request->validated();
         $this->gradeLevelService->update($payload);
-        return response(new SuccessResponseResource(
-            null,
-            null,
-            __('messages.success.updated')
-        ));
+        return ok(__('messages.success.updated'));
     }
 
-    public function delete(int $id): Response
+    public function delete(?int $id = null): Response
     {
+        validateId($id);
         validateExistenceDataById($id, $this->gradeLevelService);
         $this->gradeLevelService->delete($id);
-        return response(new SuccessResponseResource(
-            null,
-            null,
-            __('messages.success.deleted')
-        ));
+        return ok(__('messages.success.deleted'));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        validateId($id);
+        $gradeLevel = $this->gradeLevelService->findOne($id);
+        return ok(__('messages.success.retrieve'), $gradeLevel);
     }
 }
