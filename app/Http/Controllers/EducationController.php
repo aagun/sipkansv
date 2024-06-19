@@ -44,6 +44,7 @@ class EducationController extends Controller
 
     public function delete(?int $id = null): Response
     {
+        if (!isset($id)) exceptionIdNotFound();
         validateExistenceDataById($id, $this->educationService);
         $this->educationService->delete($id);
         return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
