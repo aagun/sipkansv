@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 use App\Services\RoleService;
 use Illuminate\Http\Response;
 use App\Models\Role;
@@ -19,7 +18,7 @@ class RoleControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        DB::delete('delete from roles');
+
         $this->roleService = $this->app->make(RoleService::class);
     }
 
