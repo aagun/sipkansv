@@ -16,7 +16,7 @@ interface GradeLevelService
 
     public function existsByName(string $name): bool;
 
-    public function delete(string $name): bool;
+    public function delete(string $id): bool;
 
     public function update(array $gradeLevel): bool;
 

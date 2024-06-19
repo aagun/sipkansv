@@ -30,9 +30,9 @@ class GradeLevelServiceImpl implements GradeLevelService
         return GradeLevel::query()->where('name', $name)->exists();
     }
 
-    public function delete(string $name): bool
+    public function delete(string $id): bool
     {
-        return GradeLevel::query()->where('name', $name)->delete();
+        return GradeLevel::query()->where('name', $id)->delete();
     }
 
     public function update(array $gradeLevel): bool

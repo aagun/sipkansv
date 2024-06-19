@@ -49,4 +49,15 @@ class GradeLevelController extends Controller
             __('messages.success.updated')
         ));
     }
+
+    public function delete(int $id): Response
+    {
+        validateExistenceDataById($id, $this->gradeLevelService);
+        $this->gradeLevelService->delete($id);
+        return response(new SuccessResponseResource(
+            null,
+            null,
+            __('messages.success.deleted')
+        ));
+    }
 }
