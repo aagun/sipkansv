@@ -86,7 +86,6 @@ class GradeLevelControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $id = GradeLevel::query()->first()->id;
-        var_dump($id);
         $name = 'UPDATED GRADE LEVEL';
         $payload = [
             'id' => $id,
@@ -95,7 +94,6 @@ class GradeLevelControllerTest extends TestCase
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
-        var_dump($response->content());
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(GradeLevel::class, ['name' => $name]);
