@@ -21,7 +21,7 @@ class GradeLevelServiceTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $grade_level = $this->gradeLevelService->findByName('2C');
+        $grade_level = $this->gradeLevelService->findByName('II/C');
         $grade_level->load('users');
         self::assertEquals(4, $grade_level->users->count());
     }
