@@ -42,10 +42,21 @@ class EducationController extends Controller
         return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
     }
 
-    public function delete(int $id): Response
+    public function delete(?int $id = null): Response
     {
         validateExistenceDataById($id, $this->educationService);
         $this->educationService->delete($id);
         return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        $education = null;
+
+        if (isset($id)) {
+            $education = $this->educationService->findOne($id);
+        }
+
+        return response(new SuccessResponseResource($education, null, __('messages.success.retrieve')));
     }
 }
