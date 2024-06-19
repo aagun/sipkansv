@@ -19,15 +19,15 @@ class RoleSeeder extends Seeder
             ],
             [
                 'name' => 'RO_SUPERVISOR',
-                'description' => 'Role untuk pengawas'
+                'description' => 'Pengawas'
             ],
             [
                 'name' => 'RO_OPERATOR',
-                'description' => 'Role untuk pengelola data'
+                'description' => 'Operator'
             ],
             [
                 'name' => 'RO_HEAD',
-                'description' => 'Rolea untuk pimpinan'
+                'description' => 'Pimpinan'
             ]
         ];
 

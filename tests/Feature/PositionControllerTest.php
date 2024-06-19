@@ -157,7 +157,7 @@ class PositionControllerTest extends TestCase
         $response = $this->delete("/positions/$position_id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertInvalid(['id' => "The selected $position_id is invalid."]);
+        $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
 

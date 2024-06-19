@@ -165,7 +165,7 @@ class RoleControllerTest extends TestCase
         $id = 1;
         $response = $this->put("/roles/$id");
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertInvalid(['id' => ["The selected $id is invalid."]]);
+        $response->assertInvalid(['id' => ["The selected id is invalid."]]);
     }
 
     public function testEditRoleFailed()
@@ -199,6 +199,6 @@ class RoleControllerTest extends TestCase
         $response = $this->delete("/roles/$id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertInvalid(['id' => "The selected $id is invalid."]);
+        $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 }

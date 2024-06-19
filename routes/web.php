@@ -8,6 +8,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\GradeLevelController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,4 +76,14 @@ Route::prefix('educations')
         Route::put('/', 'update');
         Route::delete('/{id?}', 'delete');
         Route::get('/{id?}', 'detail');
+    });
+
+Route::prefix('users')
+    ->controller(UserController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id}', 'detail');
+        Route::delete('/{id}', 'delete');
     });
