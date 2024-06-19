@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
 
@@ -24,11 +23,11 @@ class RoleSeeder extends Seeder
             ],
             [
                 'name' => 'RO_OPERATOR',
-                'description' => 'Role untuk operator kantor'
+                'description' => 'Role untuk pengelola data'
             ],
             [
                 'name' => 'RO_HEAD',
-                'description' => 'Rolea unutk pimpinan'
+                'description' => 'Rolea untuk pimpinan'
             ]
         ];
 

@@ -3,20 +3,17 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 use App\Services\PositionService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Position;
-use Database\Seeders\PositionSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Database\Seeders\DatabaseSeeder;
 
 class PositionControllerTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-
-        DB::delete('delete from positions');
 
         $this->positionService = $this->app->make(PositionService::class);
     }
@@ -32,12 +29,13 @@ class PositionControllerTest extends TestCase
         $response = $this->post('/positions', $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(Position::class, ['name' => $position_name]);
     }
 
     public function testCreateUniqueError()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $payload = [
             'name' => 'pengawas perikanan ahli muda',
@@ -62,7 +60,7 @@ class PositionControllerTest extends TestCase
 
     public function testUpdateSuccess()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $position_id = Position::query()->first()->id;
         $payload = [
@@ -73,12 +71,13 @@ class PositionControllerTest extends TestCase
         $response = $this->put('/positions', $payload);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Position::class, ['name' => 'UPDATE_NAME']);
     }
 
     public function testUpdateNotExistError()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $position_id = 1;
         $payload = [
@@ -94,7 +93,7 @@ class PositionControllerTest extends TestCase
 
     public function testUpdateUniqueError()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $current_position = Position::query()->first();
 
@@ -122,7 +121,7 @@ class PositionControllerTest extends TestCase
 
     public function testSearch()
     {
-        $this->seed(PositionSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $response = $this->post('/positions/search', [
             'name' => 'pengawas',
@@ -135,4 +134,31 @@ class PositionControllerTest extends TestCase
             ->etc()
         );
     }
+
+    public function testDeleteSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $position_id = Position::query()->first()->id;
+
+        $response = $this->delete("/positions/$position_id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
+        $this->assertDatabaseCount(Position::class, 5);
+    }
+
+    public function testDeleteFailed()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $position_id = 10;
+
+        $response = $this->delete("/positions/$position_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The selected $position_id is invalid."]);
+    }
+
+
 }

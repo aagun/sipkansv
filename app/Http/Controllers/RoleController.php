@@ -8,11 +8,7 @@ use App\Http\Resources\SuccessResponseResource;
 use App\Http\Resources\BaseResponseResource;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
-use App\Http\Resources\ErrorResponseResource;
 use App\Http\Requests\RoleUpdateRequest;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RoleController extends Controller
 {
@@ -23,48 +19,33 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function createRole(RoleRequest $request): BaseResponseResource
+    public function create(RoleRequest $request): BaseResponseResource
     {
         $data = $request->validated();
         $saved = $this->roleService->save($data);
-        return new SuccessResponseResource($saved);
+        return new SuccessResponseResource($saved, null, __('messages.success.created'));
     }
 
-    public function searchRole(Request $request): Response
+    public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
 
         $data = $this->roleService->searchRole($filter);
-        return response(new SuccessResponseResource($data));
+        return response(new SuccessResponseResource($data, null, __('messages.success.retrieve')));
     }
 
-    public function editRole(RoleUpdateRequest $roleRequest, int $id): Response
+    public function edit(RoleUpdateRequest $roleRequest, int $id): Response
     {
         $data = $roleRequest->validated();
-
-        if (!$this->roleService->exist($id)) {
-            $errors = ['id' => ["The id $id does not exist"]];
-            throw new HttpResponseException(response(
-                new ErrorResponseResource($errors),
-            Response::HTTP_NOT_FOUND)
-            );
-        }
-
+        validateExistenceDataById($id, $this->roleService);
         $this->roleService->update([...$data, 'id' => $id]);
-        return response(new SuccessResponseResource(null));
+        return response(new SuccessResponseResource(null, null, __('messages.success.updated')));
     }
 
-    public function updateRole(int $id): Response
+    public function delete(int $id): Response
     {
-        if (!$this->roleService->exist($id)) {
-            $errors = ['id' => ["The id $id does not exist"]];
-            throw new HttpResponseException(response(
-                new ErrorResponseResource($errors),
-            Response::HTTP_NOT_FOUND)
-            );
-        }
-
+        validateExistenceDataById($id, $this->roleService);
         $this->roleService->delete($id);
-        return response(new SuccessResponseResource(null));
+        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
     }
 }

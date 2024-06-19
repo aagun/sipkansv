@@ -32,6 +32,7 @@ class RoleControllerTest extends TestCase
         $response = $this->post('roles', $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(Role::class, ['name' => $role_name]);
     }
 
@@ -123,6 +124,7 @@ class RoleControllerTest extends TestCase
         $payload = [];
         $response = $this->post('roles/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
             ->where('errors', null)
             ->count('data', 4)
@@ -152,6 +154,7 @@ class RoleControllerTest extends TestCase
         $response = $this->put("/roles/$role_id", ['name' => 'RO_ADMIN_UPDATED']);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Role::class, ['name' => 'RO_ADMIN_UPDATED']);
     }
 
@@ -159,11 +162,10 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $role_id = 1;
-        $response = $this->put("/roles/$role_id");
-
+        $id = 1;
+        $response = $this->put("/roles/$id");
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertInvalid(['id' => "The id $role_id does not exist"]);
+        $response->assertInvalid(['id' => ["The selected $id is invalid."]]);
     }
 
     public function testEditRoleFailed()
@@ -177,7 +179,7 @@ class RoleControllerTest extends TestCase
         $response->assertInvalid(['name', 'description']);
     }
 
-    public function testUpdateRoleSuccess()
+    public function testDeleteRoleSuccess()
     {
         $this->seed(RoleSeeder::class);
 
@@ -185,17 +187,18 @@ class RoleControllerTest extends TestCase
         $response = $this->delete("/roles/$role_id");
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
         $this->assertDatabaseMissing(Role::class, ['id' => $role_id]);
     }
 
-    public function testUpdateRoleNotFound()
+    public function testDeleteRoleNotFound()
     {
         $this->seed(RoleSeeder::class);
 
-        $role_id = 1;
-        $response = $this->delete("/roles/$role_id");
+        $id = 1;
+        $response = $this->delete("/roles/$id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertInvalid(['id' => "The id $role_id does not exist"]);
+        $response->assertInvalid(['id' => "The selected $id is invalid."]);
     }
 }

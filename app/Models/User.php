@@ -47,4 +47,29 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
+
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class, 'position_id', 'id');
+    }
+
+    public function rank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class, 'rank_id', 'id');
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
+
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class, 'institution_id', 'id');
+    }
+
+    public function gradeLevel(): BelongsTo
+    {
+        return $this->belongsTo(GradeLevel::class, 'grade_level_id', 'id');
+    }
 }

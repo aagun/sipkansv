@@ -7,8 +7,6 @@ use App\Models\Role;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\RoleRequest;
-use Illuminate\Http\Request;
 
 class RoleServiceImpl implements RoleService
 {
@@ -17,12 +15,12 @@ class RoleServiceImpl implements RoleService
         return Role::all();
     }
 
-    public function findOne(int $id): Model | Builder
+    public function findOne(int $id): Model | Builder | null
     {
-        return Role::query()->findOrFail($id);
+        return Role::query()->where('id', $id)->first();
     }
 
-    public function findOneByName(string $name): Model | Builder
+    public function findOneByName(string $name): Model | Builder | null
     {
         return Role::query()
             ->where('name', $name)
@@ -71,7 +69,7 @@ class RoleServiceImpl implements RoleService
             ->get();
     }
 
-    public function exist(int $id): bool
+    public function exists(int $id): bool
     {
         return Role::query()->where('id', $id)->exists();
     }

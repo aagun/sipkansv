@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface PositionService
 {
-    public function findOne(int $id): Model | Builder;
+    public function findOne(int $id): Model | Builder | null;
 
-    public function findByName(string $name): Model | Builder;
+    public function findByName(string $name): Model | Builder | null;
 
-    public function exist(int $id): bool;
+    public function exists(int $id): bool;
 
-    public function existByName(string $name): bool;
+    public function existsByName(string $name): bool;
 
     public function delete(int $id): bool;
 
