@@ -8,4 +8,5 @@ return [
     App\Providers\PositionServiceProvider::class,
     App\Providers\RankServiceProvider::class,
     App\Providers\RoleServiceProvider::class,
+    App\Providers\EducationServiceProvider::class,
 ];
