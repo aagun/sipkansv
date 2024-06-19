@@ -160,6 +160,6 @@ class GradeLevelControllerTest extends TestCase
         $response = $this->delete(self::BASE_ENDPOINT .  '/' . $id);
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertInvalid(['id' => "The selected $id is invalid."]);
+        $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 }
