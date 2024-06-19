@@ -15,4 +15,9 @@ if (!function_exists('validateExistenceDataById')) {
             ));
         }
     }
+
+    function validateExistenceData(mixed $primaryKey, $serviceClass): void
+    {
+        validateExistenceDataById($primaryKey, $serviceClass);
+    }
 }

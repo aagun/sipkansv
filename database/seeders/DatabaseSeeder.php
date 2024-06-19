@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RankSeeder::class,
             DepartmentSeeder::class,
             InstitutionSeeder::class,
+            GradeLevelSeeder::class,
             UserSeeder::class
         ]);
     }
