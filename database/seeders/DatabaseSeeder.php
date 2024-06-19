@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             InstitutionSeeder::class,
             GradeLevelSeeder::class,
             EducationSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            InvestmentTypeSeeder::class
         ]);
     }
 }
