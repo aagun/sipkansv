@@ -9,6 +9,7 @@ use App\Services\InstitutionService;
 use App\Models\Institution;
 use Database\Seeders\InstitutionSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Database\Seeders\DatabaseSeeder;
 
 class InstitutionControllerTest extends TestCase
 {
@@ -159,5 +160,31 @@ class InstitutionControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => "The selected id is invalid."]);
+    }
+
+    public function testInstitutionDetail()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $response = $this->get(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('data', null)
+            ->etc()
+        );
+    }
+
+    public function testInstitutionDetailSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = Institution::query()->first()->id;
+
+        $response = $this->get(self::BASE_ENDPOINT . "/$id");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->whereNot('data', null)
+            ->etc()
+        );
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Services\DepartmentService;
 use App\Http\Requests\DepartmentCreateRequest;
-use App\Http\Resources\SuccessResponseResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\DepartmentUpdateRequest;
 
@@ -22,30 +21,35 @@ class DepartmentController extends Controller
     {
         $payload = $request->validated();
         $this->departmentService->save($payload);
-        return response(
-            new SuccessResponseResource(null, null, __('messages.success.created')),
-            Response::HTTP_CREATED
-        );
+        return created(__('messages.success.created'));
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->departmentService->search($filter);
-        return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(DepartmentUpdateRequest $request): Response
     {
         $payload = $request->validated();
         $this->departmentService->update($payload);
-        return response(new SuccessResponseResource(null, null, __('messages.success.updated')));
+        return ok(__('messages.success.updated'));
     }
 
-    public function delete(int $id): Response
+    public function delete(?int $id = null): Response
     {
+        validateId($id);
         validateExistenceDataById($id, $this->departmentService);
         $this->departmentService->delete($id);
-        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+        return ok(__('messages.success.deleted'));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        validateId($id);
+        $department = $this->departmentService->findOne($id);
+        return ok(__('messages.success.retrieve'), $department);
     }
 }

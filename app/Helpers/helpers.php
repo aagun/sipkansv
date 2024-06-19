@@ -13,6 +13,11 @@ if (!function_exists('validateExistenceDataById')) {
         }
     }
 
+    function validateId($id): void
+    {
+        if (!isset($id)) exceptionIdNotFound();
+    }
+
     function exceptionIdNotFound()
     {
         $errors = ['id' => ["The selected id is invalid."]];

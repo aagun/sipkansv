@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\PositionService;
 use App\Http\Requests\PositionCreateRequest;
-use App\Http\Resources\SuccessResponseResource;
 use Illuminate\Http\Response;
 use App\Http\Requests\PositionUpdateRequest;
 use Illuminate\Http\Request;
@@ -22,30 +21,35 @@ class PositionController extends Controller
     {
         $payload = $request->validated();
         $saved = $this->positionService->save($payload);
-        return response(
-            new SuccessResponseResource($saved, null, __('messages.success.created')),
-            Response::HTTP_CREATED
-        );
+        return created(__('messages.success.created'), $saved);
     }
 
     public function update(PositionUpdateRequest $request): Response
     {
         $payload = $request->validated();
         $saved = $this->positionService->update($payload);
-        return response(new SuccessResponseResource($saved, null, __('messages.success.updated')));
+        return ok(__('messages.success.updated'), $saved);
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->positionService->search($filter);
-        return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
-    public function delete(int $id): Response
+    public function delete(?int $id = null): Response
     {
+        validateId($id);
         validateExistenceDataById($id, $this->positionService);
         $this->positionService->delete($id);
-        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
+        return ok(__('messages.success.deleted'));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        validateId($id);
+        $institution = $this->positionService->findOne($id);
+        return ok(__('messages.success.retrieve'), $institution);
     }
 }
