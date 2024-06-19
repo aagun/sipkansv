@@ -62,4 +62,5 @@ Route::prefix('grade-levels')
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
+        Route::put('/', 'update');
     });

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use App\Models\GradeLevel;
 
-class GradeLevelCreateRequest extends BaseRequest
+class GradeLevelUpdateRequest extends BaseRequest
 {
     protected function prepareForValidation(): void
     {
@@ -29,7 +29,13 @@ class GradeLevelCreateRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            'id' => [
+                'required',
+                'numeric',
+                Rule::exists(GradeLevel::class, 'id'),
+            ],
             'name' => [
+                'sometimes',
                 'required',
                 'string',
                 Rule::unique(GradeLevel::class, 'name')

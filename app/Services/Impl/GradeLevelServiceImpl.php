@@ -10,12 +10,22 @@ use App\Models\GradeLevel;
 
 class GradeLevelServiceImpl implements GradeLevelService
 {
+    public function findOne(int $id): Model | Builder | null
+    {
+        return GradeLevel::query()->where('id', $id)->first();
+    }
+
     public function findByName(string $name): Model | Builder | null
     {
         return GradeLevel::query()->where('name', $name)->first();
     }
 
-    public function exists(string $name): bool
+    public function exists(int $id): bool
+    {
+        return GradeLevel::query()->where('id', $id)->exists();
+    }
+
+    public function existsByName(string $name): bool
     {
         return GradeLevel::query()->where('name', $name)->exists();
     }
@@ -27,9 +37,9 @@ class GradeLevelServiceImpl implements GradeLevelService
 
     public function update(array $gradeLevel): bool
     {
-        $name = $gradeLevel['name'];
-        unset($gradeLevel['name']);
-        return GradeLevel::query()->where('name', $name)->update($gradeLevel);
+        $id = $gradeLevel['id'];
+        unset($gradeLevel['id']);
+        return GradeLevel::query()->where('id', $id)->update($gradeLevel);
     }
 
     public function search(array $filter): Collection
@@ -53,7 +63,7 @@ class GradeLevelServiceImpl implements GradeLevelService
         return GradeLevel::query()->create($gradeLevel);
     }
 
-    public function saveAll(array $gradeLevels)
+    public function saveAll(array $gradeLevels): void
     {
         foreach ($gradeLevels as $gradeLevel) {
             $this->save($gradeLevel);

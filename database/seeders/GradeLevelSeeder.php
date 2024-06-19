@@ -15,74 +15,74 @@ class GradeLevelSeeder extends Seeder
     {
         $grade_levels = [
             [
-                'name' => '2A',
-                'description' => 'II/A',
+                'name' => 'II/A',
+                'description' => 'Golongan II/A',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '2B',
-                'description' => 'II/B',
+                'name' => 'II/B',
+                'description' => 'Golongan II/B',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '2C',
-                'description' => 'II/C',
+                'name' => 'II/C',
+                'description' => 'Golongan II/C',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '2D',
-                'description' => 'II/D',
+                'name' => 'II/D',
+                'description' => 'Golongan II/D',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '3A',
-                'description' => 'III/A',
+                'name' => 'III/A',
+                'description' => 'Golongan III/A',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '3B',
-                'description' => 'III/B',
+                'name' => 'III/B',
+                'description' => 'Golongan III/B',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '3C',
-                'description' => 'III/C',
+                'name' => 'III/C',
+                'description' => 'Golongan III/C',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '3D',
-                'description' => 'III/D',
+                'name' => 'III/D',
+                'description' => 'Golongan III/D',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '4A',
-                'description' => 'IV/A',
+                'name' => 'IV/A',
+                'description' => 'Golongan IV/A',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '4B',
-                'description' => 'IV/B',
+                'name' => 'IV/B',
+                'description' => 'Golongan IV/B',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '4C',
-                'description' => 'IV/C',
+                'name' => 'IV/C',
+                'description' => 'Golongan IV/C',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => '4D',
-                'description' => 'IV/D',
+                'name' => 'IV/D',
+                'description' => 'Golongan IV/D',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],

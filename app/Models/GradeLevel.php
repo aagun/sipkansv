@@ -11,13 +11,13 @@ class GradeLevel extends Model
     use HasFactory;
 
     protected $table = 'grade_levels';
-    protected $primaryKey = 'name';
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
     public $incrementing = false;
     protected $fillable = ['name', 'description'];
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class, 'grade_level', 'name');
+        return $this->hasMany(User::class, 'grade_level_id', 'id');
     }
 }

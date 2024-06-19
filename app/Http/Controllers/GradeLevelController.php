@@ -7,6 +7,7 @@ use App\Http\Resources\SuccessResponseResource;
 use App\Services\GradeLevelService;
 use App\Http\Requests\GradeLevelCreateRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\GradeLevelUpdateRequest;
 
 class GradeLevelController extends Controller
 {
@@ -35,6 +36,17 @@ class GradeLevelController extends Controller
             $collection,
             null,
             __('messages.success.retrieve')
+        ));
+    }
+
+    public function update(GradeLevelUpdateRequest $request): Response
+    {
+        $payload = $request->validated();
+        $this->gradeLevelService->update($payload);
+        return response(new SuccessResponseResource(
+            null,
+            null,
+            __('messages.success.updated')
         ));
     }
 }

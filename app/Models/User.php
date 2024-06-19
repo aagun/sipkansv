@@ -70,6 +70,6 @@ class User extends Authenticatable
 
     public function gradeLevel(): BelongsTo
     {
-        return $this->belongsTo(GradeLevel::class, 'grade_level', 'name');
+        return $this->belongsTo(GradeLevel::class, 'grade_level_id', 'id');
     }
 }

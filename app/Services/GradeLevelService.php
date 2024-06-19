@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface GradeLevelService
 {
+    public function findOne(int $id): Model | Builder | null;
+
     public function findByName(string $name): Model | Builder | null;
 
-    public function exists(string $name): bool;
+    public function exists(int $id): bool;
+
+    public function existsByName(string $name): bool;
 
     public function delete(string $name): bool;
 
