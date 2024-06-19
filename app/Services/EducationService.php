@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 
 interface EducationService
 {
@@ -12,15 +11,15 @@ interface EducationService
 
     public function findByName(string $name): Model | Builder;
 
-    public function exist(int $id): bool;
+    public function exists(int $id): bool;
 
-    public function existByName(string $name): bool;
+    public function existsByName(string $name): bool;
 
     public function delete(int $id): bool;
 
     public function update(array $education): bool;
 
-    public function searchEducation(array $education);
+    public function search(array $filter);
 
     public function save(array $education): Model | Builder;
 

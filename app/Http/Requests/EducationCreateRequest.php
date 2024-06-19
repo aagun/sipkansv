@@ -7,6 +7,20 @@ use App\Models\Education;
 
 class EducationCreateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => strtoupper($this->name)]);
+        }
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'name' => strtoupper($this->name),
+        ]);
+    }
+
     public function rules(): array
     {
         return [

@@ -25,7 +25,14 @@ class User extends Authenticatable
         'gender',
         'email',
         'password',
-        'role_id','status'
+        'role_id',
+        'education_id',
+        'department_id',
+        'grade_level_id',
+        'institution_id',
+        'rank_id',
+        'position_id',
+        'status'
     ];
 
     protected $hidden = [
@@ -71,5 +78,10 @@ class User extends Authenticatable
     public function gradeLevel(): BelongsTo
     {
         return $this->belongsTo(GradeLevel::class, 'grade_level_id', 'id');
+    }
+
+    public function education(): BelongsTo
+    {
+        return $this->belongsTo(Education::class, 'education_id', 'id');
     }
 }

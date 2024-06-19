@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Education;
+use Carbon\Carbon;
 
 class EducationSeeder extends Seeder
 {
@@ -16,33 +16,43 @@ class EducationSeeder extends Seeder
         $educations = [
             [
                 'name' => 'SMA',
-                'description' => 'Sekolah Menegah Atas'
+                'description' => 'Sekolah Menegah Atas',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
                 'name' => 'S1',
-                'description' => 'Strata-I'
+                'description' => 'Strata-I',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
                 'name' => 'S2',
-                'description' => 'Strata-II'
+                'description' => 'Strata-II',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
                 'name' => 'D3',
-                'description' => 'Diploma-III'
+                'description' => 'Diploma-III',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
                 'name' => 'D4',
-                'description' => 'Diploma-IV'
+                'description' => 'Diploma-IV',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
                 'name' => 'D5',
-                'description' => 'Diploma-V'
+                'description' => 'Diploma-V',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]
         ];
 
-        foreach ($educations as $education) {
-            Education::query()->create($education);
-        }
-    
+        Education::query()->insert($educations);
+
     }
 }

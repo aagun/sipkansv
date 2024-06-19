@@ -23,7 +23,7 @@ class EducationController extends Controller
         $payload = $request->validated();
         $saved = $this->educationService->save($payload);
         return response(
-            new SuccessResponseResource($saved),
+            new SuccessResponseResource($saved, null, __('messages.success.created')),
             Response::HTTP_CREATED
         );
     }
@@ -32,13 +32,20 @@ class EducationController extends Controller
     {
         $payload = $request->validated();
         $saved = $this->educationService->update($payload);
-        return response(new SuccessResponseResource($saved));
+        return response(new SuccessResponseResource($saved, null, __('messages.success.updated')));
     }
 
     public function search(Request $request): Response
     {
         $filter = $request->only(['name', 'description']);
         $collection = $this->educationService->search($filter);
-        return response(new SuccessResponseResource($collection));
+        return response(new SuccessResponseResource($collection, null, __('messages.success.retrieve')));
+    }
+
+    public function delete(int $id): Response
+    {
+        validateExistenceDataById($id, $this->educationService);
+        $this->educationService->delete($id);
+        return response(new SuccessResponseResource(null, null, __('messages.success.deleted')));
     }
 }

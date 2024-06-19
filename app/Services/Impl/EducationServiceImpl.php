@@ -13,37 +13,40 @@ class EducationServiceImpl implements EducationService
 {
     public function findOne(int $id): Model | Builder
     {
-        return new Education();
+        return Education::query()->where('id', $id)->first();
     }
 
     public function findByName(string $name): Model | Builder
     {
-        return new Education();
+        return Education::query()->where('name', $name)->first();
     }
 
-    public function exist(int $id): bool
+    public function exists(int $id): bool
     {
-        return false;
+        return Education::query()->where('id', $id)->exists();
     }
 
-    public function existByName(string $name): bool
+    public function existsByName(string $name): bool
     {
-        return false;
+        return Education::query()->where('name', $name)->exists();
     }
 
     public function delete(int $id): bool
     {
-        return false;
+        return Education::query()->where('id', $id)->delete();
     }
 
     public function update(array $education): bool
     {
+        $id = $education[ 'id' ];
+        unset($education[ 'id' ]);
+
         return Education::query()
-            ->where('id', $education['id'])
+            ->where('id', $id)
             ->update($education);
     }
 
-    public function searchEducation(array $filter): Collection
+    public function search(array $filter): Collection
     {
         return Education::query()
             ->when($filter, function (Builder $query, array $filter) {
