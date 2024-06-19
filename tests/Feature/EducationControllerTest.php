@@ -156,4 +156,38 @@ class EducationControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
+    public function testDelete()
+    {
+        $response = $this->delete(self::BASE_ENDPOINT);
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertInvalid(['id' => "The selected id is invalid."]);
+    }
+
+    public function testEducationDetail()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $response = $this->get(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('data', null)
+            ->etc()
+        );
+    }
+
+    public function testEducationDetailSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = Education::query()->first()->id;
+
+        $response = $this->get(self::BASE_ENDPOINT . "/$id");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->whereNot('data', null)
+            ->etc()
+        );
+    }
+
 }
