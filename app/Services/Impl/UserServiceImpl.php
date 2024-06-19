@@ -47,7 +47,7 @@ class UserServiceImpl implements UserService
     public function search(array $filter): Collection
     {
         return User::query()
-            ->leftJoin('roles', 'role.id' ,'=', 'users.role_id')
+            ->leftJoin('roles', 'roles.id' ,'=', 'users.role_id')
             ->leftJoin('positions', 'positions.id' ,'=', 'users.position_id')
             ->leftJoin('ranks', 'ranks.id' ,'=', 'users.rank_id')
             ->leftJoin('grade_levels', 'grade_levels.id' ,'=', 'users.grade_level_id')

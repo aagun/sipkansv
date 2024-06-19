@@ -217,8 +217,6 @@ class UserControllerTest extends TestCase
         $id = User::query()->first()->id;
         $response = $this->get(self::BASE_ENDPOINT . "/$id");
 
-        var_dump($response->content());
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
     }
