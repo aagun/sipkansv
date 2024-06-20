@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             GradeLevelSeeder::class,
             EducationSeeder::class,
             UserSeeder::class,
-            InvestmentTypeSeeder::class
+            InvestmentTypeSeeder::class,
+            BusinessEntityTypeSeeder::class
         ]);
     }
 }
