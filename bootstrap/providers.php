@@ -13,5 +13,6 @@ return [
     App\Providers\RankServiceProvider::class,
     App\Providers\RecommendationServiceProvider::class,
     App\Providers\RoleServiceProvider::class,
+    App\Providers\SubSectorServiceProvider::class,
     App\Providers\UserServiceProvider::class,
 ];
