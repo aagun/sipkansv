@@ -10,6 +10,7 @@ return [
     App\Providers\InvestmentTypeServiceProvider::class,
     App\Providers\PositionServiceProvider::class,
     App\Providers\RankServiceProvider::class,
+    App\Providers\RecommendationServiceProvider::class,
     App\Providers\RoleServiceProvider::class,
     App\Providers\UserServiceProvider::class,
 ];
