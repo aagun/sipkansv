@@ -15,6 +15,7 @@ use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\SubSectorController;
 use App\Http\Controllers\KbliController;
+use App\Http\Controllers\BusinessScaleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -158,6 +159,17 @@ Route::prefix('sub-sectors')
 // KBLI
 Route::prefix('kblis')
     ->controller(KbliController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+// Skala Bisnis
+Route::prefix('business-scales')
+    ->controller(BusinessScaleController::class)
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
