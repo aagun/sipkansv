@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             RecommendationSeeder::class,
             ObservationSeeder::class,
             SubSectorSeeder::class,
+            KbliSeeder::class,
         ]);
     }
 }

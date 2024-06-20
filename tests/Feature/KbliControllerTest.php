@@ -3,35 +3,39 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Services\ObservationService;
 use Illuminate\Http\Response;
+use App\Models\SubSector;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
-use App\Models\SubSector;
+use App\Services\KbliService;
+use App\Models\Kbli;
 
-class SubSectorControllerTest extends TestCase
+class KbliControllerTest extends TestCase
 {
-    private const BASE_ENDPOINT = '/sub-sectors';
+    private const BASE_ENDPOINT = '/kblis';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app->make(ObservationService::class);
+        $this->app->make(KbliService::class);
     }
 
     public function testCreateSuccess()
     {
-        $name = 'SUB_SECTOR_NAME_TEST';
+        $this->seed(DatabaseSeeder::class);
+
+        $name = 'KBLI_NAME_TEST';
         $payload = [
+            'code' => 12345,
             'name' => $name,
-            'description' => 'SUB_SECTOR_DESCRIPTION_TEST'
+            'sub_sector_id' => SubSector::query()->where('name', 'Pemasaran Hasil Perikanan')->first()->id
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonFragment(['message' => __('messages.success.created')]);
-        $this->assertDatabaseHas(SubSector::class, ['name' => $name]);
+        $this->assertDatabaseHas(Kbli::class, ['name' => $name]);
     }
 
     public function testCreateUniqueError()
@@ -39,8 +43,9 @@ class SubSectorControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $payload = [
-            'name' => 'Pengolahan Hasil Perikanan',
-            'description' => 'Pengolahan Hasil Perikanan'
+            'code' => 03111,
+            'name' => 'Penangkapan Pisces/Ikan Bersirip di Laut',
+            'sub_sector_id' => -99
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
@@ -63,7 +68,7 @@ class SubSectorControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = SubSector::query()->first()->id;
+        $id = Kbli::query()->first()->id;
         $payload = [
             'id' => $id,
             'name' => 'UPDATED_NAME'
@@ -73,7 +78,7 @@ class SubSectorControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(SubSector::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(Kbli::class, ['name' => 'UPDATED_NAME']);
     }
 
     public function testUpdateNotExistError()
@@ -96,7 +101,7 @@ class SubSectorControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $current_rank = SubSector::query()->first();
+        $current_rank = Kbli::query()->first();
 
         $payload = [
             'id' => $current_rank->id,
@@ -117,7 +122,6 @@ class SubSectorControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
-        $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
     public function testSearch()
@@ -129,7 +133,7 @@ class SubSectorControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->where('message', __('messages.success.retrieve'))
-            ->count('data', 5)
+            ->count('data', 112)
             ->etc()
         );
     }
@@ -138,12 +142,12 @@ class SubSectorControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = SubSector::query()->first()->id;
+        $id = Kbli::query()->first()->id;
 
         $response = $this->delete(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
-        $this->assertDatabaseCount(SubSector::class, 4);
+        $this->assertDatabaseCount(Kbli::class, 111);
     }
 
     public function testDeleteFailed()
@@ -158,7 +162,7 @@ class SubSectorControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
-    public function testSubSectorDetail()
+    public function testKbliDetail()
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -170,11 +174,11 @@ class SubSectorControllerTest extends TestCase
         );
     }
 
-    public function testSubSectorDetailSuccess()
+    public function testKbliDetailSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = SubSector::query()->first()->id;
+        $id = Kbli::query()->first()->id;
 
         $response = $this->get(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);
@@ -183,4 +187,13 @@ class SubSectorControllerTest extends TestCase
             ->etc()
         );
     }
+
+    public function testKbliSubSector()
+    {
+        $this->seed(DatabaseSeeder::class);
+        $kbli = Kbli::query()->first();
+        self::assertNotNull($kbli->subSector);
+
+    }
+
 }
