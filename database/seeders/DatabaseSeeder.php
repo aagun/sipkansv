@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             BusinessEntityTypeSeeder::class,
             RecommendationSeeder::class,
             ObservationSeeder::class,
+            SubSectorSeeder::class,
         ]);
     }
 }

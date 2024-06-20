@@ -13,6 +13,7 @@ use App\Http\Controllers\InvestmentTypeController;
 use App\Http\Controllers\BusinessEntityTypeController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\ObservationController;
+use App\Http\Controllers\SubSectorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -98,6 +99,7 @@ Route::prefix('users')
         Route::delete('/{id}', 'delete');
     });
 
+// Jesni Penanaman Modal
 Route::prefix('investment-types')
     ->controller(InvestmentTypeController::class)
     ->group(function () {
@@ -119,6 +121,7 @@ Route::prefix('bet')
         Route::delete('/{id?}', 'delete');
     });
 
+// Jenis Rekomendasi
 Route::prefix('recommendations')
     ->controller(RecommendationController::class)
     ->group(function () {
@@ -132,6 +135,17 @@ Route::prefix('recommendations')
 // Jenis Pengawasan
 Route::prefix('observations')
     ->controller(ObservationController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+// Sub Sektor
+Route::prefix('sub-sectors')
+    ->controller(SubSectorController::class)
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
