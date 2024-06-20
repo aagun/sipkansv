@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SubSector extends Model
 {
@@ -14,4 +15,9 @@ class SubSector extends Model
     protected $keyType = 'int';
     public $incrementing = true;
     protected $fillable = ['name', 'description'];
+
+    public function kblis(): HasMany
+    {
+        return $this->hasMany('kblis', 'sub_sector_id', 'id');
+    }
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\BusinessEntityTypeController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\SubSectorController;
+use App\Http\Controllers\KbliController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -146,6 +147,17 @@ Route::prefix('observations')
 // Sub Sektor
 Route::prefix('sub-sectors')
     ->controller(SubSectorController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+// KBLI
+Route::prefix('kblis')
+    ->controller(KbliController::class)
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');

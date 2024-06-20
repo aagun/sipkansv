@@ -8,6 +8,7 @@ return [
     App\Providers\GradeLevelServiceProvider::class,
     App\Providers\InstitutionServiceProvider::class,
     App\Providers\InvestmentTypeServiceProvider::class,
+    App\Providers\KbliServiceProvider::class,
     App\Providers\ObservationServiceProvider::class,
     App\Providers\PositionServiceProvider::class,
     App\Providers\RankServiceProvider::class,

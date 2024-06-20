@@ -38,6 +38,12 @@ class SubSectorSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
+            [
+                'name' => 'Pemasaran Hasil Perikanan',
+                'description' => 'Pemasaran Hasil Perikanan',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
         ];
 
         SubSector::query()->insert($sub_sectors);
