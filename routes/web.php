@@ -11,6 +11,7 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InvestmentTypeController;
 use App\Http\Controllers\BusinessEntityTypeController;
+use App\Http\Controllers\RecommendationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -109,6 +110,16 @@ Route::prefix('investment-types')
 // Status Badan Usaha
 Route::prefix('bet')
     ->controller(BusinessEntityTypeController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+Route::prefix('recommendations')
+    ->controller(RecommendationController::class)
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
