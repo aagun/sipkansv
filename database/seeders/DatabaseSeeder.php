@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             DistrictSeeder::class,
             SubDistrictSeeder::class,
+            VillageSeeder::class,
         ]);
     }
 }

@@ -20,4 +20,5 @@ return [
     App\Providers\SubDistrictServiceProvider::class,
     App\Providers\SubSectorServiceProvider::class,
     App\Providers\UserServiceProvider::class,
+    App\Providers\VillageServiceProvider::class,
 ];

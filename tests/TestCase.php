@@ -29,6 +29,7 @@ abstract class TestCase extends BaseTestCase
         DB::delete('delete from provinces');
         DB::delete('delete from districts');
         DB::delete('delete from sub_districts');
+        DB::delete('delete from villages');
     }
 
 }

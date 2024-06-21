@@ -42,7 +42,7 @@ class InstitutionControllerTest extends TestCase
         $this->seed(InstitutionSeeder::class);
 
         $payload = [
-            'name' => 'DKPP JABAR',
+            'name' => 'Dinas Kelautan dan Perikanan Provinsi Jawa Barat',
             'description' => 'Dinas Kelautan dan Perikanan Provinsi Jawa Barat',
         ];
 

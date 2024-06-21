@@ -19,6 +19,7 @@ use App\Http\Controllers\BusinessScaleController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
+use App\Http\Controllers\VillageController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -198,6 +199,13 @@ Route::prefix('districts')
 
 Route::prefix('sub-districts')
     ->controller(SubDistrictController::class)
+    ->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/{id?}', 'detail');
+    });
+
+Route::prefix('villages')
+    ->controller(VillageController::class)
     ->group(function () {
         Route::post('/search', 'search');
         Route::get('/{id?}', 'detail');

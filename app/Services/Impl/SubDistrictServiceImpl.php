@@ -56,7 +56,7 @@ class SubDistrictServiceImpl implements SubDistrictService
         ];
 
         $search = $filter['search'];
-        $sort = isset($filter[ 'sort' ]) && in_array($filter[ 'sort' ], array_keys($permissibleSort)) ? : 'districts.id';
+        $sort = isset($filter[ 'sort' ]) && in_array($filter[ 'sort' ], array_keys($permissibleSort)) ? : 'sub_districts.id';
         p_info("filter: " . json_encode($filter) . ", sort: $sort");
 
         return SubDistrict::query()
