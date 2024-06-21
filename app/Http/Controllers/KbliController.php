@@ -27,7 +27,7 @@ class KbliController extends Controller
 
     public function search(Request $request): Response
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->only(['code', 'name', 'sub_sector']);
         $collection = $this->kbliService->search($filter);
         return ok(__('messages.success.retrieve'), $collection);
     }

@@ -4,6 +4,8 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 use App\Http\Resources\ErrorResponseResource;
 use App\Http\Resources\SuccessResponseResource;
+use App\Http\Resources\Pagination\SuccessPageableResponseCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 if (!function_exists('validateExistenceDataById')) {
     function validateExistenceDataById(mixed $id, $serviceClass): void
@@ -50,8 +52,17 @@ if (!function_exists('validateExistenceDataById')) {
         );
     }
 
-    function ok(?string $message = null, $resource = null, $resourceClass = null): Response
+    function ok(?string $message = null, $resource = null, $resourceClass = null, bool $paginate = false): Response | ResourceCollection
+
     {
+        if ($paginate) {
+            return new SuccessPageableResponseCollection(
+                $resource,
+                $message,
+                $resourceClass
+            );
+        }
+
         return response(
             new SuccessResponseResource(
                 $resource,

@@ -12,6 +12,7 @@ return [
     App\Providers\KbliServiceProvider::class,
     App\Providers\ObservationServiceProvider::class,
     App\Providers\PositionServiceProvider::class,
+    App\Providers\ProvinceServiceProvider::class,
     App\Providers\RankServiceProvider::class,
     App\Providers\RecommendationServiceProvider::class,
     App\Providers\RoleServiceProvider::class,

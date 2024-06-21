@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             SubSectorSeeder::class,
             KbliSeeder::class,
             BusinessScaleSeeder::class,
+            ProvinceSeeder::class
         ]);
     }
 }
