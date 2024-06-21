@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             BusinessScaleSeeder::class,
             ProvinceSeeder::class,
             DistrictSeeder::class,
+            SubDistrictSeeder::class,
         ]);
     }
 }

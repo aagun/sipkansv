@@ -3,29 +3,30 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Http\Response;
-use Illuminate\Testing\Fluent\AssertableJson;
-use App\Services\DistrictService;
-use App\Models\District;
+use App\Services\SubDistrictService;
 use Database\Seeders\ProvinceSeeder;
 use Database\Seeders\DistrictSeeder;
+use Illuminate\Http\Response;
+use Illuminate\Testing\Fluent\AssertableJson;
+use App\Models\SubDistrict;
+use Database\Seeders\SubDistrictSeeder;
 
-class DistrictControllerTest extends TestCase
+class SubDistrictControllerTest extends TestCase
 {
-    private const BASE_ENDPOINT = '/districts';
+    private const BASE_ENDPOINT = '/sub-districts';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app->make(DistrictService::class);
+        $this->app->make(SubDistrictService::class);
     }
 
     public function testSearch()
     {
-        $this->seed([ProvinceSeeder::class, DistrictSeeder::class]);
+        $this->seed([ProvinceSeeder::class, DistrictSeeder::class, SubDistrictSeeder::class]);
         $filter = [
-            'search' => ['province_id' => 11]
+            'search' => ['district_id' => 1101]
         ];
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
         $response->assertStatus(Response::HTTP_OK);
@@ -33,7 +34,7 @@ class DistrictControllerTest extends TestCase
         $response->assertJson(fn (AssertableJson $json) => $json
             ->hasAll(['status', 'data', 'message', 'errors'])
             ->where('message', __('messages.success.retrieve'))
-            ->where('total', 19)
+            ->where('total', 18)
             ->count('data', 10)
             ->etc()
         );
@@ -41,7 +42,7 @@ class DistrictControllerTest extends TestCase
 
     public function testDetail()
     {
-        $this->seed([ProvinceSeeder::class, DistrictSeeder::class]);
+        $this->seed([ProvinceSeeder::class, DistrictSeeder::class, SubDistrictSeeder::class]);
 
         $response = $this->get(self::BASE_ENDPOINT);
         $response->assertStatus(Response::HTTP_NOT_FOUND);
@@ -53,9 +54,9 @@ class DistrictControllerTest extends TestCase
 
     public function testDetailSuccess()
     {
-        $this->seed([ProvinceSeeder::class, DistrictSeeder::class]);
+        $this->seed([ProvinceSeeder::class, DistrictSeeder::class, SubDistrictSeeder::class]);
 
-        $id = District::query()->first()->id;
+        $id = SubDistrict::query()->first()->id;
 
         $response = $this->get(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);

@@ -5,25 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Services\DistrictService;
-use App\Http\Resources\DistrictResource;
+use App\Services\SubDistrictService;
+use App\Http\Resources\SubDistrictResource;
 
-class DistrictController extends Controller
+class SubDistrictController extends Controller
 {
-    private DistrictService $districtService;
+    private SubDistrictService $subDistrictService;
 
-    public function __construct(DistrictService $districtService)
+    public function __construct(SubDistrictService $subDistrictService)
     {
-        $this->districtService = $districtService;
+        $this->subDistrictService = $subDistrictService;
     }
 
     public function search(PageableRequest $request): Response | ResourceCollection
     {
 
-        $collection = $this->districtService->search($request->toArray());
+        $collection = $this->subDistrictService->search($request->toArray());
         return ok(__('messages.success.retrieve'),
             $collection,
-            DistrictResource::class,
+            SubDistrictResource::class,
             true
         );
     }
@@ -31,7 +31,7 @@ class DistrictController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
-        $institution = $this->districtService->findOne($id);
+        $institution = $this->subDistrictService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }
 }
