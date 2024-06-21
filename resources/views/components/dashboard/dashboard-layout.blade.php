@@ -1,5 +1,5 @@
 <x-html>
-    <div x-data="{isOpen: true}">
+    <div x-data="{isOpen: true, isOpenMasterData: false}">
         <nav class="bg-[#009142] w-full h-[50px] flex justify-between">
             <div class="flex items-center h-full">
                 <div class="bg-green-900 h-full flex items-center px-[10px]">
@@ -20,31 +20,60 @@
             </div>
         </nav>
         <div class="flex w-full relative">
-            <div class="bg-white w-[420px] h-full md:relative absolute shadow-md"
-            x-show="isOpen"
+            <div class="bg-white min-w-[350px] h-full lg:relative absolute"
+                x-show="isOpen"
                 x-transition:enter="transition ease-out duration-100 transform"
                 x-transition:enter-start="opacity-0 scale-95"
                 x-transition:enter-end="opacity-100 scale-100"
                 x-transition:leave="transition ease-in duration-75 transform"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95" >
-                <div class="p-[15px] flex justify-between border-b-[1px] border-gray-300">
-                    <h1 class="text-[#009142] font-medium text-[20px]">Dashboard</h1>
-                </div>
-                <div class="p-[15px]">
-                    <ul class="text-[18px] text-gray-500">
-                        <li class="group flex justify-between  hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">
-                            <a href="/dashboard"><i class="fas fa-chart-line mr-[10px]"></i>Info Grapis</a>
-                            {{-- <p class="hidden group-hover:block {{ (request()->is('dashboard')) ? 'block' : ' ' }}">></p> --}}
-                        </li>
-                        <li class="group flex justify-between  hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/users')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">
-                            <a href="/dashboard/users"><i class="fas fa-users mr-[10px]"></i>Data Pengguna</a>
-                        </li>
-                    </ul>
+                <div class="bg-white min-w-[350px] h-full absolute shadow-md z-30 ">
+                    <div class="p-[15px] flex justify-between border-b-[1px] border-gray-300">
+                        <h1 class="text-[#009142] font-medium text-[20px]">Dashboard</h1>
+                    </div>
+                    <div class="p-[15px]">
+                        <ul class="text-[18px] text-gray-500">
+                            <a href="/dashboard" class="flex items-center hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">
+                                <i class="fas fa-chart-line mr-[10px]"></i>Info Grapis
+                                {{-- <p class="hidden group-hover:block {{ (request()->is('dashboard')) ? 'block' : ' ' }}">></p> --}}
+                            </a>
+                            <a href="/dashboard/users" class="flex items-center hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/users*')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">
+                                <i class="fas fa-users mr-[10px]"></i>Data Pengguna
+                            </a>
+                            <a href="/dashboard/kegiatan" class="flex items-center hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/kegiatan*')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">
+                                <i class="fas fa-file-signature mr-[10px]"></i>Kegiatan
+                            </a>
+                            
+                            <buton @click="isOpenMasterData = !isOpenMasterData" class="flex hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 cursor-pointer {{ true ? 'bg-gray-400 text-white' : 'bg-white' }}">
+                                <div class="flex items-center justify-between w-full">
+                                    <span><i class="fas fa-database mr-[10px]"></i>Master Data </span><span>></span>
+                                </div>
+                            </buton>
+                            <div 
+                            x-show="isOpenMasterData"
+                            x-transition:enter="transition ease-out duration-100 transform"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75 transform"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95" >
+                                <ul>
+                                    <a href="/dashboard/data/pangkat" class="flex items-center ml-[25px] hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/data/pangkat')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">Pangkat</a>
+                                    <a href="/dashboard/data/jabatan" class="flex items-center ml-[25px] hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/data/jabatan')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">Jabatan</a>
+                                    <a href="/dashboard/data/golongan-ruang" class="flex items-center ml-[25px] hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/data/golongan-ruang')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">Golongan Ruang</a>
+                                    <a href="/dashboard/data/pendidikan" class="flex items-center ml-[25px] hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/data/pendidikan')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">Pendidikan</a>
+                                    <a href="/dashboard/data/unit-kerja" class="flex items-center ml-[25px] hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/data/unit-kerja')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">Unit Kerja</a>
+                                    <a href="/dashboard/data/instansi" class="flex items-center ml-[25px] hover:text-gray-700 hover hover:bg-gray-100 p-[5px] rounded-sm active:bg-gray-200 {{ (request()->is('dashboard/data/instansi')) ? 'bg-[#09afed] text-white' : 'bg-white' }}">Instansi</a>
+                                </ul>
+                            </div>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="bg-[#fbc92a] w-full min-h-screen">
-                <div class="bg-white w-[98%] md:w-[95%] border-x-[3px] border-t-[3px] border-[#009142] m-auto mt-[5px] min-h-screen rounded-t-xl">
+            
+            <div class="bg-[#fbc92a] w-full h-[92vh] overflow-auto">
+                <div class="bg-white w-[98%] md:w-[95%] border-x-[3px] border-t-[3px] border-[#009142] m-auto mt-[5px] min-h-screen rounded-t-xl p-[10px]">
                   @yield("content")
                 </div>
             </div>
