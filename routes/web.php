@@ -17,6 +17,7 @@ use App\Http\Controllers\SubSectorController;
 use App\Http\Controllers\KbliController;
 use App\Http\Controllers\BusinessScaleController;
 use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\DistrictController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -182,6 +183,13 @@ Route::prefix('business-scales')
 // Data Provinsi
 Route::prefix('provinces')
     ->controller(ProvinceController::class)
+    ->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/{id?}', 'detail');
+    });
+
+Route::prefix('districts')
+    ->controller(DistrictController::class)
     ->group(function () {
         Route::post('/search', 'search');
         Route::get('/{id?}', 'detail');

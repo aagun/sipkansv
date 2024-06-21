@@ -27,6 +27,7 @@ abstract class TestCase extends BaseTestCase
         DB::delete('delete from kblis');
         DB::delete('delete from business_scales');
         DB::delete('delete from provinces');
+        DB::delete('delete from districts');
     }
 
 }

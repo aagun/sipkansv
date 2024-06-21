@@ -6,6 +6,7 @@ use App\Http\Resources\ErrorResponseResource;
 use App\Http\Resources\SuccessResponseResource;
 use App\Http\Resources\Pagination\SuccessPageableResponseCollection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 if (!function_exists('validateExistenceDataById')) {
     function validateExistenceDataById(mixed $id, $serviceClass): void
@@ -85,4 +86,15 @@ if (!function_exists('validateExistenceDataById')) {
     }
 
 
+    function p_info($data): void
+    {
+        Log::info($data);
+    }
+
+    function print_json(mixed $data): void
+    {
+        $json = json_decode($data);
+        $json = $json == null ? $data : $json;
+        Log::info(json_encode($json, JSON_PRETTY_PRINT));
+    }
 }

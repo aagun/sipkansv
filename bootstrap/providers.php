@@ -5,6 +5,7 @@ return [
     App\Providers\BusinessEntityTypeServiceProvider::class,
     App\Providers\BusinessScaleServiceProvider::class,
     App\Providers\DepartmentServiceProvider::class,
+    App\Providers\DistrictServiceProvider::class,
     App\Providers\EducationServiceProvider::class,
     App\Providers\GradeLevelServiceProvider::class,
     App\Providers\InstitutionServiceProvider::class,
