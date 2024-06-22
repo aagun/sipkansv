@@ -7,8 +7,10 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Resources\SuccessResponseResource;
 use Illuminate\Http\Response;
 use App\Http\Requests\UserUpdateRequest;
-use Illuminate\Http\Request;
 use App\Enums\UserStatus;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserController extends Controller
 {
@@ -23,40 +25,26 @@ class UserController extends Controller
     {
         $payload = $request->all();
         $saved = $this->userService->save($payload);
-        return response(
-            new SuccessResponseResource(
-                $saved,
-                null,
-                __('messages.success.created')
-            ),
-            Response::HTTP_CREATED
+        return created(
+            __('messages.success.created'),
+            $saved
         );
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only([
-            'name',
-            'nip',
-            'status',
-            'position_id',
-            'education_id',
-            'rank_id',
-            'institution_id',
-            'grade_level_id',
-            'department_id',
-        ]);
-
-        if (!isset($filter) || !isset($filter['status'])) {
-            $filter['status'] = UserStatus::ACTIVE;
+        $filter = $request->toArray();
+        if (!isset($filter['search']) || !isset($filter['search']['status'])) {
+            $filter['search']['status'] = UserStatus::ACTIVE;
         }
 
         $collection = $this->userService->search($filter);
-        return response(new SuccessResponseResource(
+        return ok(
+            __('messages.success.retrieve'),
             $collection,
-            null,
-            __('messages.success.retrieve')
-        ));
+            UserResource::class,
+            true
+        );
     }
 
     public function detail(int $id): Response

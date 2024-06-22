@@ -57,7 +57,6 @@ class DistrictServiceImpl  implements DistrictService
 
         $search = $filter['search'];
         $sort = isset($filter[ 'sort' ]) && in_array($filter[ 'sort' ], array_keys($permissibleSort)) ? : 'districts.id';
-        p_info("filter: " . json_encode($filter) . ", sort: $sort");
 
         return District::query()
             ->select([

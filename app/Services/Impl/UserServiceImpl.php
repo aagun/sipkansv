@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Enums\UserStatus;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserServiceImpl implements UserService
 {
@@ -44,9 +43,36 @@ class UserServiceImpl implements UserService
         }
     }
 
-    public function search(array $filter): Collection
+    public function search(array $filter): LengthAwarePaginator
     {
+        $permissibleSort = [
+            ['full_name' => 'users.name'],
+            ['position' => 'positions.name'],
+            ['nip' => 'users.nip'],
+            ['rank_name' => 'ranks.name'],
+            ['grade_level' => 'grade_levels.name'],
+            ['education' => 'educations.name'],
+            ['department' => 'departments.name'],
+            ['institution' => 'institutions.name'],
+        ];
+
+        $sort = validateSort($filter, $permissibleSort, $permissibleSort[0]['full_name']);
+        $order = $filter['order'];
+
         return User::query()
+            ->select([
+                'users.name AS full_name',
+                'positions.name AS position',
+                'users.nip AS nip',
+                'ranks.name AS rank_name',
+                'grade_levels.name AS grade_level',
+                'educations.name AS education',
+                'departments.name AS department',
+                'institutions.name AS institution',
+                'users.phone AS phone',
+                'users.email AS email',
+                'users.username AS username',
+            ])
             ->leftJoin('roles', 'roles.id' ,'=', 'users.role_id')
             ->leftJoin('positions', 'positions.id' ,'=', 'users.position_id')
             ->leftJoin('ranks', 'ranks.id' ,'=', 'users.rank_id')
@@ -84,8 +110,8 @@ class UserServiceImpl implements UserService
                     $query->where('users.institution_id', $filter['institution_id']);
                 }
             })
-            ->orderByRaw("users.name asc")
-            ->get();
+            ->orderByRaw("$sort $order")
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 
     public function delete(int $id): bool
@@ -101,33 +127,33 @@ class UserServiceImpl implements UserService
         return User::query()->where('id', $id)->update($user);
     }
 
-    public function userDetail(int $id): array
+    public function userDetail(int $id): Builder | Model | null
     {
-        return DB::select("
-            select
-                users.name as name,
-                users.nip as nip,
-                users.phone as phone,
-                users.email as email,
-                users.username as username,
-                roles.description as role,
-                positions.name as position,
-                ranks.name as ranks,
-                grade_levels.name as grade,
-                educations.name as education,
-                departments.name as department,
-                institutions.description as institution
-            from users
-                     left join roles on roles.id = users.role_id
-                     left join positions on positions.id = users.position_id
-                     left join ranks on ranks.id = users.rank_id
-                     left join grade_levels on grade_levels.id = users.grade_level_id
-                     left join educations on educations.id = users.education_id
-                     left join departments on departments.id = users.department_id
-                     left join institutions on institutions.id = users.institution_id
-            where
-                users.status = 'aktif' and
-                users.id = ?", [$id]);
+        return User::query()
+            ->select([
+                'users.name AS full_name',
+                'positions.name AS position',
+                'users.nip AS nip',
+                'ranks.name AS rank_name',
+                'grade_levels.name AS grade_level',
+                'educations.name AS education',
+                'departments.name AS department',
+                'institutions.name AS institution',
+                'users.email AS email',
+                'users.phone AS phone',
+                'users.username AS username',
+                'roles.name AS role'
+            ])
+            ->leftJoin('roles', 'roles.id' ,'=', 'users.role_id')
+            ->leftJoin('positions', 'positions.id' ,'=', 'users.position_id')
+            ->leftJoin('ranks', 'ranks.id' ,'=', 'users.rank_id')
+            ->leftJoin('grade_levels', 'grade_levels.id' ,'=', 'users.grade_level_id')
+            ->leftJoin('educations', 'educations.id' ,'=', 'users.education_id')
+            ->leftJoin('departments', 'departments.id' ,'=', 'users.department_id')
+            ->leftJoin('institutions', 'institutions.id' ,'=', 'users.institution_id')
+            ->where('users.status', '=', UserStatus::ACTIVE)
+            ->where('users.id', '=', $id)
+            ->first();
     }
 
 
