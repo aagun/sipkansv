@@ -30,6 +30,11 @@ if (!function_exists('validateExistenceDataById')) {
         ));
     }
 
+    function validateSort($filter, $permissibleSort, $defaultSort): bool
+    {
+        return isset($filter['sort']) && in_array($filter['sort'], array_keys($permissibleSort)) ? : $defaultSort;
+    }
+
     function error($status = null, ?string $message = null, $errors = null): Response
     {
         return response(
