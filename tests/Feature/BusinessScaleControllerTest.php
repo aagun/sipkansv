@@ -3,44 +3,44 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Services\DepartmentService;
 use Illuminate\Http\Response;
-use App\Models\Department;
-use Database\Seeders\DepartmentSeeder;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
+use App\Services\BusinessScaleService;
+use App\Models\BusinessScale;
 
-class DepartmentControllerTest extends TestCase
+class BusinessScaleControllerTest extends TestCase
 {
-    private const BASE_ENDPOINT = '/departments';
+    private const BASE_ENDPOINT = '/business-scales';
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app->make(DepartmentService::class);
+        $this->app->make(BusinessScaleService::class);
     }
 
     public function testCreateSuccess()
     {
-        $department_name = 'DEPARTMENT_NAME_TEST';
+        $name = 'BUSINESS_SCALE_NAME_TEST';
         $payload = [
-            'name' => $department_name,
-            'description' => $department_name
+            'name' => $name,
+            'description' => 'BUSINESS_SCALE_DESCRIPTION_TEST'
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonFragment(['message' => __('messages.success.created')]);
-        $this->assertDatabaseHas(Department::class, ['name' => $department_name]);
+        $this->assertDatabaseHas(BusinessScale::class, ['name' => $name]);
     }
 
     public function testCreateUniqueError()
     {
-        $this->seed(DepartmentSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $payload = [
-            'name' => 'Bidang Pengawasan Sumber Daya Kelautan dan Perikanan',
-            'description' => 'Bidang Pengawasan Sumber Daya Kelautan dan Perikanan',
+            'name' => 'Kecil',
+            'description' => 'Kecil'
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
@@ -59,30 +59,11 @@ class DepartmentControllerTest extends TestCase
         $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
-    public function testSearch()
-    {
-        $this->seed(DatabaseSeeder::class);
-
-        $filter = [
-            'name' => 'psdkp',
-            'description' => 'unit pelaksana'
-        ];
-
-        $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
-
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json
-            ->count('data', 2)
-            ->etc()
-        );
-    }
-
     public function testUpdateSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = Department::query()->first()->id;
+        $id = BusinessScale::query()->first()->id;
         $payload = [
             'id' => $id,
             'name' => 'UPDATED_NAME'
@@ -92,7 +73,7 @@ class DepartmentControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Department::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(BusinessScale::class, ['name' => 'UPDATED_NAME']);
     }
 
     public function testUpdateNotExistError()
@@ -115,11 +96,11 @@ class DepartmentControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $current_data = Department::query()->first();
+        $current_rank = BusinessScale::query()->first();
 
         $payload = [
-            'id' => $current_data->id,
-            'name' => $current_data->name
+            'id' => $current_rank->id,
+            'name' => $current_rank->name
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
@@ -139,28 +120,45 @@ class DepartmentControllerTest extends TestCase
         $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
+    public function testSearch()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $response = $this->post(self::BASE_ENDPOINT . '/search');
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->where('message', __('messages.success.retrieve'))
+            ->count('data', 4)
+            ->etc()
+        );
+    }
+
     public function testDeleteSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = Department::query()->first()->id;
+        $id = BusinessScale::query()->first()->id;
 
-        $response = $this->delete(self::BASE_ENDPOINT . '/' . $id);
+        $response = $this->delete(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
-        $this->assertDatabaseCount(Department::class, 2);
+        $this->assertDatabaseCount(BusinessScale::class, 3);
     }
 
     public function testDeleteFailed()
     {
-        $id = 10;
-        $response = $this->delete(self::BASE_ENDPOINT .  '/' . $id);
+        $this->seed(DatabaseSeeder::class);
+
+        $rank_id = 10;
+
+        $response = $this->delete(self::BASE_ENDPOINT . "/$rank_id");
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
-    public function testDetailFailed()
+    public function testBusinessScaleDetail()
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -172,11 +170,11 @@ class DepartmentControllerTest extends TestCase
         );
     }
 
-    public function testDetailSuccess()
+    public function testBusinessScaleDetailSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = Department::query()->first()->id;
+        $id = BusinessScale::query()->first()->id;
 
         $response = $this->get(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);
@@ -185,5 +183,4 @@ class DepartmentControllerTest extends TestCase
             ->etc()
         );
     }
-
 }

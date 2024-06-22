@@ -15,19 +15,19 @@ class DepartmentSeeder extends Seeder
     {
         $departments = [
             [
-                'name' => 'UPTD PSDKPWS',
+                'name' => 'Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan',
                 'description' => 'Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => 'UPTD PSDKPWU',
+                'name' => 'Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Utara',
                 'description' => 'Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Utara',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => 'Bidang PSDKP',
+                'name' => 'Bidang Pengawasan Sumber Daya Kelautan dan Perikanan',
                 'description' => 'Bidang Pengawasan Sumber Daya Kelautan dan Perikanan',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()

@@ -15,6 +15,11 @@ use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\SubSectorController;
 use App\Http\Controllers\KbliController;
+use App\Http\Controllers\BusinessScaleController;
+use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\SubDistrictController;
+use App\Http\Controllers\VillageController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -165,3 +170,45 @@ Route::prefix('kblis')
         Route::get('/{id?}', 'detail');
         Route::delete('/{id?}', 'delete');
     });
+
+// Skala Bisnis
+Route::prefix('business-scales')
+    ->controller(BusinessScaleController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+// Data Provinsi
+Route::prefix('provinces')
+    ->controller(ProvinceController::class)
+    ->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/{id?}', 'detail');
+    });
+
+Route::prefix('districts')
+    ->controller(DistrictController::class)
+    ->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/{id?}', 'detail');
+    });
+
+Route::prefix('sub-districts')
+    ->controller(SubDistrictController::class)
+    ->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/{id?}', 'detail');
+    });
+
+Route::prefix('villages')
+    ->controller(VillageController::class)
+    ->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/{id?}', 'detail');
+    });
+
+

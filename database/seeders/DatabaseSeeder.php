@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -28,6 +26,11 @@ class DatabaseSeeder extends Seeder
             ObservationSeeder::class,
             SubSectorSeeder::class,
             KbliSeeder::class,
+            BusinessScaleSeeder::class,
+            ProvinceSeeder::class,
+            DistrictSeeder::class,
+            SubDistrictSeeder::class,
+            VillageSeeder::class,
         ]);
     }
 }
