@@ -2,7 +2,9 @@
 
 return [
     App\Providers\ActivityReportServiceProvider::class,
+    App\Providers\ActivityServiceProvider::class,
     App\Providers\AppServiceProvider::class,
+    App\Providers\AttachmentServiceProvider::class,
     App\Providers\BusinessEntityTypeServiceProvider::class,
     App\Providers\BusinessScaleServiceProvider::class,
     App\Providers\DepartmentServiceProvider::class,
@@ -21,6 +23,5 @@ return [
     App\Providers\SubDistrictServiceProvider::class,
     App\Providers\SubSectorServiceProvider::class,
     App\Providers\UserServiceProvider::class,
-    App\Providers\ActivityServiceProvider::class,
     App\Providers\VillageServiceProvider::class,
 ];
