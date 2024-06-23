@@ -56,8 +56,7 @@ return new class extends Migration
             $table->enum('kategory_kepatuhan', ['Patuh', 'Tidak Patuh']);
             $table->string('permasalahan_perusahaan');
             $table->string('hasil_pengawasan');
-            $table->string('dokumen_pendukung_name');
-            $table->string('dokumen_pendukung_link');
+            $table->unsignedBigInteger('attachment_id')->nullable();
             $table->unsignedBigInteger('recommendation_id')->nullable();
             $table->string('status');
             $table->timestamps();
@@ -119,6 +118,11 @@ return new class extends Migration
 
             $table->foreign('investment_type_id')
                 ->on('investment_types')
+                ->references('id')
+                ->nullOnDelete();
+
+            $table->foreign('attachment_id')
+                ->on('attachments')
                 ->references('id')
                 ->nullOnDelete();
 
