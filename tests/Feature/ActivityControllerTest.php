@@ -39,8 +39,8 @@ class ActivityControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $payload = [
-            'name' => 'Kurang Baik',
-            'description' => 'Perbaikan'
+            'name' => 'Pengawasan Usaha Pemanfaatan Sumber Daya Kelautan Kewenangan Provinsi',
+            'description' => 'Pengawasan Usaha Pemanfaatan Sumber Daya Kelautan Kewenangan Provinsi'
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
@@ -128,8 +128,10 @@ class ActivityControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'total', 'errors'])
             ->where('message', __('messages.success.retrieve'))
-            ->count('data', 4)
+            ->where('total', 6)
+            ->count('data', 6)
             ->etc()
         );
     }
@@ -143,7 +145,7 @@ class ActivityControllerTest extends TestCase
         $response = $this->delete(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
-        $this->assertDatabaseCount(Activity::class, 3);
+        $this->assertDatabaseCount(Activity::class, 5);
     }
 
     public function testDeleteFailed()

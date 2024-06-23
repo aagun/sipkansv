@@ -12,7 +12,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InvestmentTypeController;
 use App\Http\Controllers\BusinessEntityTypeController;
 use App\Http\Controllers\RecommendationController;
-use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\SubSectorController;
 use App\Http\Controllers\KbliController;
@@ -21,6 +20,8 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\VillageController;
+use App\Http\Controllers\ActivityReportController;
+use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -139,17 +140,6 @@ Route::prefix('recommendations')
         Route::delete('/{id?}', 'delete');
     });
 
-
-Route::prefix('activities')
-    ->controller(ActivityController::class)
-    ->group(function () {
-          Route::post('/', 'create');
-          Route::post('/search', 'search');
-          Route::put('/', 'update');
-          Route::get('/{id?}', 'detail');
-          Route::delete('/{id?}', 'delete');
-      });
-
 // Jenis Pengawasan
 Route::prefix('observations')
     ->controller(ObservationController::class)
@@ -202,6 +192,7 @@ Route::prefix('provinces')
         Route::get('/{id?}', 'detail');
     });
 
+// Data Kabupaten
 Route::prefix('districts')
     ->controller(DistrictController::class)
     ->group(function () {
@@ -209,6 +200,7 @@ Route::prefix('districts')
         Route::get('/{id?}', 'detail');
     });
 
+// Data Kecamatan
 Route::prefix('sub-districts')
     ->controller(SubDistrictController::class)
     ->group(function () {
@@ -216,9 +208,30 @@ Route::prefix('sub-districts')
         Route::get('/{id?}', 'detail');
     });
 
+// Data Desa
 Route::prefix('villages')
     ->controller(VillageController::class)
     ->group(function () {
         Route::post('/search', 'search');
         Route::get('/{id?}', 'detail');
     });
+
+// Data Kegiatan
+Route::prefix('activities')
+    ->controller(ActivityController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+// Laporan Kegiatan
+Route::prefix('activity-reports')
+    ->controller(ActivityReportController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+    });
+
+

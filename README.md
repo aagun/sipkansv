@@ -44,8 +44,12 @@ Sistem Informasi Pengawasan Kelautan dan Perikanan Pemerintah Daerah Provinsi Ja
 6. Jalankan migrasi database
    ```bash 
    php artisan migrate
+   ``` 
+7. Load composer files
+   ```bash
+   composer dump-autoload
    ```
-7. Menjalankan aplikasi
+8. Menjalankan aplikasi
    ```bash
    php artisan serve
    ```
