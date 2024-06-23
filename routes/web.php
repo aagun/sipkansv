@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InvestmentTypeController;
 use App\Http\Controllers\BusinessEntityTypeController;
 use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ObservationController;
 use App\Http\Controllers\SubSectorController;
 use App\Http\Controllers\KbliController;
@@ -138,6 +139,17 @@ Route::prefix('recommendations')
         Route::delete('/{id?}', 'delete');
     });
 
+
+Route::prefix('activities')
+    ->controller(ActivityController::class)
+    ->group(function () {
+          Route::post('/', 'create');
+          Route::post('/search', 'search');
+          Route::put('/', 'update');
+          Route::get('/{id?}', 'detail');
+          Route::delete('/{id?}', 'delete');
+      });
+
 // Jenis Pengawasan
 Route::prefix('observations')
     ->controller(ObservationController::class)
@@ -210,5 +222,3 @@ Route::prefix('villages')
         Route::post('/search', 'search');
         Route::get('/{id?}', 'detail');
     });
-
-

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             InvestmentTypeSeeder::class,
             BusinessEntityTypeSeeder::class,
             RecommendationSeeder::class,
+            ActivitySeeder::class,
             ObservationSeeder::class,
             SubSectorSeeder::class,
             KbliSeeder::class,
