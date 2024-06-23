@@ -39,8 +39,8 @@ class DepartmentControllerTest extends TestCase
         $this->seed(DepartmentSeeder::class);
 
         $payload = [
-            'name' => 'UPTD PSDKPWS',
-            'description' => 'Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan',
+            'name' => 'Bidang Pengawasan Sumber Daya Kelautan dan Perikanan',
+            'description' => 'Bidang Pengawasan Sumber Daya Kelautan dan Perikanan',
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $payload);
@@ -64,8 +64,10 @@ class DepartmentControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'name' => 'psdkp',
-            'description' => 'unit pelaksana'
+            'search' => [
+                'name' => 'Pelaksana',
+                'description' => 'unit'
+            ]
         ];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);

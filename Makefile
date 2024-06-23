@@ -31,5 +31,18 @@ artisan-service: ## Create laravel service
 artisan-test: ## Create test file
 	@php artisan make:test "$(name)Test"
 
-artisan-remigrate: ## Refresh laravel migration
-	@php artisan migrate:refresh
+artisan-new: ## Setup all required files to create service
+	@php artisan make:model "$(name)" -sm
+	@php artisan make:interface "Services/$(name)Service"
+	@php artisan make:class "Services/Impl/$(name)ServiceImpl"
+	@php artisan make:provider "$(name)ServiceProvider"
+	@php artisan make:controller "$(name)Controller"
+	@php artisan make:test "$(name)ControllerTest"
+	@php artisan make:request "$(name)CreateRequest"
+	@php artisan make:request "$(name)UpdateRequest"
+
+migrate-fresh: ## Drop all tables and re-run migration(s)
+	@php artisan migrate:fresh
+
+seed-fresh: migrate-fresh ##
+	@php artisan db:seed

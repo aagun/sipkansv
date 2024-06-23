@@ -57,13 +57,13 @@ class UserControllerTest extends TestCase
             'phone' => '08122066949',
             'gender' => 'l',
             'status' => 'active',
-            'role' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id + 1000,
-            'position' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id + 10000,
-            'rank' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id + 10000,
-            'department' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id + 100000,
-            'institution' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id + 100000,
-            'grade_level'=> $this->gradeLevelService->search(['name' => 'III/D'])->first()->id + 100000,
-            'education' => $this->educationService->search(['name' => 'S2'])->first()->id + 100000,
+            'role' => $this->roleService->findOneByName('RO_SUPERVISOR')->id + 99999,
+            'position' => $this->positionService->findByName( 'Pengawas Perikanan Ahli Muda')->id + 99999,
+            'rank' => $this->rankService->findByName('Penata Tk.I')->id + 99999,
+            'department' => $this->departmentService->findByName('Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan')->id + 99999,
+            'institution' => $this->institutionService->findByName('Dinas Kelautan dan Perikanan Provinsi Jawa Barat')->id + 99999,
+            'grade_level'=> $this->gradeLevelService->findByName('III/D')->id + 99999,
+            'education' => $this->educationService->findByName('S2')->id + 99999,
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $user);
@@ -94,18 +94,19 @@ class UserControllerTest extends TestCase
             'phone' => '08122066949',
             'gender' => 'l',
             'status' => 'aktif',
-            'role' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id,
-            'position' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id,
-            'rank' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id,
-            'department' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id,
-            'institution' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id,
-            'grade_level'=> $this->gradeLevelService->search(['name' => 'III/D'])->first()->id,
-            'education' => null,
+            'role' => $this->roleService->findOneByName('RO_SUPERVISOR')->id,
+            'position' => $this->positionService->findByName( 'Pengawas Perikanan Ahli Muda')->id,
+            'rank' => $this->rankService->findByName('Penata Tk.I')->id,
+            'department' => $this->departmentService->findByName('Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan')->id,
+            'institution' => $this->institutionService->findByName('Dinas Kelautan dan Perikanan Provinsi Jawa Barat')->id,
+            'grade_level'=> $this->gradeLevelService->findByName('III/D')->id,
+            'education' => $this->educationService->findByName('S2')->id,
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $user);
 
         $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment(['message' => __('messages.success.created')]);
         $this->assertDatabaseHas(User::class, ['name' => 'User Test Success']);
     }
 
@@ -123,13 +124,13 @@ class UserControllerTest extends TestCase
             'phone' => '08122066949',
             'gender' => 'l',
             'status' => 'active',
-            'role' => $this->roleService->searchRole(['name' => 'RO_SUPERVISOR'])->first()->id + 1000,
-            'position' => $this->positionService->search(['name' => 'Pengawas Perikanan Ahli Muda'])->first()->id + 10000,
-            'rank' => $this->rankService->search(['name' => 'Penata Tk.I'])->first()->id + 10000,
-            'department' => $this->departmentService->search(['name' => 'UPTD PSDKPWS'])->first()->id + 100000,
-            'institution' => $this->institutionService->search(['name' => 'DKPP JABAR'])->first()->id + 100000,
-            'grade_level'=> $this->gradeLevelService->search(['name' => 'III/D'])->first()->id + 100000,
-            'education' => $this->educationService->search(['name' => 'S2'])->first()->id + 100000,
+            'role' => $this->roleService->findOneByName('RO_SUPERVISOR')->id + 99999,
+            'position' => $this->positionService->findByName( 'Pengawas Perikanan Ahli Muda')->id + 99999,
+            'rank' => $this->rankService->findByName('Penata Tk.I')->id + 99999,
+            'department' => $this->departmentService->findByName('Unit Pelaksana Teknis Daerah Penggawasan Sumber Daya Kelautan dan Perikanan Wilayah Selatan')->id + 99999,
+            'institution' => $this->institutionService->findByName('Dinas Kelautan dan Perikanan Provinsi Jawa Barat')->id + 99999,
+            'grade_level'=> $this->gradeLevelService->findByName('III/D')->id + 99999,
+            'education' => $this->educationService->findByName('S2')->id + 99999,
         ];
 
         $response = $this->post(self::BASE_ENDPOINT, $user);
@@ -158,7 +159,7 @@ class UserControllerTest extends TestCase
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $user);
-        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(User::class, ['name' => 'User Test Success']);
     }
@@ -192,8 +193,9 @@ class UserControllerTest extends TestCase
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'total', 'errors']));
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 14)->etc());
+        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 10)->etc());
     }
 
     public function testSearchWithFilter()
@@ -207,7 +209,7 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 12)->etc());
+        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 10)->etc());
     }
 
     public function testDetail()

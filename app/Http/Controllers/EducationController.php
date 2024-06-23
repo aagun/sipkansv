@@ -6,7 +6,9 @@ use App\Services\EducationService;
 use App\Http\Requests\EducationCreateRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\EducationUpdateRequest;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\EducationResource;
 
 class EducationController extends Controller
 {
@@ -31,11 +33,16 @@ class EducationController extends Controller
         return ok(__('messages.success.updated'), $saved);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->educationService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            EducationResource::class,
+            true
+        );
     }
 
     public function delete(?int $id = null): Response

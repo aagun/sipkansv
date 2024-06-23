@@ -4,8 +4,13 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 use App\Http\Resources\ErrorResponseResource;
 use App\Http\Resources\SuccessResponseResource;
+use App\Http\Resources\Pagination\SuccessPageableResponseCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 if (!function_exists('validateExistenceDataById')) {
+
+    define('PAGEABLE_PROPS', ['limit', 'offset', 'search', 'sort', 'order']);
     function validateExistenceDataById(mixed $id, $serviceClass): void
     {
         if (!$serviceClass->exists($id)) {
@@ -25,6 +30,20 @@ if (!function_exists('validateExistenceDataById')) {
             new ErrorResponseResource($errors),
             Response::HTTP_NOT_FOUND
         ));
+    }
+
+    function validateArraySort($filter, $permissibleSort, $defaultSort): string
+    {
+        return (isset($filter['sort']) && in_array($filter['sort'], $permissibleSort))
+            ? $filter['sort']
+            : $defaultSort;
+    }
+
+    function validateObjectSort($filter, $permissibleSort, $defaultSort): string
+    {
+        return (isset($filter['sort']) && in_array($filter['sort'], array_keys($permissibleSort)))
+            ? $permissibleSort[$filter['sort']]
+            : $defaultSort;
     }
 
     function error($status = null, ?string $message = null, $errors = null): Response
@@ -50,8 +69,17 @@ if (!function_exists('validateExistenceDataById')) {
         );
     }
 
-    function ok(?string $message = null, $resource = null, $resourceClass = null): Response
+    function ok(?string $message = null, $resource = null, $resourceClass = null, bool $paginate = false): Response | ResourceCollection
+
     {
+        if ($paginate) {
+            return new SuccessPageableResponseCollection(
+                $resource,
+                $message,
+                $resourceClass
+            );
+        }
+
         return response(
             new SuccessResponseResource(
                 $resource,
@@ -74,4 +102,15 @@ if (!function_exists('validateExistenceDataById')) {
     }
 
 
+    function p_info($data): void
+    {
+        Log::info($data);
+    }
+
+    function p_json(mixed $data): void
+    {
+        $json = json_decode($data);
+        $json = $json == null ? $data : $json;
+        Log::info(json_encode($json, JSON_PRETTY_PRINT));
+    }
 }

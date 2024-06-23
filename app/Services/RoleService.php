@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface RoleService
 {
@@ -22,7 +23,7 @@ interface RoleService
 
     public function delete(int $id): bool;
 
-    public function searchRole(array $filter): Collection;
+    public function search(array $filter): LengthAwarePaginator;
 
     public function exists(int $id): bool;
 }

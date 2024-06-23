@@ -67,8 +67,10 @@ class GradeLevelControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'name' => 'II/',
-            'description' => 'c'
+            'search' => [
+                'name' => 'II/',
+                'description' => 'c'
+            ]
         ];
 
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Enums\HttpResponseStatus;
 
+
 class BasePageableResponseCollection extends ResourceCollection
 {
     private HttpResponseStatus $status;
@@ -13,7 +14,13 @@ class BasePageableResponseCollection extends ResourceCollection
     private mixed $errors;
     private mixed $data;
 
-    public function __construct(HttpResponseStatus $status, string $message, $data, $resource, $errors)
+    public function __construct(
+        HttpResponseStatus $status,
+        string $message,
+        $data,
+        $resource,
+        $errors
+    )
     {
         parent::__construct($resource);
 
@@ -29,15 +36,17 @@ class BasePageableResponseCollection extends ResourceCollection
 
         unset($default['links']);
         unset($default['meta']);
+
+        return $default;
     }
 
     public function toArray(Request $request): array
     {
         return [
-          "status" => $this->status->value,
-          "message" => $this->message,
-          "data" => $this->data,
-          "errors" => $this->errors
+            'status' => $this->status,
+            'message' => $this->message,
+            'data' => $this->data,
+            'errors' => $this->errors,
         ];
     }
 }

@@ -5,8 +5,8 @@ namespace App\Services\Impl;
 use App\Services\RecommendationService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Recommendation;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class RecommendationServiceImpl implements RecommendationService
 {
@@ -37,34 +37,39 @@ class RecommendationServiceImpl implements RecommendationService
             ->delete();
     }
 
-    public function update(array $businessEntityType): bool
+    public function update(array $recommendation): bool
     {
-        $id = $businessEntityType[ 'id' ];
-        unset($businessEntityType['id']);
+        $id = $recommendation[ 'id' ];
+        unset($recommendation['id']);
 
         return Recommendation::query()
             ->where('id', $id)
-            ->update($businessEntityType);
+            ->update($recommendation);
     }
 
-    public function search(array $filter): Collection
+    public function search(array $filter): LengthAwarePaginator
     {
+        $search = $filter['search'];
+        $order = $filter['order'];
+        $permissibleSort = ['name', 'description'];
+        $sort = validateArraySort($filter, $permissibleSort, 'id');
+
         return Recommendation::query()
-            ->when($filter, function (Builder $query, array $filter) {
-                if (isset($filter['name'])) {
-                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
 
-                if (isset($filter['description'])) {
-                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$filter['description']]);
+                if (isset($search['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
                 }
             })
-            ->orderByRaw("id asc")
-            ->get();
+            ->orderByRaw("$sort $order")
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 
-    public function save(array $businessEntityType): Model | Builder
+    public function save(array $recommendation): Model | Builder
     {
-        return Recommendation::query()->create($businessEntityType);
+        return Recommendation::query()->create($recommendation);
     }
 }

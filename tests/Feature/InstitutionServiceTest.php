@@ -21,7 +21,7 @@ class InstitutionServiceTest extends TestCase
     public function testInstitutionUser()
     {
         $this->seed(DatabaseSeeder::class);
-        $institution = $this->institutionService->findByName('DKPP JABAR');
+        $institution = $this->institutionService->findByName('Dinas Kelautan dan Perikanan Provinsi Jawa Barat');
         self::assertEquals(14, $institution->users->count());
     }
 

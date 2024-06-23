@@ -5,8 +5,8 @@ namespace App\Services\Impl;
 use App\Services\RankService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Rank;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class RankServiceImpl implements RankService
 {
@@ -44,20 +44,25 @@ class RankServiceImpl implements RankService
             ->update($rank);
     }
 
-    public function search(array $filter): Collection
+    public function search(array $filter): LengthAwarePaginator
     {
+        $search = $filter['search'];
+        $order = $filter['order'];
+        $permissibleSort = ['name', 'description'];
+        $sort = validateArraySort($filter, $permissibleSort, 'id');
+
         return Rank::query()
-            ->when($filter, function (Builder $query, array $filter) {
-                if (isset($filter['name'])) {
-                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
 
-                if (isset($filter['description'])) {
-                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$filter['description']]);
+                if (isset($search['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
                 }
             })
-            ->orderByRaw("id asc")
-            ->get();
+            ->orderByRaw("$sort $order")
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 
     public function save(array $rank): Model | Builder

@@ -20,7 +20,7 @@ class DepartmentServiceTest extends TestCase
     public function testDepartmentUsers()
     {
         $this->seed(DatabaseSeeder::class);
-        $department = $this->departmentService->findByName('Bidang PSDKP');
+        $department = $this->departmentService->findByName('Bidang Pengawasan Sumber Daya Kelautan dan Perikanan');
         self::assertEquals(3, $department->users->count());
     }
 }
