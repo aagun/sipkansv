@@ -25,6 +25,11 @@ class KbliServiceImpl implements KbliService
         return Kbli::query()->where('id' , $id)->exists();
     }
 
+    public function existsBySubSectorId(int $subSectorId): bool
+    {
+        return Kbli::query()->where('sub_sector_id' , $subSectorId)->exists();
+    }
+
     public function existsByName(string $name): bool
     {
         return Kbli::query()->where('name' , $name)->exists();

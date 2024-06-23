@@ -1,6 +1,7 @@
 <?php
 
 return [
+    App\Providers\ActivityReportServiceProvider::class,
     App\Providers\AppServiceProvider::class,
     App\Providers\BusinessEntityTypeServiceProvider::class,
     App\Providers\BusinessScaleServiceProvider::class,

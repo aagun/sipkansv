@@ -20,6 +20,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\VillageController;
+use App\Http\Controllers\ActivityReportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -190,6 +191,7 @@ Route::prefix('provinces')
         Route::get('/{id?}', 'detail');
     });
 
+// Data Kabupaten
 Route::prefix('districts')
     ->controller(DistrictController::class)
     ->group(function () {
@@ -197,6 +199,7 @@ Route::prefix('districts')
         Route::get('/{id?}', 'detail');
     });
 
+// Data Kecamatan
 Route::prefix('sub-districts')
     ->controller(SubDistrictController::class)
     ->group(function () {
@@ -204,11 +207,19 @@ Route::prefix('sub-districts')
         Route::get('/{id?}', 'detail');
     });
 
+// Data Desa
 Route::prefix('villages')
     ->controller(VillageController::class)
     ->group(function () {
         Route::post('/search', 'search');
         Route::get('/{id?}', 'detail');
+    });
+
+// Laporan Kegiatan
+Route::prefix('activity-reports')
+    ->controller(ActivityReportController::class)
+    ->group(function () {
+        Route::post('/', 'create');
     });
 
 

@@ -40,6 +40,7 @@ artisan-new: ## Setup all required files to create service
 	@php artisan make:test "$(name)ControllerTest"
 	@php artisan make:request "$(name)CreateRequest"
 	@php artisan make:request "$(name)UpdateRequest"
+	@php artisan make:resource "$(name)Resource"
 
 migrate-fresh: ## Drop all tables and re-run migration(s)
 	@php artisan migrate:fresh

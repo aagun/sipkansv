@@ -14,6 +14,8 @@ interface KbliService
 
     public function exists(int $id): bool;
 
+    public function existsBySubSectorId(int $subSectorId): bool;
+
     public function existsByName(string $name): bool;
 
     public function delete(int $id): bool;
