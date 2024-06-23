@@ -33,7 +33,6 @@ class ActivityReport extends Model
         'nib',
         'effective_date',
         'project_code',
-        'sub_sector_id',
         'kbli_id',
         'business_scale_id',
 
@@ -42,7 +41,6 @@ class ActivityReport extends Model
         'pbg_slf',
         'pernyataan_mandiri',
 
-        'sertifikat_standar',
         'investment_type_id',
         'latitude',
         'longitude',
@@ -50,7 +48,6 @@ class ActivityReport extends Model
 
         'kepatuhan_teknis',
         'perizinan_berusaha_atas_kegiatan_usaha',
-        'standar_pelaksanaan_kegiatan_usaha',
         'persyaratan_umum_usaha',
         'persyaratan_khusus_usaha',
         'sarana',
