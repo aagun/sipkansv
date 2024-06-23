@@ -21,6 +21,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\VillageController;
 use App\Http\Controllers\ActivityReportController;
+use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -213,6 +214,17 @@ Route::prefix('villages')
     ->group(function () {
         Route::post('/search', 'search');
         Route::get('/{id?}', 'detail');
+    });
+
+// Data Kegiatan
+Route::prefix('activities')
+    ->controller(ActivityController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
     });
 
 // Laporan Kegiatan
