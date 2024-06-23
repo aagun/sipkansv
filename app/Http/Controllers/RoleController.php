@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoleRequest;
 use App\Services\RoleService;
 use Illuminate\Http\Response;
-use Illuminate\Http\Request;
 use App\Http\Requests\RoleUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\RoleResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RoleController extends Controller
 {
@@ -24,12 +26,16 @@ class RoleController extends Controller
         return created(__('messages.success.created'), $saved);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
-
-        $data = $this->roleService->searchRole($filter);
-        return ok(__('messages.success.retrieve'), $data);
+        $filter = $request->toArray();
+        $data = $this->roleService->search($filter);
+        return ok(
+            __('messages.success.retrieve'),
+            $data,
+            RoleResource::class,
+            true
+        );
     }
 
     public function edit(RoleUpdateRequest $roleRequest, int $id): Response

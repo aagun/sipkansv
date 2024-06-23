@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\RecommendationCreateRequest;
 use App\Http\Requests\RecommendationUpdateRequest;
 use App\Services\RecommendationService;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\RecommendationResource;
 
 class RecommendationController extends Controller
 {
@@ -25,11 +27,16 @@ class RecommendationController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->recommendationService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            RecommendationResource::class,
+            true
+        );
     }
 
     public function update(RecommendationUpdateRequest $request): Response

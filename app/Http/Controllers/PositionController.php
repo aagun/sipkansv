@@ -6,7 +6,9 @@ use App\Services\PositionService;
 use App\Http\Requests\PositionCreateRequest;
 use Illuminate\Http\Response;
 use App\Http\Requests\PositionUpdateRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\PositionResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PositionController extends Controller
 {
@@ -31,11 +33,16 @@ class PositionController extends Controller
         return ok(__('messages.success.updated'), $saved);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->positionService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            PositionResource::class,
+            true
+        );
     }
 
     public function delete(?int $id = null): Response

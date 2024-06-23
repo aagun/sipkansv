@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface EducationService
 {
@@ -19,7 +20,7 @@ interface EducationService
 
     public function update(array $education): bool;
 
-    public function search(array $filter);
+    public function search(array $filter): LengthAwarePaginator;
 
     public function save(array $education): Model | Builder;
 

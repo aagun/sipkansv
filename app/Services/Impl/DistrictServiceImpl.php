@@ -54,9 +54,9 @@ class DistrictServiceImpl  implements DistrictService
             'district_name' => 'districts.name',
             'province_name' => 'provinces.name'
         ];
-
         $search = $filter['search'];
-        $sort = isset($filter[ 'sort' ]) && in_array($filter[ 'sort' ], array_keys($permissibleSort)) ? : 'districts.id';
+        $order = $filter['order'];
+        $sort = validateObjectSort($filter, $permissibleSort, 'districts.id');
 
         return District::query()
             ->select([
@@ -74,8 +74,11 @@ class DistrictServiceImpl  implements DistrictService
                     $query->whereRaw("provinces.id = ?", [$search['province_id']]);
                 }
             })
-            ->orderByRaw($sort . ' ' . $filter['order'])
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order")
+            ->paginate(
+                perPage: $filter['limit'],
+                page: $filter['offset']
+            );
     }
 
     public function save(array $district): Model | Builder

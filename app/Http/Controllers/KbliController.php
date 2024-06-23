@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\KbliService;
 use App\Http\Requests\KbliCreateRequest;
 use App\Http\Requests\KbliUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\KbliResource;
 
 class KbliController extends Controller
 {
@@ -17,7 +19,6 @@ class KbliController extends Controller
         $this->kbliService = $kbliService;
     }
 
-
     public function create(KbliCreateRequest $request): Response
     {
         $payload = $request->validated();
@@ -25,11 +26,16 @@ class KbliController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['code', 'name', 'sub_sector']);
+        $filter = $request->toArray();
         $collection = $this->kbliService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            KbliResource::class,
+            true
+        );
     }
 
     public function update(KbliUpdateRequest $request): Response

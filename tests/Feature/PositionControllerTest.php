@@ -126,12 +126,15 @@ class PositionControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $response = $this->post(self::BASE_ENDPOINT . '/search', [
-            'name' => 'pengawas',
-            'description' => 'muda'
+            'search' => [
+                'name' => 'pengawas',
+                'description' => 'muda'
+            ]
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'errors', 'total'])
             ->count('data', 1)
             ->etc()
         );

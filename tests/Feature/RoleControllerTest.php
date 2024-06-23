@@ -126,7 +126,7 @@ class RoleControllerTest extends TestCase
         $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors', 'total'])
             ->where('errors', null)
             ->count('data', 4)
         );
@@ -137,11 +137,11 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $payload = [
-            'name' => 'adm'
+            'search' => ['name' => 'adm']
         ];
         $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors'])
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors', 'total'])
             ->where('errors', null)
             ->count('data', 1)
         );
@@ -151,8 +151,8 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
-        $response = $this->put(self::BASE_ENDPOINT . "/$role_id", ['name' => 'RO_ADMIN_UPDATED']);
+        $id = Role::query()->select(['id'])->whereRaw("name LIKE CONCAT('%', 'adm', '%')")->first()->id;
+        $response = $this->put(self::BASE_ENDPOINT . "/$id", ['name' => 'RO_ADMIN_UPDATED']);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
@@ -173,7 +173,7 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
+        $role_id = $this->roleService->findOneByName('RO_ADMIN')->id;
         $response = $this->put(self::BASE_ENDPOINT . "/$role_id", ['name' => ' ', 'description' => ' ']);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
@@ -184,7 +184,7 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $role_id = $this->roleService->searchRole(['name' => 'adm'])->first()->id;
+        $role_id = $this->roleService->findOneByName('RO_ADMIN')->id;
         $response = $this->delete(self::BASE_ENDPOINT . "/$role_id");
 
         $response->assertStatus(Response::HTTP_OK);

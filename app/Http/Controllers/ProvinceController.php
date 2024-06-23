@@ -20,7 +20,8 @@ class ProvinceController extends Controller
     public function search(PageableRequest $request): Response | ResourceCollection
     {
 
-        $collection = $this->provinceService->search($request->toArray());
+        $filter = $request->toArray();
+        $collection = $this->provinceService->search($filter);
         return ok(__('messages.success.retrieve'),
             $collection,
             ProvinceResource::class,

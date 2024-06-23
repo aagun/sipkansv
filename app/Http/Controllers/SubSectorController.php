@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\SubSectorService;
 use Illuminate\Http\Response;
 use App\Http\Requests\SubSectorCreateRequest;
 use App\Http\Requests\SubSectorUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\SubSectorResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class SubSectorController extends Controller
 {
@@ -25,11 +27,16 @@ class SubSectorController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->subSectorService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            SubSectorResource::class,
+            true
+        );
     }
 
     public function update(SubSectorUpdateRequest $request): Response

@@ -128,6 +128,7 @@ class SubSectorControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'total', 'errors'])
             ->where('message', __('messages.success.retrieve'))
             ->count('data', 5)
             ->etc()

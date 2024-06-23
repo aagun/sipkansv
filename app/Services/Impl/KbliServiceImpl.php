@@ -6,7 +6,7 @@ use App\Services\KbliService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Kbli;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class KbliServiceImpl implements KbliService
 {
@@ -47,25 +47,38 @@ class KbliServiceImpl implements KbliService
             ->update($kbli);
     }
 
-    public function search(array $filter): Collection
+    public function search(array $filter): LengthAwarePaginator
     {
+        $search = $filter['search'];
+        $order = $filter['order'];
+        $permissibleSort = [
+            'code' => 'kblis.code',
+            'name' => 'kblis.name',
+            'sub_sector' => 'sub_sectors.name'
+        ];
+        $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['code']);
         return Kbli::query()
-            ->leftJoin('sub_sectors', 'sub_sectors.id', '=', 'kblis.sub_sector_id')
-            ->when($filter, function (Builder $query, array $filter) {
-                if (isset($filter['code'])) {
-                    $query->whereRaw("kblis.code LIKE CONCAT('%', ?, '%')", [$filter['code']]);
+            ->select([
+                'kblis.code AS code',
+                'kblis.name AS name',
+                'sub_sectors.name AS sub_sector'
+            ])
+            ->join('sub_sectors', 'kblis.sub_sector_id', '=', 'sub_sectors.id')
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['code'])) {
+                    $query->whereRaw("kblis.code LIKE CONCAT('%', ?, '%')", [$search['code']]);
                 }
 
-                if (isset($filter['name'])) {
-                    $query->whereRaw("kblis.name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+                if (isset($search['name'])) {
+                    $query->whereRaw("kblis.name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
 
-                if (isset($filter['sub_sector'])) {
-                    $query->whereRaw("sub_sectors.id = ? ", [$filter['sub_sector']]);
+                if (isset($search['sub_sector'])) {
+                    $query->whereRaw("sub_sectors.id = ? ", [$search['sub_sector']]);
                 }
             })
-            ->orderByRaw("kblis.id asc")
-            ->get();
+            ->orderByRaw("$sort $order")
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 
     public function save(array $kbli): Model | Builder

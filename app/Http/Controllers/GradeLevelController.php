@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Services\GradeLevelService;
 use App\Http\Requests\GradeLevelCreateRequest;
-use Illuminate\Http\Request;
 use App\Http\Requests\GradeLevelUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\GradeLevelResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class GradeLevelController extends Controller
 {
@@ -24,11 +26,16 @@ class GradeLevelController extends Controller
         return created(__('messages.success.created'), $saved);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->gradeLevelService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            GradeLevelResource::class,
+            true
+        );
     }
 
     public function update(GradeLevelUpdateRequest $request): Response

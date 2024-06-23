@@ -46,17 +46,19 @@ class UserServiceImpl implements UserService
     public function search(array $filter): LengthAwarePaginator
     {
         $permissibleSort = [
-            ['full_name' => 'users.name'],
-            ['position' => 'positions.name'],
-            ['nip' => 'users.nip'],
-            ['rank_name' => 'ranks.name'],
-            ['grade_level' => 'grade_levels.name'],
-            ['education' => 'educations.name'],
-            ['department' => 'departments.name'],
-            ['institution' => 'institutions.name'],
+            'full_name' => 'users.name',
+            'position' => 'positions.name',
+            'nip' => 'users.nip',
+            'role' => 'roles.name',
+            'rank_name' => 'ranks.name',
+            'grade_level' => 'grade_levels.name',
+            'education' => 'educations.name',
+            'department' => 'departments.name',
+            'institution' => 'institutions.name',
         ];
 
-        $sort = validateSort($filter, $permissibleSort, $permissibleSort[0]['full_name']);
+        $search = $filter['search'];
+        $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['full_name']);
         $order = $filter['order'];
 
         return User::query()
@@ -64,6 +66,7 @@ class UserServiceImpl implements UserService
                 'users.name AS full_name',
                 'positions.name AS position',
                 'users.nip AS nip',
+                'roles.name AS role',
                 'ranks.name AS rank_name',
                 'grade_levels.name AS grade_level',
                 'educations.name AS education',
@@ -80,34 +83,34 @@ class UserServiceImpl implements UserService
             ->leftJoin('educations', 'educations.id' ,'=', 'users.education_id')
             ->leftJoin('departments', 'departments.id' ,'=', 'users.department_id')
             ->leftJoin('institutions', 'institutions.id' ,'=', 'users.institution_id')
-            ->when($filter, function (Builder $query, array $filter) {
-                if (isset($filter['status'])) {
-                    $query->where('users.status', $filter['status']);
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['status'])) {
+                    $query->where('users.status', $search['status']);
                 }
 
-                if (isset($filter['name'])) {
-                    $user_name = '%' . $filter['name'] . '%';
+                if (isset($search['name'])) {
+                    $user_name = '%' . $search['name'] . '%';
                     $query->whereAny(['users.name', 'users.nip'], 'LIKE', $user_name);
                 }
 
-                if (isset($filter['position_id'])) {
-                    $query->where('users.position_id', $filter['position_id']);
+                if (isset($search['position_id'])) {
+                    $query->where('users.position_id', $search['position_id']);
                 }
 
-                if (isset($filter['rank_id'])) {
-                    $query->where('users.rank_id', $filter['rank_id']);
+                if (isset($search['rank_id'])) {
+                    $query->where('users.rank_id', $search['rank_id']);
                 }
 
-                if (isset($filter['grade_level_id'])) {
-                    $query->where('users.grade_level_id', $filter['grade_level_id']);
+                if (isset($search['grade_level_id'])) {
+                    $query->where('users.grade_level_id', $search['grade_level_id']);
                 }
 
-                if (isset($filter['education_id'])) {
-                    $query->where('users.education_id', $filter['education_id']);
+                if (isset($search['education_id'])) {
+                    $query->where('users.education_id', $search['education_id']);
                 }
 
-                if (isset($filter['institution_id'])) {
-                    $query->where('users.institution_id', $filter['institution_id']);
+                if (isset($search['institution_id'])) {
+                    $query->where('users.institution_id', $search['institution_id']);
                 }
             })
             ->orderByRaw("$sort $order")
@@ -134,6 +137,7 @@ class UserServiceImpl implements UserService
                 'users.name AS full_name',
                 'positions.name AS position',
                 'users.nip AS nip',
+                'roles.name AS role',
                 'ranks.name AS rank_name',
                 'grade_levels.name AS grade_level',
                 'educations.name AS education',

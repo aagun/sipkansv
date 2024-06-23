@@ -63,8 +63,10 @@ class InvestmentTypeControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'name' => 'pm',
-            'description' => 'd'
+            'search' =>[
+                'name' => 'pm',
+                'description' => 'd'
+            ]
         ];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);

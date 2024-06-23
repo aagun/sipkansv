@@ -38,7 +38,6 @@ class VillageControllerTest extends TestCase
 
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
         $response->assertStatus(Response::HTTP_OK);
-        p_info($response->content());
         $response->assertJson(fn (AssertableJson $json) => $json
             ->hasAll(['status', 'data', 'message', 'errors'])
             ->where('message', __('messages.success.retrieve'))

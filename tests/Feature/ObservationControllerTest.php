@@ -128,7 +128,9 @@ class ObservationControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'total', 'errors'])
             ->where('message', __('messages.success.retrieve'))
+            ->where('total', 3)
             ->count('data', 3)
             ->etc()
         );

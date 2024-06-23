@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface InstitutionService
 {
@@ -20,7 +20,7 @@ interface InstitutionService
 
     public function update(array $institution): bool;
 
-    public function search(array $filter): Collection;
+    public function search(array $filter): LengthAwarePaginator;
 
     public function save(array $institution): Model | Builder;
 

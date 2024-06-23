@@ -128,7 +128,9 @@ class BusinessEntityTypeControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'total', 'errors'])
             ->where('message', __('messages.success.retrieve'))
+            ->where('total', 2)
             ->count('data', 2)
             ->etc()
         );
@@ -158,7 +160,7 @@ class BusinessEntityTypeControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
-    public function testInstitutionDetail()
+    public function testDetail()
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -170,7 +172,7 @@ class BusinessEntityTypeControllerTest extends TestCase
         );
     }
 
-    public function testInstitutionDetailSuccess()
+    public function testDetailSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 

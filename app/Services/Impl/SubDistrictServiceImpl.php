@@ -56,8 +56,8 @@ class SubDistrictServiceImpl implements SubDistrictService
         ];
 
         $search = $filter['search'];
-        $sort = isset($filter[ 'sort' ]) && in_array($filter[ 'sort' ], array_keys($permissibleSort)) ? : 'sub_districts.id';
-        p_info("filter: " . json_encode($filter) . ", sort: $sort");
+        $order = $filter['order'];
+        $sort = validateObjectSort($filter, $permissibleSort, 'sub_districts.id');
 
         return SubDistrict::query()
             ->select([
@@ -75,7 +75,7 @@ class SubDistrictServiceImpl implements SubDistrictService
                     $query->whereRaw("districts.id = ?", [$search['district_id']]);
                 }
             })
-            ->orderByRaw($sort . ' ' . $filter['order'])
+            ->orderByRaw("$sort $order")
             ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 
