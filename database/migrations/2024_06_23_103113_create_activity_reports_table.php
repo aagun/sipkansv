@@ -58,7 +58,7 @@ return new class extends Migration
             $table->string('hasil_pengawasan');
             $table->string('dokumen_pendukung_name');
             $table->string('dokumen_pendukung_link');
-            $table->unsignedBigInteger('recommendation_id');
+            $table->unsignedBigInteger('recommendation_id')->nullable();
             $table->string('status');
             $table->timestamps();
 
