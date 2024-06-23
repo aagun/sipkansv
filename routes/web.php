@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InvestmentTypeController;
 use App\Http\Controllers\BusinessEntityTypeController;
 use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -120,6 +121,16 @@ Route::prefix('bet')
 
 Route::prefix('recommendations')
     ->controller(RecommendationController::class)
+    ->group(function () {
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    });
+
+Route::prefix('activities')
+    ->controller(ActivityController::class)
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');

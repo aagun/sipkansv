@@ -13,4 +13,5 @@ return [
     App\Providers\RecommendationServiceProvider::class,
     App\Providers\RoleServiceProvider::class,
     App\Providers\UserServiceProvider::class,
+    App\Providers\ActivityServiceProvider::class,
 ];

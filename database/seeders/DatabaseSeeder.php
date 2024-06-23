@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             InvestmentTypeSeeder::class,
             BusinessEntityTypeSeeder::class,
-            RecommendationSeeder::class
+            RecommendationSeeder::class,
+            ActivitySeeder::class
         ]);
     }
 }
