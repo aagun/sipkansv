@@ -20,8 +20,10 @@ class SubDistrictController extends Controller
     public function search(PageableRequest $request): Response | ResourceCollection
     {
 
-        $collection = $this->subDistrictService->search($request->toArray());
-        return ok(__('messages.success.retrieve'),
+        $filter = $request->toArray();
+        $collection = $this->subDistrictService->search($filter);
+        return ok(
+            __('messages.success.retrieve'),
             $collection,
             SubDistrictResource::class,
             true

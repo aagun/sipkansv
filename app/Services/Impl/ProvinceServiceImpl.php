@@ -50,14 +50,17 @@ class ProvinceServiceImpl implements ProvinceService
     public function search(array $filter): LengthAwarePaginator
     {
         $search = $filter['search'];
-        $sort = $filter[ 'sort' ] ?? 'id';
+        $order = $filter['order'];
+        $permissibleSort = ['name'];
+        $sort = validateArraySort($filter, $permissibleSort, 'id');
+
         return Province::query()
             ->when($search, function (Builder $query, array $search) {
                 if (isset($search['name'])) {
                     $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
             })
-            ->orderByRaw($sort . ' ' . $filter['order'])
+            ->orderByRaw($sort . ' ' . $order)
             ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 

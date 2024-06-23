@@ -18,6 +18,6 @@ class SubSector extends Model
 
     public function kblis(): HasMany
     {
-        return $this->hasMany('kblis', 'sub_sector_id', 'id');
+        return $this->hasMany(Kbli::class, 'sub_sector_id', 'id');
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\BusinessEntityTypeService;
 use App\Http\Requests\BusinessEntityTypeCreateRequest;
 use App\Http\Requests\BusinessEntityTypeUpdateRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\BusinessEntityTypeResource;
+use App\Http\Requests\PageableRequest;
 
 class BusinessEntityTypeController extends Controller
 {
@@ -25,11 +27,16 @@ class BusinessEntityTypeController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->businessEntityTypeService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            BusinessEntityTypeResource::class,
+            true
+        );
     }
 
     public function update(BusinessEntityTypeUpdateRequest $request): Response

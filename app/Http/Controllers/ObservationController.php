@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\ObservationService;
 use App\Http\Requests\ObservationUpdateRequest;
 use App\Http\Requests\ObservationCreateRequest;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\ObservationResource;
 
 class ObservationController extends Controller
 {
@@ -25,11 +27,16 @@ class ObservationController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->observationService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            ObservationResource::class,
+            true
+        );
     }
 
     public function update(ObservationUpdateRequest $request): Response

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\BusinessScaleService;
 use App\Http\Requests\BusinessScaleCreateRequest;
 use App\Http\Requests\BusinessScaleUpdateRequest;
+use App\Http\Resources\BusinessScaleResource;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class BusinessScaleController extends Controller
 {
@@ -25,11 +27,17 @@ class BusinessScaleController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->businessScaleService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        p_json($collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            BusinessScaleResource::class,
+            true
+        );
     }
 
     public function update(BusinessScaleUpdateRequest $request): Response

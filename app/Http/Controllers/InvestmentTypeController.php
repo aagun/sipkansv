@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\InvestmentTypeService;
 use App\Http\Requests\InvestmentTypeCreateRequest;
 use App\Http\Requests\InvestmentTypeUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\InvestmentTypeResource;
 
 class InvestmentTypeController extends Controller
 {
@@ -24,11 +26,16 @@ class InvestmentTypeController extends Controller
         return created(__('messages.success.created'));
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->investmentType->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            InvestmentTypeResource::class,
+            true
+        );
     }
 
     public function update(InvestmentTypeUpdateRequest $request): Response

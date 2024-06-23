@@ -125,9 +125,12 @@ class RankControllerTest extends TestCase
     {
         $this->seed(RankSeeder::class);
 
-        $response = $this->post(self::BASE_ENDPOINT . '/search', [
-            'name' => 'penata',
-            'description' => 'muda'
+        $response = $this->post(self::BASE_ENDPOINT . '/search',
+            [
+                'search' => [
+                    'name' => 'penata',
+                    'description' => 'muda'
+                ]
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -162,7 +165,7 @@ class RankControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
-    public function testInstitutionDetail()
+    public function testDetail()
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -174,7 +177,7 @@ class RankControllerTest extends TestCase
         );
     }
 
-    public function testInstitutionDetailSuccess()
+    public function testDetailSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\InstitutionCreateRequest;
 use App\Services\InstitutionService;
 use App\Http\Requests\InstitutionUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\InstitutionResource;
 
 class InstitutionController extends Controller
 {
@@ -25,11 +27,16 @@ class InstitutionController extends Controller
         return created(__('messages.success.created'), $saved);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->institutionService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            InstitutionResource::class,
+            true
+        );
     }
 
     public function update(InstitutionUpdateRequest $request): Response

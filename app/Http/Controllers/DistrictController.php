@@ -19,8 +19,8 @@ class DistrictController extends Controller
 
     public function search(PageableRequest $request): Response | ResourceCollection
     {
-
-        $collection = $this->districtService->search($request->toArray());
+        $filter = $request->toArray();
+        $collection = $this->districtService->search($filter);
         return ok(__('messages.success.retrieve'),
             $collection,
             DistrictResource::class,

@@ -9,6 +9,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Log;
 
 if (!function_exists('validateExistenceDataById')) {
+
+    define('PAGEABLE_PROPS', ['limit', 'offset', 'search', 'sort', 'order']);
     function validateExistenceDataById(mixed $id, $serviceClass): void
     {
         if (!$serviceClass->exists($id)) {
@@ -30,9 +32,18 @@ if (!function_exists('validateExistenceDataById')) {
         ));
     }
 
-    function validateSort($filter, $permissibleSort, $defaultSort): bool
+    function validateArraySort($filter, $permissibleSort, $defaultSort): string
     {
-        return isset($filter['sort']) && in_array($filter['sort'], array_keys($permissibleSort)) ? : $defaultSort;
+        return (isset($filter['sort']) && in_array($filter['sort'], $permissibleSort))
+            ? $filter['sort']
+            : $defaultSort;
+    }
+
+    function validateObjectSort($filter, $permissibleSort, $defaultSort): string
+    {
+        return (isset($filter['sort']) && in_array($filter['sort'], array_keys($permissibleSort)))
+            ? $permissibleSort[$filter['sort']]
+            : $defaultSort;
     }
 
     function error($status = null, ?string $message = null, $errors = null): Response
@@ -96,7 +107,7 @@ if (!function_exists('validateExistenceDataById')) {
         Log::info($data);
     }
 
-    function print_json(mixed $data): void
+    function p_json(mixed $data): void
     {
         $json = json_decode($data);
         $json = $json == null ? $data : $json;

@@ -62,8 +62,10 @@ class EducationControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'name' => 'D',
-            'description' => 'V'
+            'search' => [
+                'name' => 'D',
+                'description' => 'V'
+            ]
         ];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);

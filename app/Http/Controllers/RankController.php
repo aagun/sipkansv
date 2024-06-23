@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Services\RankService;
 use App\Http\Requests\RankCreateRequest;
-use Illuminate\Http\Request;
 use App\Http\Requests\RankUpdateRequest;
+use App\Http\Requests\PageableRequest;
+use App\Http\Resources\RankResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RankController extends Controller
 {
@@ -25,11 +27,16 @@ class RankController extends Controller
         return created(__('messages.success.created'), $rank);
     }
 
-    public function search(Request $request): Response
+    public function search(PageableRequest $request): Response | ResourceCollection
     {
-        $filter = $request->only(['name', 'description']);
+        $filter = $request->toArray();
         $collection = $this->rankService->search($filter);
-        return ok(__('messages.success.retrieve'), $collection);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            RankResource::class,
+            true
+        );
     }
 
     public function update(RankUpdateRequest $request): Response

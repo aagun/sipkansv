@@ -4,9 +4,9 @@ namespace App\Services\Impl;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use App\Services\BusinessEntityTypeService;
 use App\Models\BusinessEntityType;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BusinessEntityTypeServiceImpl implements BusinessEntityTypeService
 {
@@ -47,20 +47,25 @@ class BusinessEntityTypeServiceImpl implements BusinessEntityTypeService
             ->update($businessEntityType);
     }
 
-    public function search(array $filter): Collection
+    public function search(array $filter): LengthAwarePaginator
     {
+        $search = $filter['search'];
+        $order = $filter['order'];
+        $permissibleSort = ['name', 'description'];
+        $sort = validateArraySort($filter, $permissibleSort, 'id');
+
         return BusinessEntityType::query()
-            ->when($filter, function (Builder $query, array $filter) {
-                if (isset($filter['name'])) {
-                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$filter['name']]);
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
 
-                if (isset($filter['description'])) {
-                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$filter['description']]);
+                if (isset($search['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
                 }
             })
-            ->orderByRaw("id asc")
-            ->get();
+            ->orderByRaw("$sort $order")
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
     }
 
     public function save(array $businessEntityType): Model | Builder

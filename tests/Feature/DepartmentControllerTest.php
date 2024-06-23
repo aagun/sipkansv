@@ -64,8 +64,10 @@ class DepartmentControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'name' => 'psdkp',
-            'description' => 'unit pelaksana'
+            'search' => [
+                'name' => 'Pelaksana',
+                'description' => 'unit'
+            ]
         ];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);

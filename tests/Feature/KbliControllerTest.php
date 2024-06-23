@@ -128,12 +128,15 @@ class KbliControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $response = $this->post(self::BASE_ENDPOINT . '/search');
+        $filter = ['sort' => 'name'];
+        $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'total', 'errors'])
             ->where('message', __('messages.success.retrieve'))
-            ->count('data', 112)
+            ->count('data', 10)
+            ->where('total', 112)
             ->etc()
         );
     }

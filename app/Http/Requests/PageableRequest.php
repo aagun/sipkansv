@@ -26,6 +26,14 @@ class PageableRequest extends BaseRequest
         if (!isset($this->order)) {
             $this->merge(['order' => 'asc']);
         }
+
+        if (!isset($this->sort)) {
+            $this->merge(['sort' => null]);
+        }
+
+        if (!isset($this->search)) {
+            $this->merge(['search' => null]);
+        }
     }
 
     public function rules(): array
