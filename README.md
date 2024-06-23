@@ -29,7 +29,7 @@ Sistem Informasi Pengawasan Kelautan dan Perikanan Pemerintah Daerah Provinsi Ja
     composer install
    ```
 3. Buat file .env dari file .env.example
-    * Salin file `.env.example` kemudian ganti namanya menjadi `.env`
+    * Salin file `.env.dev` kemudian ganti namanya menjadi `.env`
    
 4. Konfigurasi database pada file .env
    * Buka file `.env` kemudian isi variable-variable berikut sesuai dengan environment yang di pakai
