@@ -27,7 +27,7 @@
                 x-transition:leave="transition ease-in duration-75 transform"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95">
-            <div class="min-w-[450px] md:w-[650px] m-auto mt-[100px] bg-white mt-[200px] rounded-lg text-center p-[30px] shadow-2xl">
+            <div class="w-[450px] md:w-[650px] m-auto bg-white mt-[150px] rounded-lg text-center p-[15px] md:p-[30px] shadow-2xl">
                 <h2 class="font-bold text-[20px]">Ubah Golongan Ruang</h2>
                 <form action="">
                     @csrf
