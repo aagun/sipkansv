@@ -1,6 +1,6 @@
 @extends("components.dashboard.dashboard-layout")
 @section("content")
-    <div class="w-full" x-data="{isDelete: false, isShowForm: false}">
+    <div class="w-full" x-data="{isDelete: false, isShowForm: false, isShowFormEdit: false}">
         <div class="absolute w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[100]"
                 x-show="isDelete"
                 x-transition:enter="transition ease-out duration-100 transform"
@@ -11,11 +11,56 @@
                 x-transition:leave-end="opacity-0 scale-95">
             <div class="w-[450px] m-auto bg-white mt-[200px] rounded-lg text-center p-[30px] shadow-2xl">
                 <h2 class="font-bold text-[20px]">Konfirmasi Penghapusan</h2>
-                <p class="text-[15px] mt-[30px]">Apakah Anda yakin ingin menghapus item ini?</p>
+                <p class="text-[15px] mt-[30px]">Apakah Anda yakin ingin menghapus ini?</p>
                 <div class="w-[200px] flex justify-between m-auto mt-[30px]">
                     <button class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Hapus</button>
                     <button @click="isDelete = !isDelete" class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Batalkan</button>
                 </div>
+            </div>
+        </div>
+
+        <div class="absolute w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[100]"
+                x-show="isShowFormEdit"
+                x-transition:enter="transition ease-out duration-100 transform"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75 transform"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95">
+            <div class="min-w-[450px] md:w-[650px] m-auto mt-[100px] bg-white mt-[200px] rounded-lg text-center p-[30px] shadow-2xl">
+                <h2 class="font-bold text-[20px]">Ubah Pendidikan</h2>
+                <form action="">
+                    @csrf
+                    <div class="space-y-6 bg-white">
+    
+                        <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
+                            <h2 class="max-w-sm mx-auto md:w-1/5 ">
+                                Nama <span class="text-red-600">*</span>
+                            </h2>
+                            <div class="max-w-lg mx-auto md:w-4/5">
+                                <div class=" relative ">
+                                    <input type="text" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama" required />
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+    
+                        <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
+                            <h2 class="max-w-sm mx-auto md:w-1/5">
+                                Deskripsi
+                            </h2>
+                            <div class="max-w-lg mx-auto md:w-4/5">
+                                <div class=" relative">
+                                    <textarea id="content" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="w-[200px] flex justify-between m-auto mt-[30px]">
+                            <button class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Ubah</button>
+                            <button @click="isShowFormEdit = !isShowFormEdit" class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Batalkan</button>
+                        </div>
+                    </div>
             </div>
         </div>
 
@@ -108,7 +153,7 @@
                                 Lorem ipsum dolor sit amet consectetur Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veritatis alias ducimus ipsa doloribus, architecto beatae laborum magni id quam blanditiis assumenda provident dicta voluptas nihil voluptates ex soluta inventore eos.
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Edit</a>
+                                <button @click="isShowFormEdit = !isShowFormEdit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Ubah</button>
                                 <button @click="isDelete = !isDelete" class="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline">Hapus</button>
                             </td>
                         </tr>

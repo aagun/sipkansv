@@ -91,6 +91,9 @@
                                 No
                             </th>
                             <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                                Status
+                            </th>
+                            <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 NIP/NIK
                             </th>
                             <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
@@ -129,6 +132,9 @@
                         <tr class="text-gray-700">
                             <td class="border p-4 dark:border-dark-5 text-center">
                                 1
+                            </td>
+                            <td class="border p-4 dark:border-dark-5">
+                                -
                             </td>
                             <td class="border p-4 dark:border-dark-5">
                                 -
