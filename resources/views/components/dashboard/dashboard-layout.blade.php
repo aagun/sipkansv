@@ -3,7 +3,7 @@
         <nav class="bg-[#009142] w-full h-[50px] flex justify-between">
             <div class="flex items-center h-full">
                 <div class="bg-green-900 h-full flex items-center px-[10px]">
-                    <img src="./img/logo.png" class="w-[50px]" alt="">
+                    <img src="{{ asset('img/logo.png') }}" class="w-[50px]" alt="">
                     <h2 class="text-white font-bold text-[18px] ml-[10px] mr-[20px]">SIPKAN</h2>
                 </div>
                 <button @click="isOpen = !isOpen" class="text-white hover:text-gray-600 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
