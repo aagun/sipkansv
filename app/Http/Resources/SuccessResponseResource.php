@@ -8,7 +8,7 @@ use App\Enums\HttpResponseStatus;
 
 class SuccessResponseResource extends BaseResponseResource
 {
-    public function __construct($resource, $resourceClass = null, string $message = null)
+    public function __construct($resource, $resourceClass = null, ?string $message = null)
     {
         $resource = $resourceClass ? $resourceClass::collection($resource) : $resource;
 

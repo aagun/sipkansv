@@ -11,8 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        if (in_array(env('APP_ENV'), ['testing', 'local'])) {
+            $middleware->validateCsrfTokens(except: [
+                '*'
+            ]);
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (Throwable $t, $request) {
+        });
     })->create();

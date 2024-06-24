@@ -7,6 +7,7 @@ use App\Models\Role;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class RoleServiceImpl implements RoleService
 {
@@ -15,12 +16,12 @@ class RoleServiceImpl implements RoleService
         return Role::all();
     }
 
-    public function findOne(int $id): Model | Builder
+    public function findOne(int $id): Model | Builder | null
     {
-        return Role::query()->findOrFail($id);
+        return Role::query()->where('id', $id)->first();
     }
 
-    public function findOneByName(string $name): Model | Builder
+    public function findOneByName(string $name): Model | Builder | null
     {
         return Role::query()
             ->where('name', $name)
@@ -51,6 +52,33 @@ class RoleServiceImpl implements RoleService
         return Role::query()
             ->where('id', $id)
             ->delete();
+    }
+
+    public function search(array $filter): LengthAwarePaginator
+    {
+
+        $search = $filter['search'];
+        $order = $filter['order'];
+        $permissibleSort = ['name', 'description'];
+        $sort = validateArraySort($filter, $permissibleSort, 'id');
+
+        return Role::query()
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
+                }
+
+                if (isset($search['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
+                }
+            })
+            ->orderByRaw("$sort $order")
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    public function exists(int $id): bool
+    {
+        return Role::query()->where('id', $id)->exists();
     }
 
 }

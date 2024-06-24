@@ -24,8 +24,18 @@ class User extends Authenticatable
         'nip',
         'gender',
         'email',
+        'phone',
         'password',
-        'role_id','status'
+        'remember_token',
+        'username',
+        'role_id',
+        'education_id',
+        'department_id',
+        'grade_level_id',
+        'institution_id',
+        'rank_id',
+        'position_id',
+        'status'
     ];
 
     protected $hidden = [
@@ -46,5 +56,35 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class, 'position_id', 'id');
+    }
+
+    public function rank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class, 'rank_id', 'id');
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
+
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class, 'institution_id', 'id');
+    }
+
+    public function gradeLevel(): BelongsTo
+    {
+        return $this->belongsTo(GradeLevel::class, 'grade_level_id', 'id');
+    }
+
+    public function education(): BelongsTo
+    {
+        return $this->belongsTo(Education::class, 'education_id', 'id');
     }
 }

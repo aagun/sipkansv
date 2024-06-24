@@ -29,7 +29,7 @@ Sistem Informasi Pengawasan Kelautan dan Perikanan Pemerintah Daerah Provinsi Ja
     composer install
    ```
 3. Buat file .env dari file .env.example
-    * Salin file `.env.example` kemudian ganti namanya menjadi `.env`
+    * Salin file `.env.dev` kemudian ganti namanya menjadi `.env`
    
 4. Konfigurasi database pada file .env
    * Buka file `.env` kemudian isi variable-variable berikut sesuai dengan environment yang di pakai
@@ -44,8 +44,12 @@ Sistem Informasi Pengawasan Kelautan dan Perikanan Pemerintah Daerah Provinsi Ja
 6. Jalankan migrasi database
    ```bash 
    php artisan migrate
+   ``` 
+7. Load composer files
+   ```bash
+   composer dump-autoload
    ```
-7. Menjalankan aplikasi
+8. Menjalankan aplikasi
    ```bash
    php artisan serve
    ```
