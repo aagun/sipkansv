@@ -41,7 +41,6 @@ return new class extends Migration
             $table->string('sertifikat_standar');
             $table->unsignedInteger('kepatuhan_teknis');
             $table->unsignedInteger('perizinan_berusaha_atas_kegiatan_usaha');
-            $table->unsignedInteger('standar_pelaksanaan_kegiatan_usaha');
             $table->unsignedInteger('persyaratan_umum_usaha');
             $table->unsignedInteger('persyaratan_khusus_usaha');
             $table->unsignedInteger('sarana');
@@ -58,7 +57,7 @@ return new class extends Migration
             $table->string('hasil_pengawasan');
             $table->unsignedBigInteger('attachment_id')->nullable();
             $table->unsignedBigInteger('recommendation_id')->nullable();
-            $table->string('status');
+            $table->enum('status', ['active', 'draft'])->nullable()->default('active');
             $table->timestamps();
 
             $table->foreign('activity_id')

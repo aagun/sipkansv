@@ -21,6 +21,20 @@ use Illuminate\Validation\Rules\File;
 
 class ActivityReportCreateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->tingkat_kepatuhan_proyek)) {
+            $this->merge([
+                'tingkat_kepatuhan_proyek' => ucwords(strtolower($this->tingkat_kepatuhan_proyek))
+            ]);
+        }
+        if (isset($this->kategory_kepatuhan)) {
+            $this->merge([
+                'kategory_kepatuhan' => ucwords(strtolower($this->kategory_kepatuhan))
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -28,7 +42,7 @@ class ActivityReportCreateRequest extends BaseRequest
             'activity_id' => [
                 'required',
                 'numeric',
-                Rule::exists('activites', 'id')
+                Rule::exists('activities', 'id')
             ],
             'observation_id' => [
                 'required',
@@ -150,12 +164,6 @@ class ActivityReportCreateRequest extends BaseRequest
                 'min:0',
                 'max:100'
             ],
-            'standar_pelaksanaan_kegiatan_usaha' => [
-                'required',
-                'numeric',
-                'min:0',
-                'max:100'
-            ],
             'persyaratan_umum_usaha' => [
                 'required',
                 'numeric',
@@ -238,7 +246,7 @@ class ActivityReportCreateRequest extends BaseRequest
             'dokumen_pendukung' => [
                 'required',
                 File::types(['pdf'])
-                ->max(5 * 1024)
+                ->max(5 * 1024) // 5MB
             ],
             'recommendation_id' => [
                 'required',
