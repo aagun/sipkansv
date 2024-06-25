@@ -56,6 +56,7 @@ class InvestmentTypeController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->investmentType);
         $department = $this->investmentType->findOne($id);
         return ok(__('messages.success.retrieve'), $department);
     }

@@ -57,6 +57,7 @@ class RankController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->rankService);
         $institution = $this->rankService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

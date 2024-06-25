@@ -57,6 +57,7 @@ class InstitutionController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->institutionService);
         $institution = $this->institutionService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

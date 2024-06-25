@@ -56,6 +56,7 @@ class KbliController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->kbliService);
         $institution = $this->kbliService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

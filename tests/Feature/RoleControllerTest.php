@@ -152,7 +152,10 @@ class RoleControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         $id = Role::query()->select(['id'])->whereRaw("name LIKE CONCAT('%', 'adm', '%')")->first()->id;
-        $response = $this->put(self::BASE_ENDPOINT . "/$id", ['name' => 'RO_ADMIN_UPDATED']);
+        $response = $this->put(self::BASE_ENDPOINT, [
+            'id' => $id,
+            'name' => 'RO_ADMIN_UPDATED'
+        ]);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
@@ -163,9 +166,9 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $id = 1;
-        $response = $this->put(self::BASE_ENDPOINT . "/$id");
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $id = 999999;
+        $response = $this->put(self::BASE_ENDPOINT, ['id' => $id]);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => ["The selected id is invalid."]]);
     }
 
@@ -173,8 +176,12 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $role_id = $this->roleService->findOneByName('RO_ADMIN')->id;
-        $response = $this->put(self::BASE_ENDPOINT . "/$role_id", ['name' => ' ', 'description' => ' ']);
+        $id = $this->roleService->findOneByName('RO_ADMIN')->id;
+        $response = $this->put(self::BASE_ENDPOINT, [
+            'id' => $id,
+            'name' => ' ',
+            'description' => ' '
+        ]);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name', 'description']);
@@ -203,7 +210,7 @@ class RoleControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
-    public function testInstitutionDetail()
+    public function testDetail()
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -215,7 +222,7 @@ class RoleControllerTest extends TestCase
         );
     }
 
-    public function testInstitutionDetailSuccess()
+    public function testDetailSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 

@@ -55,9 +55,11 @@ class ActivityReport extends Model
         'pelayanan',
         'persyaratan_produk',
         'sistem_manajemen_usaha',
+
         'kepatuhan_administratif',
         'pelaksanaan_kegiatan_usaha',
         'riwayat_pengenaan_sanksi',
+
         'tingkat_kepatuhan_proyek',
         'kategory_kepatuhan',
 

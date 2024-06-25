@@ -56,6 +56,7 @@ class PositionController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->positionService);
         $institution = $this->positionService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

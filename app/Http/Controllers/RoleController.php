@@ -38,11 +38,10 @@ class RoleController extends Controller
         );
     }
 
-    public function edit(RoleUpdateRequest $roleRequest, int $id): Response
+    public function edit(RoleUpdateRequest $roleRequest): Response
     {
-        $data = $roleRequest->validated();
-        validateExistenceDataById($id, $this->roleService);
-        $this->roleService->update([...$data, 'id' => $id]);
+        $payload = $roleRequest->validated();
+        $this->roleService->update($payload);
         return ok(__('messages.success.updated'));
     }
 
@@ -57,6 +56,7 @@ class RoleController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->roleService);
         $institution = $this->roleService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

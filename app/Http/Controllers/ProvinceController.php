@@ -32,6 +32,7 @@ class ProvinceController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->provinceService);
         $institution = $this->provinceService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

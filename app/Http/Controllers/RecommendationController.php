@@ -57,6 +57,7 @@ class RecommendationController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->recommendationService);
         $institution = $this->recommendationService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

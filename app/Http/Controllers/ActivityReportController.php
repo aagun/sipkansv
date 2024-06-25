@@ -10,6 +10,11 @@ use Illuminate\Support\Carbon;
 use App\Enums\ComplianceRate;
 use App\Enums\ComplianceCategory;
 use App\Services\AttachmentService;
+use App\Http\Requests\PageableRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\ActivityReportResource;
+use App\Http\Requests\ActivityReportUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ActivityReportController extends Controller
 {
@@ -74,7 +79,63 @@ class ActivityReportController extends Controller
         return created(__('messages.success.created'), $saved);
     }
 
+    public function update(ActivityReportUpdateRequest $request): Response
+    {
+        $payload = $request->validated();
 
+        if (isset($payload['sub_sector_id']) && !$this->kbliService->existsBySubSectorId($payload['sub_sector_id'])) {
+            return error(
+                null,
+                __('validation.exists', ['attribute' => 'sub_sector_id'])
+            );
+        }
+
+        // save the attachment
+        if ($payload['dokumen_pendukung'] && $payload['attachment_id']) {
+            $prev_file = $this->attachmentService->findOne($payload[ 'attachment_id' ])->name;
+            Storage::delete($prev_file);
+
+            $file = $request->file('dokumen_pendukung');
+            $filename = $this->composeAttachmentFilename($file);
+            $link = $file->storeAs('dokumen-pendukung',  $filename);
+
+            $this->attachmentService->update([
+                'id' => $payload['attachment_id'],
+                'name' => $filename,
+                'link' => $link,
+            ]);
+
+            unset($payload['dokumen_pendukung']);
+        }
+
+
+        $this->activityReportService->update($payload);
+
+        return ok(__('messages.success.updated'));
+    }
+
+    public function detail(?int $id = null): Response
+    {
+        validateId($id);
+        validateExistenceDataById($id, $this->activityReportService);
+        $data = $this->activityReportService->detail($id);
+        return ok(
+            __('messages.success.retrieve'),
+            $data
+        );
+    }
+
+    public function search(PageableRequest $request): Response | ResourceCollection
+    {
+        $filter = $request->toArray();
+        $collection = $this->activityReportService->search($filter);
+        return ok(
+            __('messages.success.retrieve'),
+            $collection,
+            ActivityReportResource::class,
+            true
+        );
+    }
 
     private function composeAttachmentFilename($file): string
     {

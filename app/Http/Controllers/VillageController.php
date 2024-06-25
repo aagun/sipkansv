@@ -31,6 +31,7 @@ class VillageController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->villageService);
         $institution = $this->villageService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

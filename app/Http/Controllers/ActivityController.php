@@ -58,6 +58,7 @@ class ActivityController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->activityService);
         $institution = $this->activityService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

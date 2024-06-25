@@ -56,6 +56,7 @@ class EducationController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->educationService);
         $education = $this->educationService->findOne($id);
         return ok(__('messages.success.retrieve'), $education);
     }
