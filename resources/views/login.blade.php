@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="bg-white border-t-[1px] border-gray-300 rounded-b-2xl p-[15px]">
-                <h3 class="text-[13px] font-bold text-gray-600">Silahkan masukkan username & password untuk login ke Aplikasi</h3>
+                <h3 class="text-[13px] font-bold text-gray-600">Silahkan masukkan nip & kata sandi untuk masuk ke Aplikasi</h3>
                 <div class="p-[10px]">
                     <form action="" method="post">
                         @csrf

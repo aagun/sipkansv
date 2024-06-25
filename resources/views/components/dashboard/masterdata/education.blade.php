@@ -1,7 +1,16 @@
 @extends("components.dashboard.dashboard-layout")
 @section("content")
-    <div class="w-full" x-data="{isDelete: false, isShowForm: false, isShowFormEdit: false}">
-        <div class="absolute w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[100]"
+    <div class="w-full" x-data="masterDataHandler('http://127.0.0.1:8000/educations', 'http://127.0.0.1:8000/educations/search', 'http://127.0.0.1:8000/educations', 'http://127.0.0.1:8000/educations')">
+        <div x-show="deleteMessage" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800 fixed z-[100]" role="alert">
+            <div x-text="deleteMessage" class="ms-3 text-sm font-medium">
+            </div>
+        </div>
+        <div x-show="editMessage" class="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800 fixed z-[100]" role="alert">
+            <div x-text="editMessage" class="ms-3 text-sm font-medium">
+            </div>
+        </div>
+
+        <div class="fixed w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[1000]"
                 x-show="isDelete"
                 x-transition:enter="transition ease-out duration-100 transform"
                 x-transition:enter-start="opacity-0 scale-95"
@@ -13,13 +22,13 @@
                 <h2 class="font-bold text-[20px]">Konfirmasi Penghapusan</h2>
                 <p class="text-[15px] mt-[30px]">Apakah Anda yakin ingin menghapus ini?</p>
                 <div class="w-[200px] flex justify-between m-auto mt-[30px]">
-                    <button class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Hapus</button>
+                    <button @click="deleteItem" class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Hapus</button>
                     <button @click="isDelete = !isDelete" class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Batalkan</button>
                 </div>
             </div>
         </div>
 
-        <div class="absolute w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[100]"
+        <div class="fixed w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[1000]"
                 x-show="isShowFormEdit"
                 x-transition:enter="transition ease-out duration-100 transform"
                 x-transition:enter-start="opacity-0 scale-95"
@@ -29,9 +38,9 @@
                 x-transition:leave-end="opacity-0 scale-95">
             <div class="w-[450px] md:w-[650px] m-auto bg-white mt-[150px] rounded-lg text-center p-[15px] md:p-[30px] shadow-2xl">
                 <h2 class="font-bold text-[20px]">Ubah Pendidikan</h2>
-                <form action="">
-                    @csrf
+                <form @submit.prevent="editItem">
                     <div class="space-y-6 bg-white">
+                        <input type="text" x-model="itemToEdit.id" name="id" hidden>
     
                         <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
                             <h2 class="max-w-sm mx-auto md:w-1/5 ">
@@ -39,7 +48,8 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative ">
-                                    <input type="text" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama" required />
+                                    <input type="text" x-model="itemToEdit.name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama"  required />
+                                    <span x-show="errors.nameEdit" x-text="errors.nameEdit" class="text-red-500"></span>
                                 </div>
                             </div>
                         </div>
@@ -47,20 +57,21 @@
     
                         <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
                             <h2 class="max-w-sm mx-auto md:w-1/5">
-                                Deskripsi
+                                Deskripsi <span class="text-red-600">*</span>
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative">
-                                    <textarea id="content" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
+                                    <textarea id="content" x-model="itemToEdit.description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
                                 </div>
                             </div>
                         </div>
                         <hr/>
                         <div class="w-[200px] flex justify-between m-auto mt-[30px]">
-                            <button class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Ubah</button>
-                            <button @click="isShowFormEdit = !isShowFormEdit" class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Batalkan</button>
+                            <button type="submit" class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Ubah</button>
+                            <button type="reset" @click="isShowFormEdit = !isShowFormEdit" class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Batalkan</button>
                         </div>
                     </div>
+                </form>
             </div>
         </div>
 
@@ -76,30 +87,35 @@
             x-transition:leave="transition ease-in duration-75 transform"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95">
-                <form action="">
-                    @csrf
+                <form @submit.prevent="createSubmit" novalidate>
+
                     <div class="space-y-6 bg-white">
+                        <div x-show="successMessage" class="mb-4 p-4 bg-green-200 text-green-800" x-text="successMessage"></div>
     
                         <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
                             <h2 class="max-w-sm mx-auto md:w-1/5 ">
                                 Nama <span class="text-red-600">*</span>
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
-                                <div class=" relative ">
-                                    <input type="text" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama" required />
+                                <div class=" relative box-border">
+                                    <input type="text" x-model="name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama" required/>
+                                    <span x-show="errors.name" x-text="errors.name" class="text-red-500"></span>
                                 </div>
+                                
                             </div>
                         </div>
                         <hr/>
     
                         <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
                             <h2 class="max-w-sm mx-auto md:w-1/5">
-                                Deskripsi
+                                Deskripsi <span class="text-red-600">*</span>
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative">
-                                    <textarea id="content" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
+                                    <textarea id="content" x-model="description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required></textarea>
+                                    <span x-show="errors.description" x-text="errors.description" class="text-red-500"></span>
                                 </div>
+                               
                             </div>
                         </div>
                         <hr/>
@@ -116,13 +132,14 @@
                 </form> 
             </div>
 
-            <div class="w-full flex flex-row-reverse text-center">
+            <div class="w-full flex flex-row-reverse text-center" >
                 <button @click="isShowForm = !isShowForm" class="text-[15px] font-bold text-gray-600 hover:text-gray-800 inline-flex items-center justify-center px-[10px] focus:outline-none bg-gray-300 hover:bg-gray-400 rounded-[100px]"><span x-show="isShowForm">X</span><span x-show="!isShowForm">Tambah Pendidikan</span></button>
             </div>
         </div>
 
         <div class="p-[10px]">
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg" x-data="fetchData()">
+                <div x-show="error" class="mt-4 text-red-500" x-text="error"></div>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -142,21 +159,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4">
-                                1
-                            </td>
-                            <td class="px-6 py-4">
-                                tes
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem ipsum dolor sit amet consectetur Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veritatis alias ducimus ipsa doloribus, architecto beatae laborum magni id quam blanditiis assumenda provident dicta voluptas nihil voluptates ex soluta inventore eos.
-                            </td>
-                            <td class="px-6 py-4">
-                                <button @click="isShowFormEdit = !isShowFormEdit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Ubah</button>
-                                <button @click="isDelete = !isDelete" class="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline">Hapus</button>
-                            </td>
-                        </tr>
+                        <template x-for="(item, index) in items" :key="item.id">
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <td class="px-6 py-4" x-text="index + 1"></td>                              
+                                <td class="px-6 py-4" x-text="item.name"></td>
+                                <td class="px-6 py-4" x-text="item.description"></td>
+                                <td class="px-6 py-4">
+                                    <button @click="getEditData(item.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1" value={item.id}>Ubah</button>
+                                    <button @click="confirmDelete(item.id)" class="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline">Hapus</button>
+                                </td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>
