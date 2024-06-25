@@ -56,8 +56,8 @@ class ProvinceServiceImpl implements ProvinceService
 
         return Province::query()
             ->when($search, function (Builder $query, array $search) {
-                if (isset($search['name'])) {
-                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
+                if (isset($search['province_name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['province_name']]);
                 }
             })
             ->orderByRaw($sort . ' ' . $order)
