@@ -7,7 +7,6 @@ use App\Services\DepartmentService;
 use App\Http\Requests\DepartmentCreateRequest;
 use App\Http\Requests\DepartmentUpdateRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\DepartmentResource;
 use App\Http\Requests\PageableRequest;
 
 class DepartmentController extends Controller
@@ -30,12 +29,7 @@ class DepartmentController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->departmentService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            DepartmentResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(DepartmentUpdateRequest $request): Response

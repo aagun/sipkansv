@@ -126,9 +126,10 @@ class RoleControllerTest extends TestCase
         $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors', 'total'])
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'message', 'data', 'errors'])
             ->where('errors', null)
-            ->count('data', 4)
+            ->etc()
         );
     }
 
@@ -141,9 +142,10 @@ class RoleControllerTest extends TestCase
         ];
         $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors', 'total'])
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'data', 'message', 'errors'])
             ->where('errors', null)
-            ->count('data', 1)
+            ->etc()
         );
     }
 

@@ -8,7 +8,6 @@ use App\Services\InstitutionService;
 use App\Http\Requests\InstitutionUpdateRequest;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\InstitutionResource;
 
 class InstitutionController extends Controller
 {
@@ -31,12 +30,7 @@ class InstitutionController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->institutionService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            InstitutionResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(InstitutionUpdateRequest $request): Response

@@ -8,7 +8,6 @@ use App\Http\Requests\ObservationUpdateRequest;
 use App\Http\Requests\ObservationCreateRequest;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\ObservationResource;
 
 class ObservationController extends Controller
 {
@@ -31,12 +30,7 @@ class ObservationController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->observationService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            ObservationResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(ObservationUpdateRequest $request): Response

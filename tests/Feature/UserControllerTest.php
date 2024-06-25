@@ -154,7 +154,6 @@ class UserControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $id = User::query()->first()->id;
-        var_dump($id);
         $user = [
             'id' => $id,
             'role' => Role::query()->inRandomOrder()->first()->id,
@@ -198,7 +197,7 @@ class UserControllerTest extends TestCase
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
 
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'total', 'errors']));
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors']));
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
     }
 
@@ -213,7 +212,9 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 10)->etc());
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->hasAll(['status', 'data', 'message', 'errors'])
+            ->etc());
     }
 
     public function testDetail()

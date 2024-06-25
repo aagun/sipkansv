@@ -8,7 +8,6 @@ use App\Http\Requests\InvestmentTypeCreateRequest;
 use App\Http\Requests\InvestmentTypeUpdateRequest;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\InvestmentTypeResource;
 
 class InvestmentTypeController extends Controller
 {
@@ -30,12 +29,7 @@ class InvestmentTypeController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->investmentType->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            InvestmentTypeResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(InvestmentTypeUpdateRequest $request): Response

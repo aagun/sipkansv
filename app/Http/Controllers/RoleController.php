@@ -7,7 +7,6 @@ use App\Services\RoleService;
 use Illuminate\Http\Response;
 use App\Http\Requests\RoleUpdateRequest;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\RoleResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RoleController extends Controller
@@ -29,13 +28,8 @@ class RoleController extends Controller
     public function search(PageableRequest $request): Response | ResourceCollection
     {
         $filter = $request->toArray();
-        $data = $this->roleService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $data,
-            RoleResource::class,
-            true
-        );
+        $collection = $this->roleService->search($filter);
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function edit(RoleUpdateRequest $roleRequest): Response

@@ -7,7 +7,6 @@ use App\Services\BusinessEntityTypeService;
 use App\Http\Requests\BusinessEntityTypeCreateRequest;
 use App\Http\Requests\BusinessEntityTypeUpdateRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\BusinessEntityTypeResource;
 use App\Http\Requests\PageableRequest;
 
 class BusinessEntityTypeController extends Controller
@@ -31,12 +30,7 @@ class BusinessEntityTypeController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->businessEntityTypeService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            BusinessEntityTypeResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(BusinessEntityTypeUpdateRequest $request): Response

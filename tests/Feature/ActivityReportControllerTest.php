@@ -113,9 +113,8 @@ class ActivityReportControllerTest extends TestCase
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
 
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'total', 'errors']));
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors']));
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 10)->etc());
     }
 
     public function testEditSuccess()
@@ -173,6 +172,7 @@ class ActivityReportControllerTest extends TestCase
         $id = ActivityReport::query()->inRandomOrder()->first()->id;
 
         $response = $this->get(self::BASE_ENDPOINT . "/$id");
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->whereNot('data', null)

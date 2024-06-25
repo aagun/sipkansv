@@ -6,7 +6,6 @@ use Illuminate\Http\Response;
 use App\Services\ProvinceService;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\ProvinceResource;
 
 class ProvinceController extends Controller
 {
@@ -22,11 +21,7 @@ class ProvinceController extends Controller
 
         $filter = $request->toArray();
         $collection = $this->provinceService->search($filter);
-        return ok(__('messages.success.retrieve'),
-            $collection,
-            ProvinceResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function detail(?int $id = null): Response

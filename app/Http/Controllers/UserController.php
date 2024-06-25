@@ -8,7 +8,6 @@ use Illuminate\Http\Response;
 use App\Http\Requests\UserUpdateRequest;
 use App\Enums\UserStatus;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserController extends Controller
@@ -43,9 +42,7 @@ class UserController extends Controller
         $collection = $this->userService->search($request->toArray());
         return ok(
             __('messages.success.retrieve'),
-            $collection,
-            UserResource::class,
-            true
+            $collection
         );
     }
 

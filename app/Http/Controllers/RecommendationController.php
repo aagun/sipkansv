@@ -8,7 +8,6 @@ use App\Http\Requests\RecommendationUpdateRequest;
 use App\Services\RecommendationService;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\RecommendationResource;
 
 class RecommendationController extends Controller
 {
@@ -31,12 +30,7 @@ class RecommendationController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->recommendationService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            RecommendationResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(RecommendationUpdateRequest $request): Response

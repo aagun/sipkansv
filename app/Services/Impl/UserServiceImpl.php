@@ -71,8 +71,6 @@ class UserServiceImpl implements UserService
 
         $search = $filter['search'];
 
-        p_info($search);
-
         $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['full_name']);
         $order = $filter['order'];
 

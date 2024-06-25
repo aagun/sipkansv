@@ -12,7 +12,6 @@ use App\Enums\ComplianceCategory;
 use App\Services\AttachmentService;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\ActivityReportResource;
 use App\Http\Requests\ActivityReportUpdateRequest;
 use Illuminate\Support\Facades\Storage;
 
@@ -129,12 +128,7 @@ class ActivityReportController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->activityReportService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            ActivityReportResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     private function composeAttachmentFilename($file): string
