@@ -8,7 +8,6 @@ use App\Http\Requests\KbliCreateRequest;
 use App\Http\Requests\KbliUpdateRequest;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\KbliResource;
 
 class KbliController extends Controller
 {
@@ -30,12 +29,7 @@ class KbliController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->kbliService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            KbliResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(KbliUpdateRequest $request): Response
@@ -56,6 +50,7 @@ class KbliController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->kbliService);
         $institution = $this->kbliService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

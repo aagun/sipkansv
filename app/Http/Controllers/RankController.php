@@ -7,7 +7,6 @@ use App\Services\RankService;
 use App\Http\Requests\RankCreateRequest;
 use App\Http\Requests\RankUpdateRequest;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\RankResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RankController extends Controller
@@ -31,12 +30,7 @@ class RankController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->rankService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            RankResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(RankUpdateRequest $request): Response
@@ -57,6 +51,7 @@ class RankController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->rankService);
         $institution = $this->rankService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

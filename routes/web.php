@@ -72,7 +72,7 @@ Route::prefix("/dashboard")
                 return view("components.dashboard.masterdata.institution");
             })->name("institution");
         });
-        
+
     });
 
 Route::name("auth.")
@@ -103,7 +103,7 @@ Route::prefix('roles')
     ->group(function () {
         Route::post('/', 'create');
         Route::post('/search', 'search');
-        Route::put('/{id?}', 'edit');
+        Route::put('/', 'edit');
         Route::get('/{id?}', 'detail');
         Route::delete('/{id?}', 'delete');
     });
@@ -303,4 +303,7 @@ Route::prefix('activity-reports')
     ->controller(ActivityReportController::class)
     ->group(function () {
         Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
     });

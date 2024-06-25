@@ -13,6 +13,8 @@ interface UserService
 
     public function exists(int $id): bool;
 
+    public function existsByStatus(int $id, string $status): bool;
+
     public function existsByName(string $name): bool;
 
     public function save(array $user): Builder | Model;

@@ -7,7 +7,6 @@ use App\Http\Requests\PositionCreateRequest;
 use Illuminate\Http\Response;
 use App\Http\Requests\PositionUpdateRequest;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\PositionResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PositionController extends Controller
@@ -37,12 +36,7 @@ class PositionController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->positionService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            PositionResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'),$collection);
     }
 
     public function delete(?int $id = null): Response
@@ -56,6 +50,7 @@ class PositionController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->positionService);
         $institution = $this->positionService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

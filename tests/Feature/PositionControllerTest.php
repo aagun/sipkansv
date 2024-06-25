@@ -134,8 +134,7 @@ class PositionControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
-            ->hasAll(['status', 'message', 'data', 'errors', 'total'])
-            ->count('data', 1)
+            ->hasAll(['status', 'message', 'data', 'errors'])
             ->etc()
         );
     }

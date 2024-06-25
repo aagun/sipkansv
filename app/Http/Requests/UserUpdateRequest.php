@@ -5,27 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use App\Enums\Gender;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserUpdateRequest extends BaseRequest
 {
-
-    protected function passedValidation(): void
-    {
-        $this->merge([
-            'role_id' => $this->role,
-            'department_id' => $this->department,
-            'education_id' => $this->education,
-            'grade_level_id' => $this->grade_level,
-            'institution_id' => $this->institution,
-            'rank_id' => $this->rank,
-            'position_id' => $this->position,
-            'password' => Hash::make($this->password),
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
     public function rules(): array
     {
         return [
@@ -81,43 +63,43 @@ class UserUpdateRequest extends BaseRequest
                 'string',
                 'email'
             ],
-            'role' => [
+            'role_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',
                 Rule::exists('roles', 'id')
             ],
-            'position' => [
+            'position_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',
                 Rule::exists('positions', 'id')
             ],
-            'rank' => [
+            'rank_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',
                 Rule::exists('ranks', 'id')
             ],
-            'grade_level' => [
+            'grade_level_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',
                 Rule::exists('grade_levels', 'id')
             ],
-            'education' => [
+            'education_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',
                 Rule::exists('educations', 'id')
             ],
-            'department' => [
+            'department_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',
                 Rule::exists('departments', 'id')
             ],
-            'institution' => [
+            'institution_id' => [
                 'sometimes',
                 'nullable',
                 'numeric',

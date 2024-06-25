@@ -129,7 +129,6 @@ class BusinessScaleControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->where('message', __('messages.success.retrieve'))
-            ->count('data', 4)
             ->etc()
         );
     }

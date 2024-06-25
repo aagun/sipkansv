@@ -9,6 +9,8 @@ interface AttachmentService
 {
     public function save(array $attachment): Builder | Model;
 
+    public function update(array $attachment): int;
+
     public function findOne(int $id): Builder | Model | null;
 
     public function findByName(string $name): Builder | Model | null;
