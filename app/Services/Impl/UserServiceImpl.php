@@ -23,12 +23,24 @@ class UserServiceImpl implements UserService
 
     public function exists(int $id): bool
     {
-        return User::query()->where('id', $id)->exists();
+        return User::query()
+            ->where('id', $id)
+            ->exists();
     }
 
     public function existsByName(string $name): bool
     {
-        return User::query()->where('name', $name)->exists();
+        return User::query()
+            ->where('name', $name)
+            ->exists();
+    }
+
+    public function existsByStatus(int $id, string $status): bool
+    {
+        return User::query()
+            ->where('id', $id)
+            ->where('status', $status)
+            ->exists();
     }
 
     public function save(array $user): Builder | Model
@@ -58,6 +70,9 @@ class UserServiceImpl implements UserService
         ];
 
         $search = $filter['search'];
+
+        p_info($search);
+
         $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['full_name']);
         $order = $filter['order'];
 

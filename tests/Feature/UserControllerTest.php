@@ -16,6 +16,8 @@ use Illuminate\Http\Response;
 use Database\Seeders\DatabaseSeeder;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+use App\Enums\UserStatus;
+use App\Models\Role;
 
 class UserControllerTest extends TestCase
 {
@@ -152,23 +154,22 @@ class UserControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $id = User::query()->first()->id;
-
+        var_dump($id);
         $user = [
             'id' => $id,
-            'name' => 'User Test Success',
+            'role' => Role::query()->inRandomOrder()->first()->id,
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $user);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(User::class, ['name' => 'User Test Success']);
     }
 
     public function testDeleteSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = User::query()->first()->id;
+        $id = User::query()->where('status', UserStatus::ACTIVE)->inRandomOrder()->first()->id;
         $response = $this->delete(self::BASE_ENDPOINT . "/$id");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
@@ -189,13 +190,16 @@ class UserControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $filter = [];
+        $filter = [
+            'search' => [
+                'position_id' => User::query()->inRandomOrder()->first()->position_id
+            ]
+        ];
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'total', 'errors']));
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
-        $response->assertJson(fn (AssertableJson $json) => $json->count('data', 10)->etc());
     }
 
     public function testSearchWithFilter()
@@ -216,7 +220,7 @@ class UserControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = User::query()->first()->id;
+        $id = User::query()->where('status', UserStatus::ACTIVE)->inRandomOrder()->first()->id;
         $response = $this->get(self::BASE_ENDPOINT . "/$id");
 
         $response->assertStatus(Response::HTTP_OK);

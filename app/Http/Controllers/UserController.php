@@ -32,8 +32,12 @@ class UserController extends Controller
 
     public function search(PageableRequest $request): Response | ResourceCollection
     {
-        if (!isset($request['search']) || !isset($request['search']['status'])) {
+        if (!isset($request['search'])) {
             $request['search'] = ['status' => UserStatus::ACTIVE];
+        } else if (isset($request['search']) && !isset($request['search']['status'])) {
+            $search = $request[ 'search' ];
+            $search[] = ['status' => UserStatus::ACTIVE];
+            $request['search'] = $search;
         }
 
         $collection = $this->userService->search($request->toArray());
@@ -47,20 +51,23 @@ class UserController extends Controller
 
     public function detail(int $id): Response
     {
+        validateId($id);
+        validateSoftDeleteDataById($id, $this->userService, UserStatus::ACTIVE->value);
         $user = $this->userService->userDetail($id);
         return ok(__('messages.success.retrieve'), $user);
     }
 
     public function update(UserUpdateRequest $request): Response
     {
-        $payload = $request->all();
+        $payload = $request->validated();
         $saved = $this->userService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }
 
     public function delete(int $id): Response
     {
-        validateExistenceDataById($id, $this->userService);
+        validateId($id);
+        validateSoftDeleteDataById($id, $this->userService, UserStatus::ACTIVE->value);
         $this->userService->delete($id);
         return ok(__('messages.success.deleted'));
     }

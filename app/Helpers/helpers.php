@@ -18,6 +18,13 @@ if (!function_exists('validateExistenceDataById')) {
         }
     }
 
+    function validateSoftDeleteDataById(mixed $id, $serviceClass, string $status): void
+    {
+        if (!$serviceClass->existsByStatus($id, $status)) {
+            exceptionIdNotFound();
+        }
+    }
+
     function validateId($id): void
     {
         if (!isset($id)) exceptionIdNotFound();
