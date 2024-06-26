@@ -119,7 +119,7 @@
                         setTimeout(()=> {
                             this.editMessage="";
                         }, 3000);
-                        console.log(response);
+                        // console.log(response);
                     })
                     .catch(error => {
                         this.errors = {};
