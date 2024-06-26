@@ -40,10 +40,21 @@ class ActivityReportServiceImpl implements ActivityReportService
             ->when(
                 $filter,
                 function (Builder $query, array $filter) {
-                    $start_inspection_date = $filter['start_inspection_date'];
-                    $end_inspection_date = $filter['end_inspection_date'];
-                    $query->whereDate('activity_reports.inspection_date', '>=', $start_inspection_date);
-                    $query->whereDate('activity_reports.inspection_date', '<=', $end_inspection_date);
+                    if (isset($filter['year'])) {
+                        $year = $filter['year'];
+                        $query->whereRaw("(activity_reports.inspection_date between
+                            str_to_date('{$year}-01-01', '%Y-%m-%d') and
+                            str_to_date('{$year}-12-31', '%Y-%m-%d'))"
+                        );
+                    }
+
+                    if (isset($filter['district_id'])) {
+                        $query->where('activity_reports.district_id', $filter['district_id']);
+                    }
+
+                    if (isset($filter['observation_id'])) {
+                        $query->where('activity_reports.observation_id', $filter['observation_id']);
+                    }
                 })
             ->orderByDesc('activity_reports.inspection_date')
             ->get();
@@ -80,6 +91,15 @@ class ActivityReportServiceImpl implements ActivityReportService
     private function searchFilter(Builder $query, $search, $permissibleFilter): void
     {
         foreach (array_keys($search) as $key) {
+
+            if (isset($search[$key]) && $key === 'year') {
+                $query->whereRaw("({$permissibleFilter[$key]} between
+                    str_to_date('{$search[ $key ]}-01-01', '%Y-%m-%d') and
+                    str_to_date('{$search[ $key ]}-12-31', '%Y-%m-%d'))"
+                );
+                continue;
+            }
+
             if (isset($search[$key])) {
                 $query->where($permissibleFilter[$key], $search[$key]);
             }
@@ -268,7 +288,10 @@ class ActivityReportServiceImpl implements ActivityReportService
     private function searchPermissibleFilter(): array
     {
         return [
+            'year' => 'activity_reports.inspection_date',
             'status' => 'activity_reports.status',
+            'district_id' => 'activity_reports.district_id',
+
             'bap_number' => 'activity_reports.bap_number',
             'activity_id' => 'activity_reports.activity_id',
             'observation_id' => 'activity_reports.observation_id',
@@ -276,8 +299,6 @@ class ActivityReportServiceImpl implements ActivityReportService
             'company_name' => 'activity_reports.company_name',
             'business_entity_type_id' => 'activity_reports.business_entity_type_id',
 
-            'sub_district_id' => 'activity_reports.sub_district_id',
-            'district_id' => 'activity_reports.district_id',
             'manager_id' => 'managers.manager_id',
 
             'nib' => 'activity_reports.nib',

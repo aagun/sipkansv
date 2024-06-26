@@ -51,11 +51,11 @@ class ActivityReportSeeder extends Seeder
                 ],
                 [
                     'name'     => 'activity_id',
-                    'contents' => Activity::query()->first()->id,
+                    'contents' => Activity::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'observation_id',
-                    'contents' => Observation::query()->first()->id,
+                    'contents' => Observation::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'supervisor_id',
@@ -71,7 +71,7 @@ class ActivityReportSeeder extends Seeder
                 ],
                 [
                     'name'     => 'business_entity_type_id',
-                    'contents' => BusinessEntityType::query()->first()->id,
+                    'contents' => BusinessEntityType::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'address',
@@ -79,19 +79,19 @@ class ActivityReportSeeder extends Seeder
                 ],
                 [
                     'name'     => 'village_id',
-                    'contents' => Village::query()->first()->id,
+                    'contents' => Village::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'sub_district_id',
-                    'contents' => SubDistrict::query()->first()->id,
+                    'contents' => SubDistrict::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'district_id',
-                    'contents' => District::query()->first()->id,
+                    'contents' => District::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'province_id',
-                    'contents' => Province::query()->first()->id,
+                    'contents' => Province::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'manager_id',
@@ -115,11 +115,11 @@ class ActivityReportSeeder extends Seeder
                 ],
                 [
                     'name'     => 'kbli_id',
-                    'contents' => Kbli::query()->where("sub_sector_id", $sub_sector_id)->first()->id,
+                    'contents' => Kbli::query()->where("sub_sector_id", $sub_sector_id)->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'business_scale_id',
-                    'contents' => BusinessScale::query()->first()->id,
+                    'contents' => BusinessScale::query()->inRandomOrder()->first()->id,
                 ],
                 [
                     'name'     => 'persetujuan_kesesuaian_ruang',
