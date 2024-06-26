@@ -28,6 +28,7 @@ class PositionController extends Controller
     public function update(PositionUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->positionService);
         $saved = $this->positionService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

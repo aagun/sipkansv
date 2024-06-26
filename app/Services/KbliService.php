@@ -18,6 +18,8 @@ interface KbliService
 
     public function existsByName(string $name): bool;
 
+    public function existsByCode(int $code): bool;
+
     public function delete(int $id): bool;
 
     public function update(array $kbli): bool;

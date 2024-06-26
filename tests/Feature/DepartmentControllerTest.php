@@ -80,17 +80,28 @@ class DepartmentControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = Department::query()->first()->id;
+        $model = Department::query()->first();
         $payload = [
-            'id' => $id,
-            'name' => 'UPDATED_NAME'
+            'id' => $model->id,
+            'name' => $model->name . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Department::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(Department::class, ['name' => $model->name . 'UPDATE_NAME']);
+
+        $payload = [
+            'id' => $model->id,
+            'description' => $model->description . 'UPDATE_NAME'
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Department::class, ['description' => $model->description . 'UPDATE_NAME']);
     }
 
     public function testUpdateNotExistError()
@@ -134,7 +145,6 @@ class DepartmentControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
-        $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
     public function testDeleteSuccess()

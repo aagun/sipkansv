@@ -153,15 +153,27 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $id = Role::query()->select(['id'])->whereRaw("name LIKE CONCAT('%', 'adm', '%')")->first()->id;
+        $model = Role::query()->whereRaw("name LIKE CONCAT('%', 'adm', '%')")->first();
+
         $response = $this->put(self::BASE_ENDPOINT, [
-            'id' => $id,
-            'name' => 'RO_ADMIN_UPDATED'
+            'id' => $model->id,
+            'name' => $model->name . "UPDATED",
+            'description' => $model->description,
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Role::class, ['name' => 'RO_ADMIN_UPDATED']);
+        $this->assertDatabaseHas(Role::class, ['name' => $model->name . "UPDATED"]);
+
+        $response = $this->put(self::BASE_ENDPOINT, [
+            'id' => $model->id,
+            'name' => $model->name,
+            'description' => $model->description . "UPDATED",
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Role::class, ['description' => $model->description . "UPDATED"]);
     }
 
     public function testEditRoleNotFound()
@@ -172,6 +184,22 @@ class RoleControllerTest extends TestCase
         $response = $this->put(self::BASE_ENDPOINT, ['id' => $id]);
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => ["The selected id is invalid."]]);
+    }
+
+    public function testUpdateUniqueError()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $current_data = Role::query()->first();
+
+        $payload = [
+            'id' => $current_data->id,
+            'name' => "RO_SUPERVISOR"
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['name' => 'The name has already been taken.']);
     }
 
     public function testEditRoleFailed()

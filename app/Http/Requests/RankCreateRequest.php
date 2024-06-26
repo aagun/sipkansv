@@ -7,6 +7,13 @@ use App\Models\Rank;
 
 class RankCreateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+    }
+
     public function rules(): array
     {
         return [

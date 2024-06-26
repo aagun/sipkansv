@@ -36,6 +36,7 @@ class RecommendationController extends Controller
     public function update(RecommendationUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->recommendationService);
         $saved = $this->recommendationService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

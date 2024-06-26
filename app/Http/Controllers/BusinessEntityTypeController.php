@@ -36,6 +36,7 @@ class BusinessEntityTypeController extends Controller
     public function update(BusinessEntityTypeUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->businessEntityTypeService);
         $saved = $this->businessEntityTypeService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

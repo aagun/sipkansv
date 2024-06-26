@@ -36,6 +36,7 @@ class InstitutionController extends Controller
     public function update(InstitutionUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->institutionService);
         $this->institutionService->update($payload);
         return ok(__('messages.success.updated'));
     }

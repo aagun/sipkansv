@@ -35,6 +35,11 @@ class KbliServiceImpl implements KbliService
         return Kbli::query()->where('name' , $name)->exists();
     }
 
+    public function existsByCode(int $code): bool
+    {
+        return Kbli::query()->where('code' , $code)->exists();
+    }
+
     public function delete(int $id): bool
     {
         return Kbli::query()

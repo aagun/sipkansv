@@ -7,6 +7,13 @@ use App\Models\Institution;
 
 class InstitutionUpdateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -16,9 +23,9 @@ class InstitutionUpdateRequest extends BaseRequest
                 Rule::exists(Institution::class, 'id')
             ],
             'name' => [
+                'sometimes',
                 'required',
                 'string',
-                Rule::unique(Institution::class, 'name')
             ],
             'description' => [
                 'sometimes',

@@ -35,6 +35,7 @@ class DepartmentController extends Controller
     public function update(DepartmentUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->departmentService);
         $this->departmentService->update($payload);
         return ok(__('messages.success.updated'));
     }

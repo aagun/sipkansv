@@ -83,17 +83,28 @@ class InvestmentTypeControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = InvestmentType::query()->first()->id;
+        $model = InvestmentType::query()->first();
         $payload = [
-            'id' => $id,
-            'name' => 'UPDATED_NAME'
+            'id' => $model->id,
+            'name' => $model->name . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(InvestmentType::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(InvestmentType::class, ['name' => $model->name . 'UPDATE_NAME']);
+
+        $payload = [
+            'id' => $model->id,
+            'description' => $model->description . 'UPDATE_NAME'
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(InvestmentType::class, ['description' => $model->description . 'UPDATE_NAME']);
     }
 
     public function testUpdateNotExistError()
@@ -117,10 +128,9 @@ class InvestmentTypeControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $current_data = InvestmentType::query()->first();
-
         $payload = [
             'id' => $current_data->id,
-            'name' => $current_data->name
+            'name' => "PMA"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
@@ -137,7 +147,6 @@ class InvestmentTypeControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
-        $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
     public function testDeleteSuccess()

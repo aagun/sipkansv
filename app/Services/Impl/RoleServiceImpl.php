@@ -81,4 +81,8 @@ class RoleServiceImpl implements RoleService
         return Role::query()->where('id', $id)->exists();
     }
 
+    public function existsByName(string $name): bool
+    {
+        return Role::query()->where('name', $name)->exists();
+    }
 }

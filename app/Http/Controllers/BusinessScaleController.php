@@ -36,6 +36,7 @@ class BusinessScaleController extends Controller
     public function update(BusinessScaleUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->businessScaleService);
         $saved = $this->businessScaleService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

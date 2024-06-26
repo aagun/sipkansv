@@ -7,6 +7,17 @@ use App\Models\InvestmentType;
 
 class InvestmentTypeUpdateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => strtoupper(trim($this->name))]);
+        }
+
+        if (isset($this->description)) {
+            $this->merge(['description' => ucwords(trim($this->description))]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -16,9 +27,9 @@ class InvestmentTypeUpdateRequest extends BaseRequest
                 Rule::exists(InvestmentType::class, 'id')
             ],
             'name' => [
+                'sometimes',
                 'required',
                 'string',
-                Rule::unique(InvestmentType::class, 'name')
             ],
             'description' => [
                 'sometimes',

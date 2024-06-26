@@ -78,16 +78,17 @@ class EducationControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = Education::query()->first()->id;
+        $model = Education::query()->first();
         $payload = [
-            'id' => $id,
-            'name' => 'UPDATED_NAME'
+            'id' => $model->id,
+            'name' => $model->name,
+            'description' => $model->description . "_UPDATED",
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Education::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(Education::class, ['description' => $model->description . "_UPDATED"]);
     }
 
     public function testUpdateNotExistError()
@@ -114,11 +115,10 @@ class EducationControllerTest extends TestCase
 
         $payload = [
             'id' => $current_data->id,
-            'name' => $current_data->name
+            'name' => "D5"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
-
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['name' => 'The name has already been taken.']);
     }

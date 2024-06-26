@@ -87,18 +87,28 @@ class GradeLevelControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = GradeLevel::query()->first()->id;
-        $name = 'UPDATED GRADE LEVEL';
+        $model = GradeLevel::query()->first();
         $payload = [
-            'id' => $id,
-            'name' => $name,
-            'description' => $name
+            'id' => $model->id,
+            'name' => $model->name . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(GradeLevel::class, ['name' => $name]);
+        $this->assertDatabaseHas(GradeLevel::class, ['name' => $model->name . 'UPDATE_NAME']);
+
+        $payload = [
+            'id' => $model->id,
+            'description' => $model->description . 'UPDATE_NAME'
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(GradeLevel::class, ['description' => $model->description . 'UPDATE_NAME']);
     }
 
     public function testUpdateNotExistError()
@@ -125,7 +135,7 @@ class GradeLevelControllerTest extends TestCase
 
         $payload = [
             'id' => $current_data->id,
-            'name' => $current_data->name
+            'name' => "IV/B"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);

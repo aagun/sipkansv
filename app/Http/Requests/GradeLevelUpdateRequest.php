@@ -38,7 +38,6 @@ class GradeLevelUpdateRequest extends BaseRequest
                 'sometimes',
                 'required',
                 'string',
-                Rule::unique(GradeLevel::class, 'name')
             ],
             'description' => [
                 'sometimes',

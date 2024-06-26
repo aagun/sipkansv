@@ -37,6 +37,7 @@ class ActivityController extends Controller
     public function update(ActivityUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->activityService);
         $saved = $this->activityService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

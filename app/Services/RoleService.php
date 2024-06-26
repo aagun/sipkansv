@@ -25,5 +25,7 @@ interface RoleService
 
     public function search(array $filter): LengthAwarePaginator;
 
+    public function existsByName(string $name): bool;
+
     public function exists(int $id): bool;
 }

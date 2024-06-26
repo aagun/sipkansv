@@ -28,6 +28,7 @@ class EducationController extends Controller
     public function update(EducationUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->educationService);
         $saved = $this->educationService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }
@@ -41,7 +42,7 @@ class EducationController extends Controller
 
     public function delete(?int $id = null): Response
     {
-        if (!isset($id)) exceptionIdNotFound();
+        validateId($id);
         validateExistenceDataById($id, $this->educationService);
         $this->educationService->delete($id);
         return ok(__('messages.success.deleted'));

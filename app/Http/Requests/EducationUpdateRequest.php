@@ -17,7 +17,7 @@ class EducationUpdateRequest extends BaseRequest
     protected function passedValidation(): void
     {
         $this->merge([
-            'name' => strtoupper($this->name),
+            'name' => trim(strtoupper($this->name)),
         ]);
     }
 
@@ -34,8 +34,7 @@ class EducationUpdateRequest extends BaseRequest
             'name' => [
                 'sometimes',
                 'required',
-                'string',
-                Rule::unique(Education::class, 'name')
+                'string'
             ],
             'description' => [
                 'sometimes',

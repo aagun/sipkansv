@@ -8,14 +8,17 @@ use App\Http\Requests\KbliCreateRequest;
 use App\Http\Requests\KbliUpdateRequest;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Services\SubSectorService;
 
 class KbliController extends Controller
 {
     private KbliService $kbliService;
+    private SubSectorService $subSectorService;
 
-    public function __construct(KbliService $kbliService)
+    public function __construct(KbliService $kbliService, SubSectorService $subSectorService)
     {
         $this->kbliService = $kbliService;
+        $this->subSectorService = $subSectorService;
     }
 
     public function create(KbliCreateRequest $request): Response
@@ -35,6 +38,23 @@ class KbliController extends Controller
     public function update(KbliUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->kbliService);
+
+        // Validate unique code kbli
+        $model = $this->kbliService->findOne($payload['id']);
+        if (isset($payload['code']) && $model->code !== $payload['code']) {
+            if ($this->kbliService->existsByName($payload['code'])) {
+                exceptionUnique('code');
+            }
+        }
+
+        // validate existence sub sector id
+        if (isset($payload['sub_sector_id']) && $model->sub_sector_id !== $payload['sub_sector_id']) {
+            if (!$this->subSectorService->exists($payload['sub_sector_id'])) {
+                exceptionNotFound('sub_sector_id');
+            }
+        }
+
         $saved = $this->kbliService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

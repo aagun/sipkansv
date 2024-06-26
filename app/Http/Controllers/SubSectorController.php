@@ -36,6 +36,7 @@ class SubSectorController extends Controller
     public function update(SubSectorUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->subSectorService);
         $saved = $this->subSectorService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

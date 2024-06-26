@@ -35,6 +35,7 @@ class GradeLevelController extends Controller
     public function update(GradeLevelUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->gradeLevelService);
         $this->gradeLevelService->update($payload);
         return ok(__('messages.success.updated'));
     }

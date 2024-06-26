@@ -68,17 +68,37 @@ class KbliControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = Kbli::query()->first()->id;
+        $model = Kbli::query()->first();
         $payload = [
-            'id' => $id,
-            'name' => 'UPDATED_NAME'
+            'id' => $model->id,
+            'name' => $model->name . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Kbli::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(Kbli::class, ['name' => $model->name . 'UPDATE_NAME']);
+
+        $payload = [
+            'id' => $model->id,
+            'code' => 99999
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Kbli::class, ['code' => 99999]);
+
+
+        $payload = [
+            'id' => $model->id,
+            'sub_sector_id' => SubSector::query()->first()->id
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Kbli::class, ['code' => 99999]);
     }
 
     public function testUpdateNotExistError()
@@ -105,7 +125,7 @@ class KbliControllerTest extends TestCase
 
         $payload = [
             'id' => $current_rank->id,
-            'name' => $current_rank->name
+            'name' => "Penangkapan Echinodermata di Laut"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);

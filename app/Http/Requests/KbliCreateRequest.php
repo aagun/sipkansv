@@ -8,6 +8,13 @@ use App\Models\Kbli;
 
 class KbliCreateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+    }
+
     public function rules(): array
     {
         return [

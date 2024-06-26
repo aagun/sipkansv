@@ -17,7 +17,7 @@ class SubDistrictSeeder extends Seeder
         $limit = 20;
         $counter = 1;
         while (($data = fgetcsv($csv_file, 2000, "|")) !== FALSE) {
-            if (env('APP_ENV') === 'testing' && $counter === $limit) {
+            if (collect(['testing', 'local', 'dev', 'development'])->contains(env('APP_ENV')) && $counter === $limit) {
                 break;
             }
 

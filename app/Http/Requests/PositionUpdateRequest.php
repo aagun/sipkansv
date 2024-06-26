@@ -7,6 +7,13 @@ use App\Models\Position;
 
 class PositionUpdateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -16,9 +23,9 @@ class PositionUpdateRequest extends BaseRequest
                 Rule::exists(Position::class, 'id')
             ],
             'name' => [
+                'sometimes',
                 'required',
                 'string',
-                Rule::unique(Position::class, 'name')
             ],
             'description' => [
                 'sometimes',

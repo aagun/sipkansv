@@ -10,7 +10,7 @@ class RoleUpdateRequest extends BaseRequest
     protected function prepareForValidation(): void
     {
         if (isset($this->name)) {
-            $this->merge(['name' => strtoupper($this->name)]);
+            $this->merge(['name' => trim(strtoupper($this->name))]);
         }
     }
 
@@ -30,7 +30,6 @@ class RoleUpdateRequest extends BaseRequest
                 'min:4',
                 'max:50',
                 'starts_with:RO_',
-                Rule::unique(Role::class, 'name')
             ],
             'description' => [
                 'sometimes',

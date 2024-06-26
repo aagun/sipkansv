@@ -7,6 +7,13 @@ use App\Models\Rank;
 
 class RankUpdateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -16,9 +23,9 @@ class RankUpdateRequest extends BaseRequest
                 Rule::exists(Rank::class, 'id')
             ],
             'name' => [
+                'sometimes',
                 'required',
                 'string',
-                Rule::unique(Rank::class, 'name')
             ],
             'description' => [
                 'sometimes',

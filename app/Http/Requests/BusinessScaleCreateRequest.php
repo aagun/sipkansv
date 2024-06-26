@@ -7,6 +7,17 @@ use App\Models\BusinessScale;
 
 class BusinessScaleCreateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+
+        if (isset($this->description)) {
+            $this->merge(['description' => ucwords(trim($this->description))]);
+        }
+    }
+
     public function rules(): array
     {
         return [

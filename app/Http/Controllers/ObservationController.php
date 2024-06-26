@@ -36,6 +36,7 @@ class ObservationController extends Controller
     public function update(ObservationUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->observationService);
         $saved = $this->observationService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }

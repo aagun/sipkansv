@@ -14,28 +14,47 @@ if (!function_exists('validateExistenceDataById')) {
     function validateExistenceDataById(mixed $id, $serviceClass): void
     {
         if (!$serviceClass->exists($id)) {
-            exceptionIdNotFound();
+            exceptionNotFound('id');
+        }
+    }
+
+    function validateUniqueDataByName(array $payload, $serviceClass): void
+    {
+        $model = $serviceClass->findOne($payload['id']);
+        if (isset($payload['name']) && $model->name !== $payload['name']) {
+            if ($serviceClass->existsByName($payload['name'])) {
+                exceptionUnique('name');
+            }
         }
     }
 
     function validateSoftDeleteDataById(mixed $id, $serviceClass, string $status): void
     {
         if (!$serviceClass->existsByStatus($id, $status)) {
-            exceptionIdNotFound();
+            exceptionNotFound('id');
         }
     }
 
     function validateId($id): void
     {
-        if (!isset($id)) exceptionIdNotFound();
+        if (!isset($id)) exceptionNotFound('id');
     }
 
-    function exceptionIdNotFound()
+    function exceptionNotFound($attribute)
     {
-        $errors = ['id' => ["The selected id is invalid."]];
+        $errors = [$attribute => [__('validation.exists', ['attribute' => $attribute])]];
         throw new HttpResponseException(response(
             new ErrorResponseResource($errors),
             Response::HTTP_NOT_FOUND
+        ));
+    }
+
+    function exceptionUnique($attribute)
+    {
+        $errors = [$attribute => [__('validation.unique', ['attribute' => $attribute])]];
+        throw new HttpResponseException(response(
+            new ErrorResponseResource($errors),
+            Response::HTTP_BAD_REQUEST
         ));
     }
 

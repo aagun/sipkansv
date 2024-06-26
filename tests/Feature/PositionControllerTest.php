@@ -64,17 +64,29 @@ class PositionControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $position_id = Position::query()->first()->id;
+        $model = Position::query()->first();
         $payload = [
-            'id' => $position_id,
-            'name' => 'UPDATE_NAME'
+            'id' => $model->id,
+            'name' => $model->name . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Position::class, ['name' => 'UPDATE_NAME']);
+        $this->assertDatabaseHas(Position::class, ['name' => $model->name . 'UPDATE_NAME']);
+
+        $payload = [
+            'id' => $model->id,
+            'name' => $model->name,
+            'description' => $model->description . "UPDATED",
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Position::class, ['description' => $model->description . "UPDATED"]);
     }
 
     public function testUpdateNotExistError()
@@ -101,7 +113,7 @@ class PositionControllerTest extends TestCase
 
         $payload = [
             'id' => $current_position->id,
-            'name' => $current_position->name
+            'name' => "Pengolah Data"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
@@ -118,7 +130,6 @@ class PositionControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
-        $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
     public function testSearch()

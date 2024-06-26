@@ -32,9 +32,10 @@ class RoleController extends Controller
         return ok(__('messages.success.retrieve'), $collection);
     }
 
-    public function edit(RoleUpdateRequest $roleRequest): Response
+    public function edit(RoleUpdateRequest $request): Response
     {
-        $payload = $roleRequest->validated();
+        $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->roleService);
         $this->roleService->update($payload);
         return ok(__('messages.success.updated'));
     }

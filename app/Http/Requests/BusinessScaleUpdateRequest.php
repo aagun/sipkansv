@@ -7,6 +7,16 @@ use App\Models\BusinessScale;
 
 class BusinessScaleUpdateRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->name)) {
+            $this->merge(['name' => ucwords(trim($this->name))]);
+        }
+
+        if (isset($this->description)) {
+            $this->merge(['description' => ucwords(trim($this->description))]);
+        }
+    }
     public function rules(): array
     {
         return [
@@ -16,9 +26,9 @@ class BusinessScaleUpdateRequest extends BaseRequest
                 Rule::exists(BusinessScale::class, 'id')
             ],
             'name' => [
+                'sometimes',
                 'required',
                 'string',
-                Rule::unique(BusinessScale::class, 'name')
             ],
             'description' => [
                 'sometimes',

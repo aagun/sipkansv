@@ -19,7 +19,7 @@ class VillageSeeder extends Seeder
         while (($data = fgetcsv($csv_file, 2000, "|")) !== FALSE) {
             if (preg_match('/^,{10}$/', $data[0])) break;
 
-            if (env('APP_ENV') === 'testing' && $counter === $limit) break;
+            if (collect(['testing', 'local', 'dev', 'development'])->contains(env('APP_ENV')) && $counter === $limit) break;
 
             if ($first_line || is_null($data[0])) {
                 $first_line = false;

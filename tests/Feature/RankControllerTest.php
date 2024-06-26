@@ -64,17 +64,28 @@ class RankControllerTest extends TestCase
     {
         $this->seed(RankSeeder::class);
 
-        $rank_id = Rank::query()->first()->id;
+        $model = Rank::query()->first();
         $payload = [
-            'id' => $rank_id,
-            'name' => 'UPDATED_NAME'
+            'id' => $model->id,
+            'name' => $model->name . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
-        $this->assertDatabaseHas(Rank::class, ['name' => 'UPDATED_NAME']);
+        $this->assertDatabaseHas(Rank::class, ['name' => $model->name . 'UPDATE_NAME']);
+
+        $payload = [
+            'id' => $model->id,
+            'description' => $model->description . 'UPDATE_NAME'
+        ];
+
+        $response = $this->put(self::BASE_ENDPOINT, $payload);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+        $this->assertDatabaseHas(Rank::class, ['description' => $model->description . 'UPDATE_NAME']);
     }
 
     public function testUpdateNotExistError()
@@ -101,7 +112,7 @@ class RankControllerTest extends TestCase
 
         $payload = [
             'id' => $current_rank->id,
-            'name' => $current_rank->name
+            'name' => "Pengatur"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
@@ -118,7 +129,6 @@ class RankControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The id field is required.']);
-        $response->assertInvalid(['name' => 'The name field is required.']);
     }
 
     public function testSearch()

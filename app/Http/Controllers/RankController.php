@@ -36,6 +36,7 @@ class RankController extends Controller
     public function update(RankUpdateRequest $request): Response
     {
         $payload = $request->validated();
+        validateUniqueDataByName($payload, $this->rankService);
         $saved = $this->rankService->update($payload);
         return ok(__('messages.success.updated'), $saved);
     }
