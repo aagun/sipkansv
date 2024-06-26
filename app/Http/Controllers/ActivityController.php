@@ -6,7 +6,6 @@ use Illuminate\Http\Response;
 use App\Services\ActivityService;
 use App\Http\Requests\ActivityCreateRequest;
 use App\Http\Requests\ActivityUpdateRequest;
-use App\Http\Resources\ActivityResource;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -32,12 +31,7 @@ class ActivityController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->activityService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            ActivityResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(ActivityUpdateRequest $request): Response
@@ -58,6 +52,7 @@ class ActivityController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->activityService);
         $institution = $this->activityService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

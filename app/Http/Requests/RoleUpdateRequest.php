@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Role;
 
@@ -18,6 +17,12 @@ class RoleUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
+
+            'id' => [
+                'required',
+                'numeric',
+                Rule::exists(Role::class, 'id')
+            ],
             'name' => [
                 'sometimes',
                 'required',

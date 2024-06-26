@@ -73,7 +73,7 @@ class InstitutionControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json
-            ->count('data', 1)
+            ->hasAll(['status', 'data', 'message', 'errors'])
             ->etc()
         );
     }

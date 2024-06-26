@@ -18,6 +18,13 @@ if (!function_exists('validateExistenceDataById')) {
         }
     }
 
+    function validateSoftDeleteDataById(mixed $id, $serviceClass, string $status): void
+    {
+        if (!$serviceClass->existsByStatus($id, $status)) {
+            exceptionIdNotFound();
+        }
+    }
+
     function validateId($id): void
     {
         if (!isset($id)) exceptionIdNotFound();
@@ -101,6 +108,10 @@ if (!function_exists('validateExistenceDataById')) {
         );
     }
 
+    function getObjectKeys($object): array
+    {
+        return array_keys(get_object_vars(json_decode($object)));
+    }
 
     function p_info($data): void
     {

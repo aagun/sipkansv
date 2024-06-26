@@ -6,7 +6,6 @@ use Illuminate\Http\Response;
 use App\Services\BusinessScaleService;
 use App\Http\Requests\BusinessScaleCreateRequest;
 use App\Http\Requests\BusinessScaleUpdateRequest;
-use App\Http\Resources\BusinessScaleResource;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -31,13 +30,7 @@ class BusinessScaleController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->businessScaleService->search($filter);
-        p_json($collection);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            BusinessScaleResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(BusinessScaleUpdateRequest $request): Response
@@ -58,6 +51,7 @@ class BusinessScaleController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->businessScaleService);
         $institution = $this->businessScaleService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

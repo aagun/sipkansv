@@ -6,7 +6,6 @@ use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Services\SubDistrictService;
-use App\Http\Resources\SubDistrictResource;
 
 class SubDistrictController extends Controller
 {
@@ -22,17 +21,13 @@ class SubDistrictController extends Controller
 
         $filter = $request->toArray();
         $collection = $this->subDistrictService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            SubDistrictResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->subDistrictService);
         $institution = $this->subDistrictService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

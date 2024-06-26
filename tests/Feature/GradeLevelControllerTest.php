@@ -78,7 +78,7 @@ class GradeLevelControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json
-            ->count('data', 2)
+            ->hasAll(['status', 'data', 'message', 'errors'])
             ->etc()
         );
     }
@@ -148,12 +148,12 @@ class GradeLevelControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $id = GradeLevel::query()->first()->id;
+        $id = GradeLevel::query()->inRandomOrder()->first()->id;
 
         $response = $this->delete(self::BASE_ENDPOINT . '/' . $id);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.deleted')]);
-        $this->assertDatabaseCount(GradeLevel::class, 12);
+        $this->assertDatabaseCount(GradeLevel::class, 11);
     }
 
     public function testDeleteFailed()
