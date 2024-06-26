@@ -16,25 +16,33 @@ use App\Http\Requests\ActivityReportUpdateRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\ActivityReportExport;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use App\Models\Activity;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use App\Services\ObservationService;
+use App\Services\DistrictService;
 
 class ActivityReportController extends Controller
 {
     private KbliService $kbliService;
     private AttachmentService $attachmentService;
+
+    private DistrictService $districtService;
+
+    private ObservationService $observationService;
     private ActivityReportService $activityReportService;
 
     public function __construct(
         KbliService           $kbliService,
+        DistrictService $districtService,
+        ObservationService $observationService,
         AttachmentService     $attachmentService,
         ActivityReportService $activityReportService)
     {
         $this->kbliService = $kbliService;
         $this->attachmentService = $attachmentService;
+        $this->observationService = $observationService;
+        $this->districtService = $districtService;
         $this->activityReportService = $activityReportService;
     }
 
@@ -47,27 +55,33 @@ class ActivityReportController extends Controller
     {
         $filter = $request->query();
         $rule = [
-            'start_inspection_date' => [
+            'year' => [
+                'sometimes',
+                'min:4',
+                'max:4',
                 'required',
-                'date_format:Y-m-d',
-                'before:end_inspection_date'
+                'date_format:Y',
             ],
-            'end_inspection_date' => [
-                'required',
-                'date_format:Y-m-d',
-                'after_or_equal:start_inspection_date'
-            ],
-            'activity_id' => [
+            'observation_id' => [
                 'sometimes',
                 'required',
                 'numeric',
-                Rule::exists(Activity::class, 'id')
+            ],
+            'district_id' => [
+                'sometimes',
+                'required',
+                'numeric',
             ]
         ];
 
         $validator = Validator::make($filter, $rule);
 
-        $activityReportExport = new ActivityReportExport($this->activityReportService, $validator->getData());
+        $activityReportExport = new ActivityReportExport(
+            $this->districtService,
+            $this->observationService,
+            $this->activityReportService,
+            $validator->getData()
+        );
         $response = $activityReportExport->execute();
         return response()->json($response);
     }
