@@ -108,6 +108,10 @@ if (!function_exists('validateExistenceDataById')) {
         );
     }
 
+    function getObjectKeys($object): array
+    {
+        return array_keys(get_object_vars(json_decode($object)));
+    }
 
     function p_info($data): void
     {
