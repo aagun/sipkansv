@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-enum ActivityReportStatus
+enum ActivityReportStatus: string
 {
-    //
+    case ACTIVE = 'active';
+    case DRAFT = 'draft';
 }

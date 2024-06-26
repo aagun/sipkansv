@@ -6,7 +6,6 @@ use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Services\DistrictService;
-use App\Http\Resources\DistrictResource;
 
 class DistrictController extends Controller
 {
@@ -21,16 +20,13 @@ class DistrictController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->districtService->search($filter);
-        return ok(__('messages.success.retrieve'),
-            $collection,
-            DistrictResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->districtService);
         $institution = $this->districtService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

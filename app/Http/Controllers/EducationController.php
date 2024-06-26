@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\EducationUpdateRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\EducationResource;
 
 class EducationController extends Controller
 {
@@ -37,12 +36,7 @@ class EducationController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->educationService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            EducationResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function delete(?int $id = null): Response
@@ -56,6 +50,7 @@ class EducationController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->educationService);
         $education = $this->educationService->findOne($id);
         return ok(__('messages.success.retrieve'), $education);
     }

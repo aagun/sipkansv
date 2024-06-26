@@ -25,6 +25,10 @@ use App\Enums\ComplianceCategory;
 use App\Enums\ComplianceRate;
 use App\Models\Recommendation;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\Fluent\AssertableJson;
+use App\Models\ActivityReport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ActivityReportExport;
 
 class ActivityReportControllerTest extends TestCase
 {
@@ -100,8 +104,100 @@ class ActivityReportControllerTest extends TestCase
             'recommendation_id' => Recommendation::query()->first()->id,
         ];
         $response = $this->post(self::BASE_ENDPOINT, $payload);
-        p_json($response->content());
         $response->assertStatus(Response::HTTP_CREATED);
+    }
+
+    public function testSearch()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $filter = [];
+        $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors']));
+        $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
+    }
+
+    public function testEditSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $activity_report = ActivityReport::query()->inRandomOrder()->first();
+        $response = $this->put(self::BASE_ENDPOINT, [
+            'id' => $activity_report->id,
+            'attachment_id' => $activity_report->attachment_id,
+            'dokumen_pendukung' => UploadedFile::fake()->create('update_file.pdf', 1024)
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonFragment(['message' => __('messages.success.updated')]);
+    }
+
+    public function testEditNotFound()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = 999999;
+        $response = $this->put(self::BASE_ENDPOINT, ['id' => $id]);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['id' => ["The selected id is invalid."]]);
+    }
+
+    public function testEditFailed()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = ActivityReport::query()->inRandomOrder()->first()->id;
+        $response = $this->put(self::BASE_ENDPOINT, [
+            'id' => $id,
+            'attachment_id' => 9999999,
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertInvalid(['attachment_id']);
+    }
+
+    public function testDetailError()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $response = $this->get(self::BASE_ENDPOINT);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJsonFragment(['errors' => ['id' => ['The selected id is invalid.']]]);
+    }
+
+    public function testDetailSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $id = ActivityReport::query()->inRandomOrder()->first()->id;
+
+        $response = $this->get(self::BASE_ENDPOINT . "/$id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->whereNot('data', null)
+            ->etc()
+        );
+    }
+
+    public function testExportSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+        Excel::fake();
+
+        $filter = [
+            'start_inspection_date' => Carbon::now()->month(1)->firstOfMonth()->format('Y-m-d'),
+            'end_inspection_date' => Carbon::now()->month(12)->lastOfMonth()->format('Y-m-d'),
+        ];
+
+        $queryString = http_build_query($filter);
+        $this->get(self::BASE_ENDPOINT . "/export?" . $queryString);
+
+        Excel::assertDownloaded('Laporan_Kegiatan.xlsx', function(ActivityReportExport $export) {
+            return $export->collection()->contains('2024-06-25');
+        });
     }
 
 

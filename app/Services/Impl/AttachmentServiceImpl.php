@@ -14,6 +14,13 @@ class AttachmentServiceImpl implements AttachmentService
         return Attachment::query()->create($attachment);
     }
 
+    public function update(array $attachment): int
+    {
+        $id = $attachment['id'];
+        unset($attachment['id']);
+        return Attachment::query()->where('id', $id)->update($attachment);
+    }
+
     public function findOne(int $id): Builder | Model | null
     {
         return Attachment::query()->where('id', $id)->first();

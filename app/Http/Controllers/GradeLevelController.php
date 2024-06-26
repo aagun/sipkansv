@@ -7,7 +7,6 @@ use App\Services\GradeLevelService;
 use App\Http\Requests\GradeLevelCreateRequest;
 use App\Http\Requests\GradeLevelUpdateRequest;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\GradeLevelResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class GradeLevelController extends Controller
@@ -30,12 +29,7 @@ class GradeLevelController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->gradeLevelService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            GradeLevelResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(GradeLevelUpdateRequest $request): Response
@@ -56,6 +50,7 @@ class GradeLevelController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->gradeLevelService);
         $gradeLevel = $this->gradeLevelService->findOne($id);
         return ok(__('messages.success.retrieve'), $gradeLevel);
     }

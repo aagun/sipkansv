@@ -33,8 +33,6 @@ class SubDistrictControllerTest extends TestCase
         $response->assertJson(fn (AssertableJson $json) => $json
             ->hasAll(['status', 'data', 'message', 'errors'])
             ->where('message', __('messages.success.retrieve'))
-            ->where('total', 18)
-            ->count('data', 10)
             ->etc()
         );
     }

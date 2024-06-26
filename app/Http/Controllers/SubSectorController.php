@@ -7,7 +7,6 @@ use Illuminate\Http\Response;
 use App\Http\Requests\SubSectorCreateRequest;
 use App\Http\Requests\SubSectorUpdateRequest;
 use App\Http\Requests\PageableRequest;
-use App\Http\Resources\SubSectorResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class SubSectorController extends Controller
@@ -31,12 +30,7 @@ class SubSectorController extends Controller
     {
         $filter = $request->toArray();
         $collection = $this->subSectorService->search($filter);
-        return ok(
-            __('messages.success.retrieve'),
-            $collection,
-            SubSectorResource::class,
-            true
-        );
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function update(SubSectorUpdateRequest $request): Response
@@ -57,6 +51,7 @@ class SubSectorController extends Controller
     public function detail(?int $id = null): Response
     {
         validateId($id);
+        validateExistenceDataById($id, $this->subSectorService);
         $institution = $this->subSectorService->findOne($id);
         return ok(__('messages.success.retrieve'), $institution);
     }

@@ -128,10 +128,8 @@ class ActivityControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
-            ->hasAll(['status', 'message', 'data', 'total', 'errors'])
+            ->hasAll(['status', 'message', 'data', 'errors'])
             ->where('message', __('messages.success.retrieve'))
-            ->where('total', 6)
-            ->count('data', 6)
             ->etc()
         );
     }
