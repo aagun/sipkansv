@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ActivityReport;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Enums\ActivityReportStatus;
+use Illuminate\Database\Eloquent\Collection;
 
 class ActivityReportServiceImpl implements ActivityReportService
 {
@@ -29,6 +31,23 @@ class ActivityReportServiceImpl implements ActivityReportService
             ->first();
     }
 
+    public function export(array $filter): Collection
+    {
+        $builder = ActivityReport::query();
+        $builder = $this->exportSelectTable($builder);
+        return $this->searchJoinTable($builder)
+            ->where('activity_reports.status', ActivityReportStatus::ACTIVE)
+            ->when(
+                $filter,
+                function (Builder $query, array $filter) {
+                    $start_inspection_date = $filter['start_inspection_date'];
+                    $end_inspection_date = $filter['end_inspection_date'];
+                    $query->whereDate('activity_reports.inspection_date', '>=', $start_inspection_date);
+                    $query->whereDate('activity_reports.inspection_date', '<=', $end_inspection_date);
+                })
+            ->orderByDesc('activity_reports.inspection_date')
+            ->get();
+    }
     public function update(array $activityReport): bool
     {
         $id = $activityReport['id'];
@@ -121,6 +140,56 @@ class ActivityReportServiceImpl implements ActivityReportService
             ");
     }
 
+    private function exportSelectTable(Builder $query): Builder
+    {
+        return $query
+            ->selectRaw(
+                "activity_reports.bap_number,
+                activities.name as activity,
+                observations.name as observation,
+                supervisors.name as supervisor_name,
+                activity_reports.inspection_date,
+                activity_reports.company_name,
+                business_entity_types.name as business_entity_type,
+                activity_reports.address,
+                villages.name as village,
+                sub_districts.name as sub_district,
+                districts.name as district,
+                provinces.name as province,
+                managers.name as manager_name,
+                positions.name as manager_position,
+                managers.phone as manager_phone,
+                activity_reports.nib,
+                activity_reports.effective_date,
+                activity_reports.project_code,
+                sub_sectors.name as sub_sector,
+                kblis.name as kbli,
+                business_scales.name as business_scale,
+                activity_reports.persetujuan_kesesuaian_ruang,
+                activity_reports.persetujuan_lingkungan,
+                activity_reports.pbg_slf,
+                activity_reports.pernyataan_mandiri,
+                activity_reports.sertifikat_standar,
+                investment_types.name as investment_type,
+                activity_reports.latitude,
+                activity_reports.longitude,
+                activity_reports.perizinan_berusaha_atas_kegiatan_usaha,
+                FORMAT(((activity_reports.persyaratan_umum_usaha +
+                    activity_reports.persyaratan_khusus_usaha +
+                    activity_reports.sarana +
+                    activity_reports.organisasi_dan_sdm +
+                    activity_reports.pelayanan +
+                    activity_reports.persyaratan_produk +
+                    activity_reports.sistem_manajemen_usaha)/6), 2)
+                AS standar_pelaksanaan_kegiatan_usaha,
+                activity_reports.pelaksanaan_kegiatan_usaha,
+                activity_reports.riwayat_pengenaan_sanksi,
+                activity_reports.tingkat_kepatuhan_proyek,
+                activity_reports.kategory_kepatuhan,
+                recommendations.name as recommendation
+            ");
+    }
+
     private function searchSelectTable(Builder $query): Builder
     {
         return $query
@@ -187,7 +256,7 @@ class ActivityReportServiceImpl implements ActivityReportService
             ->join('districts', 'districts.id', '=', 'activity_reports.district_id')
             ->join('provinces', 'provinces.id', '=', 'activity_reports.province_id')
             ->join('users as managers', 'managers.id', '=', 'activity_reports.manager_id')
-            ->join('positions', 'positions.id', '=', 'managers.position_id')
+            ->leftJoin('positions', 'positions.id', '=', 'managers.position_id')
             ->join('kblis', 'kblis.id', '=', 'activity_reports.kbli_id')
             ->join('sub_sectors', 'sub_sectors.id', '=', 'kblis.sub_sector_id')
             ->join('business_scales', 'business_scales.id', '=', 'activity_reports.business_scale_id')

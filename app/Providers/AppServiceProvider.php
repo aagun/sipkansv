@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         if (in_array(env('APP_ENV'), ['testing', 'local'])) {
             DB::listen(function (QueryExecuted $query) {
                 // Log::info('Query: ' . $query->sql);
+                // Log::info('Query: ' . $query->bindings);
             });
         }
     }

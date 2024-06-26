@@ -277,5 +277,6 @@ Route::prefix('activity-reports')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
+        Route::get('/export', 'export');
         Route::get('/{id?}', 'detail');
     });

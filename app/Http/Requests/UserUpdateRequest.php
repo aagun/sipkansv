@@ -5,9 +5,15 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use App\Enums\Gender;
+use Illuminate\Support\Facades\Hash;
 
 class UserUpdateRequest extends BaseRequest
 {
+    protected function passedValidation(): void
+    {
+        $this->merge(['password' => Hash::make($this->password)]);
+    }
+
     public function rules(): array
     {
         return [

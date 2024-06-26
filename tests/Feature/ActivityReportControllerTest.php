@@ -27,6 +27,8 @@ use App\Models\Recommendation;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\Fluent\AssertableJson;
 use App\Models\ActivityReport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ActivityReportExport;
 
 class ActivityReportControllerTest extends TestCase
 {
@@ -179,4 +181,24 @@ class ActivityReportControllerTest extends TestCase
             ->etc()
         );
     }
+
+    public function testExportSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+        Excel::fake();
+
+        $filter = [
+            'start_inspection_date' => Carbon::now()->month(1)->firstOfMonth()->format('Y-m-d'),
+            'end_inspection_date' => Carbon::now()->month(12)->lastOfMonth()->format('Y-m-d'),
+        ];
+
+        $queryString = http_build_query($filter);
+        $this->get(self::BASE_ENDPOINT . "/export?" . $queryString);
+
+        Excel::assertDownloaded('Laporan_Kegiatan.xlsx', function(ActivityReportExport $export) {
+            return $export->collection()->contains('2024-06-25');
+        });
+    }
+
+
 }
