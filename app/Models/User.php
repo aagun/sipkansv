@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\Gender;
-use App\Enums\UserStatus;
+use App\Enums\UserStatus;   
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
@@ -51,6 +54,16 @@ class User extends Authenticatable
             'gender' => Gender::class,
             'status' => UserStatus::class
         ];
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
     public function role(): BelongsTo
