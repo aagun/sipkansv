@@ -32,6 +32,10 @@
                 itemToEdit: null, 
                 isShowForm: false, 
                 isShowFormEdit: false, 
+                linkPaginate: null,
+                pagination: {
+                    links: []
+                },
                 validateForm() {
                     this.errors = {};
                     if (!this.name) {
@@ -69,11 +73,14 @@
                      })
                 },
                 //untuk ambil data dari database 
-                fetchData() {
+                fetchData(url = urlRead) {
                     this.error = "",
-                    axios.post(urlRead)
+                    axios.post(url, { page: this.pagination.current_page, })
                     .then(response => {
-                        this.items = response.data.data;
+                        this.items = response.data.data.data;
+                        this.pagination = response.data.data;
+                        console.log(this.items);
+                        console.log(this.pagination.last_page);
                     })
                     .catch(error => {
                         this.error = 'Terjadi kesalahan saat mengambil data.';
@@ -119,7 +126,7 @@
                         setTimeout(()=> {
                             this.editMessage="";
                         }, 3000);
-                        console.log(response);
+                        // console.log(response);
                     })
                     .catch(error => {
                         this.errors = {};
@@ -131,6 +138,130 @@
                  }
             }
         }
+
+        function activityDataHandler() {
+            return {
+                observationData: {},
+                districtData: {},
+                activityData: {},
+
+
+                fetchObservationData() {
+                    axios.post("http://127.0.0.1:8000/observations/search")
+                    .then(response => {
+                        this.observationData = response.data.data.data;
+                    })
+                },
+                fetchDistrictData() {
+                    axios.post("http://127.0.0.1:8000/districts/search", {limit: 0, offset: 1})
+                    .then(response => {
+                        this.districtData = response.data.data.data;
+                        console.log(this.districtData);
+                    })
+                },
+                fetchActivityData(){
+                    axios.post()
+                    .then(response=> {
+                        this.activityData = response.data.data;
+                        console.log(this.activityData);
+                    })
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        function yearDropdown() {
+            const currentYear = new Date().getFullYear();
+            const years = [];
+            for (let i = currentYear; i >= currentYear - 20; i--) {
+                years.push(i);
+            }
+            return {
+                years: years,
+                selectedYear: null
+            };
+        }
+
+        // JavaScript to toggle the dropdown
+        const dropdownButtonActivity = document.getElementById('dropdown-button-activity');
+        const dropDownMenuActivity = document.getElementById('dropdown-menu-activity');
+        const searchInputActivity = document.getElementById('search-input-activity');
+        let isOpenActivity = true; // Set to true to open the dropdown by default
+
+        const dropdownButtonKabupaten = document.getElementById('dropdown-button-kabupaten');
+        const dropDownMenuKabupaten = document.getElementById('dropdown-menu-kabupaten');
+        const searchInputKabupaten = document.getElementById('search-input-kabupaten');
+        let isOpenKabupaten = true; // Set to true to open the dropdown by default
+
+        function toggleDropdownkab() {
+          isOpenKabupaten = !isOpenKabupaten;
+          dropDownMenuKabupaten.classList.toggle('hidden', !isOpenKabupaten);
+        }
+        
+        // Set initial state
+        toggleDropdownkab();
+        
+        dropdownButtonKabupaten.addEventListener('click', () => {
+          toggleDropdownkab();
+        });
+        
+        // Add event listener to filter items based on input
+        searchInputKabupaten.addEventListener('input', () => {
+          const searchTerm = searchInputKabupaten.value.toLowerCase();
+          const items = dropDownMenuKabupaten.querySelectorAll('a');
+        
+          items.forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+
+        
+        // Function to toggle the dropdown state
+        function toggleDropdown() {
+          isOpenActivity = !isOpenActivity;
+          dropDownMenuActivity.classList.toggle('hidden', !isOpenActivity);
+        }
+        
+        // Set initial state
+        toggleDropdown();
+        
+        dropdownButtonActivity.addEventListener('click', () => {
+          toggleDropdown();
+        });
+        
+        // Add event listener to filter items based on input
+        searchInputActivity.addEventListener('input', () => {
+          const searchTerm = searchInputActivity.value.toLowerCase();
+          const items = dropDownMenuActivity.querySelectorAll('a');
+        
+          items.forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+       
+     </script>
+
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.turbo.min.js">
+         
      </script>
 </body>
 </html>

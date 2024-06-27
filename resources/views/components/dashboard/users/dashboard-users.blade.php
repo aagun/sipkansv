@@ -20,9 +20,9 @@
         </div>
         <div class="w-full">
             <div class="py-1 px-4 text-white bg-gray-600 w-fit rounded-r-full">
-                <h2>List Data Pengguna</h2>
+                <h2>Daftar Data Pengguna</h2>
             </div>
-            <div class="w-full bg-gray-100 p-[10px] mt-[5px] border-[1px] border-gray-300 rounded-sm border-l-[3px] border-l-[#009142]">
+            <div class="w-full bg-gray-100 p-[10px] mt-[5px] border-[1px] border-gray-300 rounded-sm border-l-[3px] border-l-primary-500">
                 <div x-show="isShowSearch"
                 x-transition:enter="transition ease-out duration-100 transform"
                 x-transition:enter-start="opacity-0 scale-95"
@@ -35,31 +35,31 @@
                             <tbody class="flex flex-col gap-3">
                                 <tr>
                                     <td class="w-[200px]">NIP/NIK</td>
-                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2"></td>
+                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2"></td>
                                 </tr>
                                 <tr>
                                     <td class="w-[200px]">Pangkat</td>
-                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2"></td>
+                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2"></td>
                                 </tr>
                                 <tr>
                                     <td class="w-[200px]">Golongan Ruang</td>
-                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2"></td>
+                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2"></td>
                                 </tr>
                                 <tr>
                                     <td class="w-[200px]">Pendidikan</td>
-                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2"></td>
+                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2"></td>
                                 </tr>
                                 <tr>
                                     <td class="w-[200px]">Unit Kerja</td>
-                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2"></td>
+                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2"></td>
                                 </tr>
                                 <tr>
                                     <td class="w-[200px]">Instansi</td>
-                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2"></td>
+                                    <td><input type="text" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2"></td>
                                 </tr>
                                 <tr>
                                     <td class="w-[200px]">Status</td>
-                                    <td><select name="" id="" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-[#009142] focus:border-transparent px-2 w-[200px]">
+                                    <td><select name="" id="" class="border-gray-400 border-[1px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent px-2 w-[200px]">
                                         <option value="">Semua</option>
                                         <option value="">Aktif</option>
                                         <option value="">Tidak Aktif</option>
@@ -81,7 +81,7 @@
 
         <div class="w-full">
             <div class="mt-[20px] mb-[10px]  flex justify-between">
-                <a href="/dashboard/users/create" class="py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-fit transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">Tambah Pengguna</a>
+                <a href="/dashboard/users/create" class="py-2 px-4  bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-primary-200 text-white w-fit transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">Tambah Pengguna</a>
             </div>
             <div class="overflow-x-scroll p-[5px]">
                 <table class="table p-4 bg-gray-100 rounded-lg shadow">
@@ -91,7 +91,7 @@
                                 No
                             </th>
                             <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
-                                Status
+                                Nama
                             </th>
                             <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 NIP/NIK
@@ -122,6 +122,9 @@
                             </th>
                             <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Password
+                            </th>
+                            <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                                Status
                             </th>
                             <th class="border p-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Aksi
@@ -166,6 +169,9 @@
                             <td class="border p-4 dark:border-dark-5">
                                 tes
                             </td>
+                            <td class="border p-4 dark:border-dark-5">
+                                -
+                            </td>
                             <td class="border p-4 dark:border-dark-5 flex gap-2">
                                 <button type="button" class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                     Ubah
@@ -175,6 +181,7 @@
                                 </button>
                             </td>
                         </tr>
+                        
                     </tbody>
                 </table>
             </div>

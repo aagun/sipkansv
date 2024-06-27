@@ -1,6 +1,6 @@
 @extends("components.dashboard.dashboard-layout")
 @section("content")
-    <div class="w-full" x-data="masterDataHandler('http://127.0.0.1:8000/positions', 'http://127.0.0.1:8000/positions/search', 'http://127.0.0.1:8000/positions', 'http://127.0.0.1:8000/positions')">
+    <div class="w-full" x-data="masterDataHandler('http://127.0.0.1:8000/business-scales', 'http://127.0.0.1:8000/business-scales/search', 'http://127.0.0.1:8000/business-scales', 'http://127.0.0.1:8000/business-scales')">
 
         <div x-show="deleteMessage" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800 fixed z-[100]" role="alert">
             <div x-text="deleteMessage" class="ms-3 text-sm font-medium">
@@ -10,7 +10,7 @@
             <div x-text="editMessage" class="ms-3 text-sm font-medium">
             </div>
         </div>
-        
+
         <div class="fixed w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[100]"
                 x-show="isDelete"
                 x-transition:enter="transition ease-out duration-100 transform"
@@ -23,7 +23,7 @@
                 <h2 class="font-bold text-[20px]">Konfirmasi Penghapusan</h2>
                 <p class="text-[15px] mt-[30px]">Apakah Anda yakin ingin menghapus ini?</p>
                 <div class="w-[200px] flex justify-between m-auto mt-[30px]">
-                    <button @click="deleteItem" class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Hapus</button>
+                    <button @click="deleteItem"  class="py-1 px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Hapus</button>
                     <button @click="isDelete = !isDelete" class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">Batalkan</button>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95">
             <div class="w-[450px] md:w-[650px] m-auto bg-white mt-[150px] rounded-lg text-center p-[15px] md:p-[30px] shadow-2xl">
-                <h2 class="font-bold text-[20px]">Ubah Jabatan</h2>
+                <h2 class="font-bold text-[20px]">Ubah Skala Usaha</h2>
                 <form @submit.prevent="editItem">
                     <div class="space-y-6 bg-white">
                         <input type="text" x-model="itemToEdit.id" name="id" hidden>
@@ -49,7 +49,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative ">
-                                    <input type="text" x-model="itemToEdit.name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Nama" required />
+                                    <input type="text" x-model="itemToEdit.name"  name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Nama" required />
                                     <span x-show="errors.nameEdit" x-text="errors.nameEdit" class="text-red-500"></span>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative">
-                                    <textarea id="content" x-model="itemToEdit.description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
+                                    <textarea id="content"  x-model="itemToEdit.description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
         </div>
 
         <div class="py-1 px-4 text-white bg-gray-600 w-fit rounded-r-full">
-            <h2>Daftar Data Jabatan</h2>
+            <h2>Daftar Data Skala Usaha</h2>
         </div>
 
         <div class="w-full bg-gray-100 p-[10px] mt-[5px] border-[1px] border-gray-300 rounded-sm border-l-[3px] border-l-primary-500 mb-[10px]">
@@ -89,6 +89,7 @@
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95">
                 <form @submit.prevent="createSubmit" novalidate>
+
                     <div class="space-y-6 bg-white">
                         <div x-show="successMessage" class="mb-4 p-4 bg-primary-200 text-primary-800" x-text="successMessage"></div>
     
@@ -98,7 +99,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative ">
-                                    <input type="text" x-model="name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Nama" required />
+                                    <input type="text" x-model="name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Nama" required/>
                                     <span x-show="errors.name" x-text="errors.name" class="text-red-500"></span>
                                 </div>
                             </div>
@@ -131,12 +132,12 @@
             </div>
 
             <div class="w-full flex flex-row-reverse text-center">
-                <button @click="isShowForm = !isShowForm" class="text-[15px] font-bold text-gray-600 hover:text-gray-800 inline-flex items-center justify-center px-[10px] focus:outline-none bg-gray-300 hover:bg-gray-400 rounded-[100px]"><span x-show="isShowForm">X</span><span x-show="!isShowForm">Tambah Jabatan</span></button>
+                <button @click="isShowForm = !isShowForm" class="text-[15px] font-bold text-gray-600 hover:text-gray-800 inline-flex items-center justify-center px-[10px] focus:outline-none bg-gray-300 hover:bg-gray-400 rounded-[100px]"><span x-show="isShowForm">X</span><span x-show="!isShowForm">Tambah Skala Usaha</span></button>
             </div>
         </div>
 
         <div class="p-[10px]">
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg" x-data="fetchData()">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg" x-init="fetchData()">
                 <div x-show="error" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800 fixed z-[100]" role="alert">
                     <div x-text="error" class="ms-3 text-sm font-medium">
                     </div>
@@ -172,7 +173,7 @@
                             </tr>
                         </template>
                     </tbody>
-                </table>
+                </table>  
             </div>
             <div class="m-4 flex justify-end space-x-2" x-show="pagination.last_page > 1">
                 <template x-for="link in pagination.links" :key="link.label">

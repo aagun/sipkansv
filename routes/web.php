@@ -30,21 +30,33 @@ Route::get('/', fn () => redirect('/login'));
 Route::prefix("/dashboard")
     ->name("dashboard.")
     ->group(function () {
+        Route::get("/", fn () => view("components.dashboard.home"))->name("index");
         Route::prefix('/users')
             ->group(function () {
-                Route::get("/", fn () => view("components.dashboard.dashboard-layout"))->name("index");
-                Route::get("/users", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
-                Route::get("/users/create", fn () => view("components.dashboard.users.form-users"))->name("users");
+                Route::get("/", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
+                Route::get("/create", fn () => view("components.dashboard.users.form-users"))->name("users");
+            });
+
+        Route::prefix('/kegiatan')
+            ->group(function () {
+                Route::get("/", fn () => view("components.dashboard.activity.activity"))->name("index");
+                Route::get("/create", fn () => view("components.dashboard.activity.form-activity"))->name("users");
             });
 
         Route::prefix("/data")->name("data.")
             ->group(function() {
                 Route::get("/pangkat", fn () => view("components.dashboard.masterdata.rank"))->name("ranks");
                 Route::get("/jabatan", fn () => view("components.dashboard.masterdata.position"))->name("position");
-                Route::get("/golongan-ruang", fn () => view("components.dashboard.masterdata.comity"))->name("comity");
+                Route::get("/golongan-ruang", fn () => view("components.dashboard.masterdata.grade-level"))->name("grade-level");
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/instansi", fn () => view("components.dashboard.masterdata.institution"))->name("institution");
+                Route::get("/status-badan-usaha", fn () => view("components.dashboard.masterdata.business-entity-type"))->name("business-entity");
+                Route::get("/skala-usaha", fn () => view("components.dashboard.masterdata.business-scale"))->name("business-entity");
+                Route::get("/status-penanaman-modal", fn () => view("components.dashboard.masterdata.investment-type"))->name("investment-type");
+                Route::get("/pengawasan", fn () => view("components.dashboard.masterdata.observation"))->name("observation");
+                Route::get("/tingkat-kepatuhan", fn () => view("components.dashboard.masterdata.recommendation"))->name("recommendation");
+                Route::get("/kbli", fn () => view("components.dashboard.masterdata.kbli"))->name("kbli");
             });
 
     });
@@ -52,22 +64,6 @@ Route::prefix("/dashboard")
 Route::name("auth.")
     ->group(function () {
         Route::get("/login", fn () => view("login"))->name("login");
-        Route::post("/login", function() {
-            $data = ["username" => "admin", "password" => "123456"];
-            $admin = Arr::first($data, fn($d) => $d == request()->input("username"));
-            if ($admin == null ) {
-                return redirect()->back()->with("error", "Username yang anda masukkan salah!");
-            }
-
-            if ($data["password"] != request()->input("password") ) {
-                return redirect()->back()->with("error", "Password yang anda masukkan salah!");
-            }
-
-            Session::put(["isLoged" => true]);
-            Session::put(["token" => "124fj154KL132cI06P541pP20541"]);
-
-            return redirect()->route("dashboard.index");
-        })->name("loginForm");
     });
 
 Route::prefix('roles')
