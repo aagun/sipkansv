@@ -5,7 +5,7 @@
             <div x-text="deleteMessage" class="ms-3 text-sm font-medium">
             </div>
         </div>
-        <div x-show="editMessage" class="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800 fixed z-[100]" role="alert">
+        <div x-show="editMessage" class="flex items-center p-4 mb-4 text-primary-800 border-t-4 border-primary-300 bg-primary-50 dark:text-primary-400 dark:bg-gray-800 dark:border-primary-800 fixed z-[100]" role="alert">
             <div x-text="editMessage" class="ms-3 text-sm font-medium">
             </div>
         </div>
@@ -48,7 +48,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative ">
-                                    <input type="text" x-model="itemToEdit.name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama"  required />
+                                    <input type="text" x-model="itemToEdit.name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Nama"  required />
                                     <span x-show="errors.nameEdit" x-text="errors.nameEdit" class="text-red-500"></span>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative">
-                                    <textarea id="content" x-model="itemToEdit.description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
+                                    <textarea id="content" x-model="itemToEdit.description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Deskripsi" required ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -76,10 +76,10 @@
         </div>
 
         <div class="py-1 px-4 text-white bg-gray-600 w-fit rounded-r-full">
-            <h2>List Data Pendidikan</h2>
+            <h2>Daftar Data Pendidikan</h2>
         </div>
 
-        <div class="w-full bg-gray-100 p-[10px] mt-[5px] border-[1px] border-gray-300 rounded-sm border-l-[3px] border-l-[#009142] mb-[10px]">
+        <div class="w-full bg-gray-100 p-[10px] mt-[5px] border-[1px] border-gray-300 rounded-sm border-l-[3px] border-l-primary-500 mb-[10px]">
             <div x-show="isShowForm" class="rounded-xl border-gray-400 border-[1px] mb-[10px] p-[5px] bg-white shadow-md"
             x-transition:enter="transition ease-out duration-100 transform"
             x-transition:enter-start="opacity-0 scale-95"
@@ -90,7 +90,7 @@
                 <form @submit.prevent="createSubmit" novalidate>
 
                     <div class="space-y-6 bg-white">
-                        <div x-show="successMessage" class="mb-4 p-4 bg-green-200 text-green-800" x-text="successMessage"></div>
+                        <div x-show="successMessage" class="mb-4 p-4 bg-primary-200 text-primary-800" x-text="successMessage"></div>
     
                         <div class="items-center w-full p-4 space-y-4 text-gray-800 md:inline-flex md:space-y-0">
                             <h2 class="max-w-sm mx-auto md:w-1/5 ">
@@ -98,7 +98,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative box-border">
-                                    <input type="text" x-model="name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Nama" required/>
+                                    <input type="text" x-model="name" name="name" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Nama" required/>
                                     <span x-show="errors.name" x-text="errors.name" class="text-red-500"></span>
                                 </div>
                                 
@@ -112,7 +112,7 @@
                             </h2>
                             <div class="max-w-lg mx-auto md:w-4/5">
                                 <div class=" relative">
-                                    <textarea id="content" x-model="description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Deskripsi" required></textarea>
+                                    <textarea id="content" x-model="description" name="description" type="text" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-600 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" placeholder="Deskripsi" required></textarea>
                                     <span x-show="errors.description" x-text="errors.description" class="text-red-500"></span>
                                 </div>
                                
@@ -139,7 +139,10 @@
 
         <div class="p-[10px]">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg" x-data="fetchData()">
-                <div x-show="error" class="mt-4 text-red-500" x-text="error"></div>
+                <div x-show="error" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800 fixed z-[100]" role="alert">
+                    <div x-text="error" class="ms-3 text-sm font-medium">
+                    </div>
+                </div>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -172,6 +175,18 @@
                         </template>
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="m-4 flex justify-end space-x-2" x-show="pagination.last_page > 1">
+                <template x-for="link in pagination.links" :key="link.label">
+                    <button
+                        @click="fetchData(link.url)"
+                        x-html="link.label"
+                        :class="{'bg-gray-300': link.active, 'bg-white': !link.active}"
+                        class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-200"
+                        :disabled="!link.url"
+                    ></button>
+                </template>
             </div>
         </div>
     </div>
