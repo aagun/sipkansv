@@ -51,7 +51,7 @@ class ActivityReportController extends Controller
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function export(Request $request): \Illuminate\Http\JsonResponse
+    public function export(Request $request): Response
     {
         $filter = $request->query();
         $rule = [
@@ -80,10 +80,11 @@ class ActivityReportController extends Controller
             $this->districtService,
             $this->observationService,
             $this->activityReportService,
-            $validator->getData()
+            $validator->getData(),
+            'Nama_User_Department'
         );
         $response = $activityReportExport->execute();
-        return response()->json($response);
+        return ok(__('messages.success.retrieve'), $response);
     }
 
     public function create(ActivityReportCreateRequest $request): Response
@@ -104,14 +105,14 @@ class ActivityReportController extends Controller
         $complianceCategoryScore = $this->calcComplianceCategoryScore($payload, $complianceRateScore);
         $complianceCategory = $this->getComplianceCategory($complianceCategoryScore);
 
-        if ($payload[ 'tingkat_kepatuhan_proyek' ] !== $complianceRate->value) {
+        if (strtolower($payload[ 'tingkat_kepatuhan_proyek' ]) !== strtolower($complianceRate->value)) {
             return error(
                 null,
                 __('validation.exists', ['attribute' => 'tingkat_kepatuhan_proyek'])
             );
         }
 
-        if ($payload[ 'kategory_kepatuhan' ] !== $complianceCategory->value) {
+        if (strtolower($payload[ 'kategory_kepatuhan' ]) !== strtolower($complianceCategory->value)) {
             return error(
                 null,
                 __('validation.exists', ['attribute' => 'kategory_kepatuhan'])

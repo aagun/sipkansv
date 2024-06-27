@@ -91,14 +91,13 @@ class DepartmentControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Department::class, ['name' => $model->name . 'UPDATE_NAME']);
-
         $payload = [
             'id' => $model->id,
+            'name' => $model->name,
             'description' => $model->description . 'UPDATE_NAME'
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.updated')]);
         $this->assertDatabaseHas(Department::class, ['description' => $model->description . 'UPDATE_NAME']);
@@ -128,7 +127,7 @@ class DepartmentControllerTest extends TestCase
 
         $payload = [
             'id' => $current_data->id,
-            'name' => $current_data->name
+            'name' => "Bidang Pengawasan Sumber Daya Kelautan dan Perikanan"
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);

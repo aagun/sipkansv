@@ -26,18 +26,21 @@ class ActivityReportExport
     private DistrictService $districtService;
     private array $filter;
     private string $template;
+    private string $userDepartment;
 
     public function __construct(
         DistrictService $districtService,
         ObservationService $observationService,
         ActivityReportService $activityReportService,
         mixed $filter,
+        string $userDepartment,
         string $template = '/docs/template.xlsx')
     {
         $this->observationService = $observationService;
         $this->districtService = $districtService;
         $this->activityReportService = $activityReportService;
         $this->filter = $filter;
+        $this->userDepartment = $userDepartment;
         $this->template = $template;
     }
 
@@ -81,17 +84,36 @@ class ActivityReportExport
             $row_index++;
         }
 
+
+        $observation_id = $this->getValueFilter('observation_id');
+
+        if ($observation_id && $this->observationService->exists($observation_id)) {
+            $observation_id = $this->observationService->findOne($observation_id)->name;
+            $observation_id = str_replace(' ', '_', ucwords(trim($observation_id)));
+            $observation_id = preg_replace('/[^\w.-]/', '_', ucwords(trim($observation_id)));
+        }
+
         return [
             'content' => $this->writeXlsxAsBase64($spreadsheet),
-            'filename' => $this->composeSpreadFilename('laporan_kegiatan'),
+            'filename' => $this->composeSpreadFilename($observation_id, $this->userDepartment),
         ];
     }
 
-    private function composeSpreadFilename(string $filename, string $ext = Excel::XLSX): string
+    private function composeSpreadFilename(string $observationType, string $department, string $ext = Excel::XLSX): string
     {
+        $filename = 'Rekap';
+
+        if ($observationType) {
+            $filename = $filename . "_".$observationType;
+        }
+
+        if ($department) {
+            $department = str_replace(" ", "_", ucwords(trim($department)));
+            $filename = $filename . "_".$department;
+        }
 
         $timestamp = Carbon::now()->format('YmdHis');
-        return "{$timestamp}_$filename.{$ext}";
+        return "{$filename}_{$timestamp}.{$ext}";
     }
 
     /**

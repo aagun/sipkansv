@@ -267,22 +267,22 @@ class ActivityReportServiceImpl implements ActivityReportService
     private function searchJoinTable(Builder $query): Builder
     {
         return $query
-            ->join('activities', 'activities.id', '=', 'activity_reports.activity_id')
-            ->join('observations', 'observations.id', '=', 'activity_reports.observation_id')
-            ->join('users as supervisors', 'supervisors.id', '=', 'activity_reports.supervisor_id')
-            ->join('business_entity_types', 'business_entity_types.id', '=', 'activity_reports.business_entity_type_id')
-            ->join('villages', 'villages.id', '=', 'activity_reports.village_id')
-            ->join('sub_districts', 'sub_districts.id', '=', 'activity_reports.sub_district_id')
-            ->join('districts', 'districts.id', '=', 'activity_reports.district_id')
-            ->join('provinces', 'provinces.id', '=', 'activity_reports.province_id')
-            ->join('users as managers', 'managers.id', '=', 'activity_reports.manager_id')
+            ->leftJoin('activities', 'activities.id', '=', 'activity_reports.activity_id')
+            ->leftJoin('observations', 'observations.id', '=', 'activity_reports.observation_id')
+            ->leftJoin('users as supervisors', 'supervisors.id', '=', 'activity_reports.supervisor_id')
+            ->leftJoin('business_entity_types', 'business_entity_types.id', '=', 'activity_reports.business_entity_type_id')
+            ->leftJoin('villages', 'villages.id', '=', 'activity_reports.village_id')
+            ->leftJoin('sub_districts', 'sub_districts.id', '=', 'activity_reports.sub_district_id')
+            ->leftJoin('districts', 'districts.id', '=', 'activity_reports.district_id')
+            ->leftJoin('provinces', 'provinces.id', '=', 'activity_reports.province_id')
+            ->leftJoin('users as managers', 'managers.id', '=', 'activity_reports.manager_id')
             ->leftJoin('positions', 'positions.id', '=', 'managers.position_id')
-            ->join('kblis', 'kblis.id', '=', 'activity_reports.kbli_id')
-            ->join('sub_sectors', 'sub_sectors.id', '=', 'kblis.sub_sector_id')
-            ->join('business_scales', 'business_scales.id', '=', 'activity_reports.business_scale_id')
-            ->join('investment_types', 'investment_types.id', '=', 'activity_reports.investment_type_id')
-            ->join('attachments', 'attachments.id', '=', 'activity_reports.attachment_id')
-            ->join('recommendations', 'recommendations.id', '=', 'activity_reports.recommendation_id');
+            ->leftJoin('kblis', 'kblis.id', '=', 'activity_reports.kbli_id')
+            ->leftJoin('sub_sectors', 'sub_sectors.id', '=', 'kblis.sub_sector_id')
+            ->leftJoin('business_scales', 'business_scales.id', '=', 'activity_reports.business_scale_id')
+            ->leftJoin('investment_types', 'investment_types.id', '=', 'activity_reports.investment_type_id')
+            ->leftJoin('attachments', 'attachments.id', '=', 'activity_reports.attachment_id')
+            ->leftJoin('recommendations', 'recommendations.id', '=', 'activity_reports.recommendation_id');
     }
 
     private function searchPermissibleFilter(): array

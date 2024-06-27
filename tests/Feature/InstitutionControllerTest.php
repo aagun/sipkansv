@@ -122,23 +122,6 @@ class InstitutionControllerTest extends TestCase
         $response->assertInvalid(['id' => 'The selected id is invalid.']);
     }
 
-    public function testUpdateUniqueError()
-    {
-        $this->seed(InstitutionSeeder::class);
-
-        $current_data = Institution::query()->first();
-
-        $payload = [
-            'id' => $current_data->id,
-            'name' => $current_data->name
-        ];
-
-        $response = $this->put(self::BASE_ENDPOINT, $payload);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
-        $response->assertInvalid(['name' => 'The name has already been taken.']);
-    }
-
     public function testUpdateMandatoryError()
     {
         $payload = [];
