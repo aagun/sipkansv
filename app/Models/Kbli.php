@@ -15,9 +15,8 @@ class Kbli extends Model
     protected $keyType = 'int';
     public $incrementing = true;
     protected $fillable = ['code', 'name', 'sub_sector_id'];
-    protected $with = ['subSector'];
 
-    public function subSector(): BelongsTo
+    public function sub_sectors(): BelongsTo
     {
         return $this->belongsTo(SubSector::class, 'sub_sector_id', 'id');
     }

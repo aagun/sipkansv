@@ -32,7 +32,7 @@ Route::prefix("/dashboard")
     ->group(function () {
         Route::prefix('/users')
             ->group(function () {
-                Route::get("/", fn () => view("components.dashboard.dashboard-layout"))->name("index");
+                Route::get("/", fn () => view("pages.dashboard"))->name("index");
                 Route::get("/users", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
                 Route::get("/users/create", fn () => view("components.dashboard.users.form-users"))->name("users");
             });
@@ -51,7 +51,7 @@ Route::prefix("/dashboard")
 
 Route::name("auth.")
     ->group(function () {
-        Route::get("/login", fn () => view("login"))->name("login");
+        Route::get("/login", fn () => view("pages.login"))->name("login");
         Route::post("/login", function() {
             $data = ["username" => "admin", "password" => "123456"];
             $admin = Arr::first($data, fn($d) => $d == request()->input("username"));

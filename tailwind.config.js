@@ -51,12 +51,12 @@ export default {
                     '950': '#421e06',
                 },
 
-
-
             }
         },
     },
     plugins: [
-        require('flowbite/plugin')
+        require('flowbite/plugin')({
+            charts: true,
+        })
     ],
 }

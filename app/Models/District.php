@@ -16,7 +16,6 @@ class District extends Model
     protected $keyType = 'int';
     public $incrementing = false;
     protected $fillable = ['id', 'name', 'province_id'];
-    protected $with = ['province'];
 
     public function province(): BelongsTo
     {
