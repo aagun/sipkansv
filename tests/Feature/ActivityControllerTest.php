@@ -66,7 +66,7 @@ class ActivityControllerTest extends TestCase
         $model = Activity::query()->first();
         $payload = [
             'id' => $model->id,
-            'name' => $model->name . 'UPDATE_NAME'
+            'name' => $model->name . 'UPDATE_NAME',
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
@@ -77,6 +77,7 @@ class ActivityControllerTest extends TestCase
 
         $payload = [
             'id' => $model->id,
+            'name' => $model->name,
             'description' => $model->description . 'UPDATE_NAME'
         ];
 
