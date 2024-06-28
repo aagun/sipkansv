@@ -70,19 +70,20 @@ Route::name("auth.")
         })->name("loginForm");
     });
 
-    Route::prefix('roles')
+Route::prefix('roles')
+    ->middleware('auth:api')
     ->controller(RoleController::class)
     ->group(function () {
-        Route::middleware('auth:api')->group(function () {
-            Route::post('/', 'create');
-            Route::post('/search', 'search');
-            Route::put('/', 'edit');
-            Route::get('/{id?}', 'detail');
-            Route::delete('/{id?}', 'delete');
-        });
-    });
+        Route::post('/', 'create');
+        Route::post('/search', 'search');
+        Route::put('/', 'update');
+        Route::get('/{id?}', 'detail');
+        Route::delete('/{id?}', 'delete');
+    }); 
 
+// Jabatan
 Route::prefix('positions')
+    ->middleware('auth:api')
     ->controller(PositionController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -92,7 +93,9 @@ Route::prefix('positions')
         Route::delete('/{id?}', 'delete');
     });
 
+// Pangkat
 Route::prefix('ranks')
+    ->middleware('auth:api')
     ->controller(RankController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -102,7 +105,9 @@ Route::prefix('ranks')
         Route::delete('/{id?}', 'delete');
     });
 
+// Unit Kerja
 Route::prefix('departments')
+    ->middleware('auth:api')
     ->controller(DepartmentController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -112,7 +117,9 @@ Route::prefix('departments')
         Route::delete('/{id?}', 'delete');
     });
 
+// Instansi
 Route::prefix('institutions')
+    ->middleware('auth:api')
     ->controller(InstitutionController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -122,7 +129,9 @@ Route::prefix('institutions')
         Route::delete('/{id?}', 'delete');
     });
 
+// Golongan
 Route::prefix('grade-levels')
+    ->middleware('auth:api')
     ->controller(GradeLevelController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -132,7 +141,9 @@ Route::prefix('grade-levels')
         Route::delete('/{id?}', 'delete');
     });
 
+// Pendidikan
 Route::prefix('educations')
+    ->middleware('auth:api')
     ->controller(EducationController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -142,7 +153,9 @@ Route::prefix('educations')
         Route::delete('/{id?}', 'delete');
     });
 
+// Pengguna
 Route::prefix('users')
+    ->middleware('auth:api')
     ->controller(UserController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -154,6 +167,7 @@ Route::prefix('users')
 
 // Jesni Penanaman Modal
 Route::prefix('investment-types')
+    ->middleware('auth:api')
     ->controller(InvestmentTypeController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -165,6 +179,7 @@ Route::prefix('investment-types')
 
 // Status Badan Usaha
 Route::prefix('bet')
+    ->middleware('auth:api')
     ->controller(BusinessEntityTypeController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -176,6 +191,7 @@ Route::prefix('bet')
 
 // Jenis Rekomendasi
 Route::prefix('recommendations')
+    ->middleware('auth:api')
     ->controller(RecommendationController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -187,6 +203,7 @@ Route::prefix('recommendations')
 
 // Jenis Pengawasan
 Route::prefix('observations')
+    ->middleware('auth:api')
     ->controller(ObservationController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -198,6 +215,7 @@ Route::prefix('observations')
 
 // Sub Sektor
 Route::prefix('sub-sectors')
+    ->middleware('auth:api')
     ->controller(SubSectorController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -209,6 +227,7 @@ Route::prefix('sub-sectors')
 
 // KBLI
 Route::prefix('kblis')
+    ->middleware('auth:api')
     ->controller(KbliController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -220,6 +239,7 @@ Route::prefix('kblis')
 
 // Skala Bisnis
 Route::prefix('business-scales')
+    ->middleware('auth:api')
     ->controller(BusinessScaleController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -231,6 +251,7 @@ Route::prefix('business-scales')
 
 // Data Provinsi
 Route::prefix('provinces')
+    ->middleware('auth:api')
     ->controller(ProvinceController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -239,6 +260,7 @@ Route::prefix('provinces')
 
 // Data Kabupaten
 Route::prefix('districts')
+    ->middleware('auth:api')
     ->controller(DistrictController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -247,6 +269,7 @@ Route::prefix('districts')
 
 // Data Kecamatan
 Route::prefix('sub-districts')
+    ->middleware('auth:api')
     ->controller(SubDistrictController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -255,6 +278,7 @@ Route::prefix('sub-districts')
 
 // Data Desa
 Route::prefix('villages')
+    ->middleware('auth:api')
     ->controller(VillageController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -263,6 +287,7 @@ Route::prefix('villages')
 
 // Data Kegiatan
 Route::prefix('activities')
+    ->middleware('auth:api')
     ->controller(ActivityController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -274,6 +299,7 @@ Route::prefix('activities')
 
 // Laporan Kegiatan
 Route::prefix('activity-reports')
+    ->middleware('auth:api')
     ->controller(ActivityReportController::class)
     ->group(function () {
         Route::post('/', 'create');
