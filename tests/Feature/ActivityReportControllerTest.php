@@ -109,9 +109,8 @@ class ActivityReportControllerTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $filter = [];
+        $filter = ['limit' => 0];
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json->hasAll(['status', 'message', 'data', 'errors']));
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);

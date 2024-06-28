@@ -70,6 +70,13 @@ class ActivityReportServiceImpl implements ActivityReportService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $permissibleSort = $this->searchPermissibleSort();
         $permissibleFilter = $this->searchPermissibleFilter();
         $search = $filter['search'];
@@ -84,8 +91,7 @@ class ActivityReportServiceImpl implements ActivityReportService
                 function (Builder $query, array $search) use($permissibleFilter) {
                     $this->searchFilter($query, $search, $permissibleFilter);
                 })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     private function searchFilter(Builder $query, $search, $permissibleFilter): void
