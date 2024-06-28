@@ -5,11 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" type="image/x-icon" href={{asset("/assets/img/favicon.ico")}}>
     <title>@yield('title') | SIPKAN</title>
 
-    @stack('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.css">
+    @vite(['resources/css/app.css'])
+    @stack('styles')
 </head>
 <body>
     @php
@@ -21,13 +23,18 @@
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
         <x-navbar :$fullName :$photo :$position/>
         <x-sidebar/>
-        <main class="p-4 lg:ml-64 h-auto pt-20">
+        <main class="p-4 lg:ml-64 h-auto pt-40 mt-8">
             @yield('content')
         </main>
         <x-footer/>
     </div>
 </body>
 
+@vite(['resources/js/app.js', 'resources/js/common.js'])
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 @stack("scripts")
 </html>

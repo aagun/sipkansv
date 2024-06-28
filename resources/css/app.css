@@ -72,4 +72,11 @@
         @apply hover:bg-primary-50 hover:text-primary-500 dark:hover:text-white dark:text-white
     }
 
+    .breadcrumb__item:hover {
+        @apply text-primary-500
+    }
+
+    .breadcrumb__item:hover > svg{
+        @apply text-primary-500
+    }
 }

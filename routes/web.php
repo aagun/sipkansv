@@ -30,18 +30,18 @@ Route::get('/', fn () => redirect('/login'));
 Route::prefix("/dashboard")
     ->name("dashboard.")
     ->group(function () {
+        Route::get("/", fn () => view("pages.dashboard"))->name("index");
         Route::prefix('/users')
             ->group(function () {
-                Route::get("/", fn () => view("pages.dashboard"))->name("index");
-                Route::get("/users", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
+                Route::get("/", fn () =>view("pages.user"))->name("users");
                 Route::get("/users/create", fn () => view("components.dashboard.users.form-users"))->name("users");
             });
 
         Route::prefix("/data")->name("data.")
             ->group(function() {
+                Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("comity");
                 Route::get("/pangkat", fn () => view("components.dashboard.masterdata.rank"))->name("ranks");
                 Route::get("/jabatan", fn () => view("components.dashboard.masterdata.position"))->name("position");
-                Route::get("/golongan-ruang", fn () => view("components.dashboard.masterdata.comity"))->name("comity");
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/instansi", fn () => view("components.dashboard.masterdata.institution"))->name("institution");
