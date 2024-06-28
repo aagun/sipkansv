@@ -66,10 +66,9 @@ class InstitutionControllerTest extends TestCase
     {
         $this->seed(InstitutionSeeder::class);
 
-        $filter = ['search' => ['description' => 'jawa barat']];
+        $filter = ['limit' => 0];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json
