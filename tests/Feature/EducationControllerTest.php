@@ -62,14 +62,11 @@ class EducationControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'search' => [
-                'name' => 'D',
-                'description' => 'V'
-            ]
+            'limit' => 0
         ];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
-
+        p_json($response->content());
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
     }
