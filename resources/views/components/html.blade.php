@@ -172,62 +172,150 @@
         function formActivityDataHandler() {
             return {
                 //data input
-                bap_number: "",
-                activity_id: "",
-                observation_id: "",
-                supervisor_id: "",
-                inspection_date: "",
-                company_name: "",
-                business_entity_type_id: "",
-                address: "",
-                village_id: "",
-                sub_district_id: "",
-                district_id: "",
-                province_id: "",
-                manager_id: "",
-                nib: "",
-                effective_date: "",
-                project_code: "",
-                sub_sector: "",
-                kbli_id: "",
-                business_scale_id: "",
-                persetujuan_kesesuaian_ruang: "",
-                persetujuan_lingkungan: "",
-                pbg_slf: "",
-                pernyataan_mandiri: "",
-                investment_type_id: "",
-                latitude: "",
-                longitude: "",
-                sertifikat_standar: "",
-                kepatuhan_teknis: "",
-                perizinan_berusaha_atas_kegiatan_usaha: "",
-                persyaratan_umum_usaha: "",
-                persyaratan_khusus_usaha: "",
-                sarana: "",
-                organisasi_dan_sdm: "",
-                pelayanan: "",
-                persyaratan_produk: "",
-                sistem_manajemen_usaha: "",
-                pelaksanaan_kegiatan_usaha: "",
-                riwayat_pengenaan_sanksi: "",
-                tingkat_kepatuhan_proyek: "",
-                kategory_kepatuhan: "",
-                permasalahan_perusahaan: "",
-                hasil_pengawasan: "",
+                // bap_number: "",
+                // activity_id: "",
+                // observation_id: "",
+                // supervisor_id: "",
+                // inspection_date: "",
+                // company_name: "",
+                // business_entity_type_id: "",
+                // address: "",
+                // village_id: "",
+                // sub_district_id: "",
+                // district_id: "",
+                // province_id: "",
+                // manager_id: "",
+                // nib: "",
+                // effective_date: "",
+                // project_code: "",
+                // sub_sector: "",
+                // kbli_id: "",
+                // business_scale_id: "",
+                // persetujuan_kesesuaian_ruang: "",
+                // persetujuan_lingkungan: "",
+                // pbg_slf: "",
+                // pernyataan_mandiri: "",
+                // investment_type_id: "",
+                // latitude: "",
+                // longitude: "",
+                // sertifikat_standar: "",
+                // kepatuhan_teknis: "",
+                // perizinan_berusaha_atas_kegiatan_usaha: "",
+                // persyaratan_umum_usaha: "",
+                // persyaratan_khusus_usaha: "",
+                // sarana: "",
+                // organisasi_dan_sdm: "",
+                // pelayanan: "",
+                // persyaratan_produk: "",
+                // sistem_manajemen_usaha: "",
+                // pelaksanaan_kegiatan_usaha: "",
+                // riwayat_pengenaan_sanksi: "",
+                // tingkat_kepatuhan_proyek: "",
+                // kategory_kepatuhan: "",
+                // permasalahan_perusahaan: "",
+                // hasil_pengawasan: "",
                 dokumen_pendukung: "",
-                recommendation_id: "",
-                //untuk menyimoan data dropdowninput
-                dataDropdownKegiatan: "",
-                dataDropdownPengawasan: "",
-                dataDropdownNamaPengawas: "",
+                // recommendation_id: "",
+                input: {},
+                //untuk menyimoan data dropdown input
+                dataKegiatan: "",
+                dataPengawasan: "",
+                dataNamaPengawas: "",
+                dataStatusBadanUsaha: "",
+                dataProvinsi: "",
+                dataKabupaten: "",
+                dataKecamatan: "",
+                dataDesa: "",
+                dataNamaPenanggungJawab: "",
+                dataPenanggungJawab: "",
+                dataSubSektor: "",
+                datakbli: "",
+                dataSkalaUsaha: "",
+                dataStatusInvestasi: "",
+                dataKepatuhanProyek: "",
+                dataRekomendasi: "",
+
+                //pesan respon
+                createMessage: "",
+                
 
                 fetchDropdownData(url, data) {
                     axios.post(url)
                     .then(response=> {
                         this[data] = response.data.data.data;
-                        console.log(this[data])
                     })
+                },
+
+                //untuk ambil data dropdown daerah
+                fetchKabupaten() {
+                    axios.post(`http://127.0.0.1:8000/districts/search`, {province_id: this.province_id})
+                    .then(response => {
+                        this.dataKabupaten = response.data.data.data;
+                    })
+                    .catch(error => {
+                        console.log(this.province_id);
+                    })
+                } ,
+                fetchKecamatan() {
+                    axios.post(`http://127.0.0.1:8000/sub-districts/search`, {district_id: this.district_id})
+                    .then(response => {
+                        this.dataKecamatan = response.data.data.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                } ,
+                fetchDesa() {                 
+                    axios.post(`http://127.0.0.1:8000/villages/search`, {sub_district_id: this.sub_district_id})
+                    .then(response => {
+                        this.dataDesa = response.data.data.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                } ,
+                fetchDataManager() {
+                    axios.get(`http://127.0.0.1:8000/users/${this.input.manager_id}`)
+                    .then(response => {
+                        this.dataPenanggungJawab = response.data.data;
+                        console.log(this.dataPenanggungJawab)
+                    })
+                },
+                fileHandleChange(event) {
+                    this.dokumen_pendukung= event.target.files[0];
+                },
+                
+                submitHandler() {
+                    let formData = new FormData();
+
+                    formData.append("dokumen_pendukung", this.dokumen_pendukung);
+                    for (let key in this.input) {
+                        formData.append(key, this.input[key]);
+                    }
+
+                    for (let pair of formData.entries()) {
+                        console.log(pair[0]+ ', ' + pair[1]);
+                    }
+
+                    axios.post(`http://127.0.0.1:8000/activity-reports` , formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(response => {
+                        console.log(response);
+                        console.log(formData);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        console.log(formData);
+                    })
+
+
                 }
+
+
+
             }
         }
 
