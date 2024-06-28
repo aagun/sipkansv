@@ -59,6 +59,13 @@ class KbliServiceImpl implements KbliService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $search = $filter['search'];
         $order = $filter['order'];
         $permissibleSort = [
@@ -90,8 +97,7 @@ class KbliServiceImpl implements KbliService
                     $query->whereRaw("sub_sectors.id = ? ", [$search['sub_sector']]);
                 }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     public function save(array $kbli): Model | Builder
