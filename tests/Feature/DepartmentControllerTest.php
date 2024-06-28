@@ -64,14 +64,10 @@ class DepartmentControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'search' => [
-                'name' => 'Pelaksana',
-                'description' => 'unit'
-            ]
+            'limit' => 0
         ];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
     }

@@ -139,7 +139,6 @@ class PositionControllerTest extends TestCase
         $response = $this->post(self::BASE_ENDPOINT . '/search', [
             'limit' => 0
         ]);
-        p_json($response->content());
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->hasAll(['status', 'message', 'data', 'errors'])
