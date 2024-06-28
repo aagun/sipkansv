@@ -67,14 +67,10 @@ class GradeLevelControllerTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $filter = [
-            'search' => [
-                'name' => 'II/',
-                'description' => 'c'
-            ]
+            'limit' => 0
         ];
 
         $response = $this->post(self::BASE_ENDPOINT . '/search', $filter);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json
