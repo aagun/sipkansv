@@ -111,7 +111,7 @@ class ActivityReportServiceImpl implements ActivityReportService
         return $query
             ->selectRaw(
                 "
-                activity_reports.id as activity_report_id
+                activity_reports.id as activity_report_id,
                 activity_reports.bap_number,
                 activities.id as activity_id,
                 activities.name as activity_name,
@@ -172,7 +172,7 @@ class ActivityReportServiceImpl implements ActivityReportService
                 attachments.id as attachment_id,
                 attachments.name as attachment_name,
                 attachments.link as attachment_link,
-                recommendations.id as recommendation_id
+                recommendations.id as recommendation_id,
                 recommendations.name as recommendation_name
             ");
     }

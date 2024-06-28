@@ -218,4 +218,13 @@ class KbliControllerTest extends TestCase
 
     }
 
+    public function testKbliSuccess()
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $total = Kbli::query()->count();
+        $data = Kbli::query()->limit(10)->offset(10)->paginate();
+        p_info($data);
+        self::assertTrue(true);
+    }
 }

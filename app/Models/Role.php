@@ -14,7 +14,6 @@ class Role extends Model
     protected $table = 'roles';
     protected $primaryKey = 'id';
     protected $keyType = 'int';
-    protected $with = ['users'];
 
     protected $fillable = [
         'name',
