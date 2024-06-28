@@ -191,19 +191,19 @@ class ActivityReportExport
             ],
             [
                 'cell' => 'AD',
-                'type' => 'number',
+                'type' => 'decimal',
             ],
             [
                 'cell' => 'AE',
-                'type' => 'number',
+                'type' => 'decimal',
             ],
             [
                 'cell' => 'AF',
-                'type' => 'number',
+                'type' => 'decimal',
             ],
             [
                 'cell' => 'AG',
-                'type' => 'number',
+                'type' => 'decimal',
             ],
             ['cell' => 'AH'],
             ['cell' => 'AI'],
