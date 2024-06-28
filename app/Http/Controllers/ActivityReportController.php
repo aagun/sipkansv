@@ -146,7 +146,7 @@ class ActivityReportController extends Controller
         }
 
         // save the attachment
-        if ($payload[ 'dokumen_pendukung' ] && $payload[ 'attachment_id' ]) {
+        if (isset($payload[ 'dokumen_pendukung' ]) && isset($payload[ 'attachment_id' ])) {
             $prev_file = $this->attachmentService->findOne($payload[ 'attachment_id' ])->name;
             Storage::delete($prev_file);
 

@@ -69,9 +69,12 @@ class KbliServiceImpl implements KbliService
         $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['code']);
         return Kbli::query()
             ->select([
+                'kblis.id AS id',
                 'kblis.code AS code',
                 'kblis.name AS name',
-                'sub_sectors.name AS sub_sector'
+                'kblis.name AS name',
+                'sub_sectors.id AS sub_sector_id',
+                'sub_sectors.name AS sub_sector_name'
             ])
             ->join('sub_sectors', 'kblis.sub_sector_id', '=', 'sub_sectors.id')
             ->when($search, function (Builder $query, array $search) {

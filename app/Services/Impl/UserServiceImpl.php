@@ -76,6 +76,7 @@ class UserServiceImpl implements UserService
 
         return User::query()
             ->select([
+                'users.id AS user_id',
                 'users.name AS full_name',
                 'positions.name AS position',
                 'users.nip AS nip',
