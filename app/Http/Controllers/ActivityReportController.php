@@ -49,7 +49,7 @@ class ActivityReportController extends Controller
         $complianceCategoryScore = $this->calcComplianceCategoryScore($payload, $complianceRateScore);
         $complianceCategory = $this->getComplianceCategory($complianceCategoryScore);
 
-        if ($payload['tingkat_kepatuhan_proyek'] !== $complianceRate->value) {
+        if (strtolower($payload['tingkat_kepatuhan_proyek']) !== strtolower($complianceRate->value)) {
             return error(
                 null,
                 __('validation.exists', ['attribute' => 'tingkat_kepatuhan_proyek'])
@@ -82,6 +82,8 @@ class ActivityReportController extends Controller
     {
         $payload = $request->validated();
 
+dd($request);
+
         if (isset($payload['sub_sector_id']) && !$this->kbliService->existsBySubSectorId($payload['sub_sector_id'])) {
             return error(
                 null,
@@ -90,7 +92,7 @@ class ActivityReportController extends Controller
         }
 
         // save the attachment
-        if ($payload['dokumen_pendukung'] && $payload['attachment_id']) {
+        if (isset($payload['dokumen_pendukung']) && isset($payload['attachment_id'])) {
             $prev_file = $this->attachmentService->findOne($payload[ 'attachment_id' ])->name;
             Storage::delete($prev_file);
 

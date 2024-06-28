@@ -3,14 +3,29 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\RoleController;
 
 // auth jwt
 Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('/login', [AuthController::class, 'login']) ->name('login');
-    Route::post('/logout', [AuthController::class, 'logout']) ->middleware('auth:api')->name('logout');
-    Route::post('/refresh', [AuthController::class, 'refresh']) ->middleware('auth:api')->name('refresh');
-    Route::post('/me', [AuthController::class, 'me']) ->middleware('auth:api')->name('me');
+    'prefix' => 'auth',
+    'middleware' => 'api'
+], function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::post('/me', [AuthController::class, 'me']);
+    });
 });
+
+// Route::prefix('roles')
+// ->controller(RoleController::class)
+// ->group(function () {
+//     Route::middleware('auth:api')->group(function () {
+//         Route::post('/', 'create');
+//         Route::post('/search', 'search');
+//         Route::put('/', 'edit');
+//         Route::get('/{id?}', 'detail');
+//         Route::delete('/{id?}', 'delete');
+//     });
+// });

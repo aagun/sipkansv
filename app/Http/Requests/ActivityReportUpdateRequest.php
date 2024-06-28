@@ -42,7 +42,7 @@ class ActivityReportUpdateRequest extends BaseRequest
     {
         return [
             'id' => [
-                'required',
+                'nullable',
                 'numeric',
                 Rule::exists(ActivityReport::class, 'id')
             ],

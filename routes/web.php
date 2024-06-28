@@ -70,14 +70,16 @@ Route::name("auth.")
         })->name("loginForm");
     });
 
-Route::prefix('roles')
+    Route::prefix('roles')
     ->controller(RoleController::class)
     ->group(function () {
-        Route::post('/', 'create');
-        Route::post('/search', 'search');
-        Route::put('/', 'edit');
-        Route::get('/{id?}', 'detail');
-        Route::delete('/{id?}', 'delete');
+        Route::middleware('auth:api')->group(function () {
+            Route::post('/', 'create');
+            Route::post('/search', 'search');
+            Route::put('/', 'edit');
+            Route::get('/{id?}', 'detail');
+            Route::delete('/{id?}', 'delete');
+        });
     });
 
 Route::prefix('positions')
