@@ -49,6 +49,13 @@ class VillageServiceImpl implements VillageService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $permissibleSort = [
             'village_id' => 'villages.id',
             'village_name' => 'villages.name',
@@ -75,8 +82,7 @@ class VillageServiceImpl implements VillageService
                     $query->whereRaw("sub_districts.id = ?", [$search['sub_district_id']]);
                 }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     public function save(array $village): Model | Builder
