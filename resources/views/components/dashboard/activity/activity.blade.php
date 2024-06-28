@@ -60,7 +60,7 @@
                 </div>
                 
             </div>
-            <div class="overflow-x-scroll p-[5px] mt-[5px]" x-init="activityDataHandler()">
+            <div class="overflow-x-scroll p-[5px] mt-[5px]" x-init="fetchActivityData()">
                 <table class="table p-4 bg-gray-100 rounded-lg shadow">
                     <thead class="bg-gray-100">
                         <tr>
@@ -157,13 +157,13 @@
                             </th>
 
                             <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
-                                Alamat
+                                Nama
                             </th>
                             <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
-                                Desa/Kel
+                                Jabatan
                             </th>
                             <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
-                                Kecamatan
+                                Kontak
                             </th>
                             <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 NIB
@@ -204,124 +204,90 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white">
-                        <tr class="text-gray-700">
-                            <td class="border px-3 py-1 dark:border-dark-5 text-center">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5">
-                                -
-                            </td>
-                            <td class="border px-3 py-1 dark:border-dark-5 flex gap-2">
-                                <button type="button" class="px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                    Ubah
-                                </button>
-                                <button @click="isDelete = !isDelete" type="button" class=" px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                    Hapus
-                                </button>
-                            </td>
-                        </tr>
+                        <template x-for="item in activityData" :key="item.bap_number">
+                            <tr class="text-gray-700">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.bap_number">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.activity_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.observation_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.supervisor_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.inspection_date">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.company_name">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.business_entity_type">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.address">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.village_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.sub_district_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.district_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.province_idr">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.manager_name">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.manager_position">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.manager_phone">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.nib">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.effective_date">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.project_code">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.sub_sector">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.kbli_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.business_scale_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.persetujuan_kesesuaian_ruang">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.persetujuan_lingkungan">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.pbg_slf">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.pernyataan_mandiri">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.sertifikat_standar">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.investment_type_id">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.latitude">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.longitude">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.perizinan_berusaha_atas_kegiatan_usaha">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.standar_pelaksanaan_kegiatan_usaha">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.pelaksanaan_kegiatan_usaha">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.riwayat_pengenaan_sanksi">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="tingkat_kepatuhan_proyek">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="kategory_kepatuhan">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.recommendation">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5 flex gap-2">
+                                    <button type="button" class="px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                        Ubah
+                                    </button>
+                                    <button @click="isDelete = !isDelete" type="button" class=" px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                        Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>      
                         
                     </tbody>
                 </table>

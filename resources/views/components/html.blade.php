@@ -159,11 +159,73 @@
                         console.log(this.districtData);
                     })
                 },
-                fetchActivityData(){
-                    axios.post()
+                fetchActivityData() {
+                    axios.post("http://127.0.0.1:8000/activity-reports/search")
                     .then(response=> {
-                        this.activityData = response.data.data;
+                        this.activityData = response.data.data.data;
                         console.log(this.activityData);
+                    })
+                },
+            }
+        }
+
+        function formActivityDataHandler() {
+            return {
+                //data input
+                bap_number: "",
+                activity_id: "",
+                observation_id: "",
+                supervisor_id: "",
+                inspection_date: "",
+                company_name: "",
+                business_entity_type_id: "",
+                address: "",
+                village_id: "",
+                sub_district_id: "",
+                district_id: "",
+                province_id: "",
+                manager_id: "",
+                nib: "",
+                effective_date: "",
+                project_code: "",
+                sub_sector: "",
+                kbli_id: "",
+                business_scale_id: "",
+                persetujuan_kesesuaian_ruang: "",
+                persetujuan_lingkungan: "",
+                pbg_slf: "",
+                pernyataan_mandiri: "",
+                investment_type_id: "",
+                latitude: "",
+                longitude: "",
+                sertifikat_standar: "",
+                kepatuhan_teknis: "",
+                perizinan_berusaha_atas_kegiatan_usaha: "",
+                persyaratan_umum_usaha: "",
+                persyaratan_khusus_usaha: "",
+                sarana: "",
+                organisasi_dan_sdm: "",
+                pelayanan: "",
+                persyaratan_produk: "",
+                sistem_manajemen_usaha: "",
+                pelaksanaan_kegiatan_usaha: "",
+                riwayat_pengenaan_sanksi: "",
+                tingkat_kepatuhan_proyek: "",
+                kategory_kepatuhan: "",
+                permasalahan_perusahaan: "",
+                hasil_pengawasan: "",
+                dokumen_pendukung: "",
+                recommendation_id: "",
+                //untuk menyimoan data dropdowninput
+                dataDropdownKegiatan: "",
+                dataDropdownPengawasan: "",
+                dataDropdownNamaPengawas: "",
+
+                fetchDropdownData(url, data) {
+                    axios.post(url)
+                    .then(response=> {
+                        this[data] = response.data.data.data;
+                        console.log(this[data])
                     })
                 }
             }
