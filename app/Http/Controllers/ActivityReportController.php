@@ -160,10 +160,11 @@ class ActivityReportController extends Controller
                 'link' => $link,
             ]);
 
-            unset($payload[ 'dokumen_pendukung' ]);
         }
 
 
+        unset($payload[ 'sub_sector_id' ]);
+        unset($payload[ 'dokumen_pendukung' ]);
         $this->activityReportService->update($payload);
 
         return ok(__('messages.success.updated'));
