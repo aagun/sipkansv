@@ -71,7 +71,7 @@ Route::name("auth.")
     });
 
 Route::prefix('roles')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(RoleController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -83,7 +83,7 @@ Route::prefix('roles')
 
 // Jabatan
 Route::prefix('positions')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(PositionController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -95,7 +95,7 @@ Route::prefix('positions')
 
 // Pangkat
 Route::prefix('ranks')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(RankController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -107,7 +107,7 @@ Route::prefix('ranks')
 
 // Unit Kerja
 Route::prefix('departments')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(DepartmentController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -119,7 +119,7 @@ Route::prefix('departments')
 
 // Instansi
 Route::prefix('institutions')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(InstitutionController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -131,7 +131,7 @@ Route::prefix('institutions')
 
 // Golongan
 Route::prefix('grade-levels')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(GradeLevelController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -143,7 +143,7 @@ Route::prefix('grade-levels')
 
 // Pendidikan
 Route::prefix('educations')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(EducationController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -155,7 +155,7 @@ Route::prefix('educations')
 
 // Pengguna
 Route::prefix('users')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(UserController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -167,7 +167,7 @@ Route::prefix('users')
 
 // Jesni Penanaman Modal
 Route::prefix('investment-types')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(InvestmentTypeController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -179,7 +179,7 @@ Route::prefix('investment-types')
 
 // Status Badan Usaha
 Route::prefix('bet')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(BusinessEntityTypeController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -191,7 +191,7 @@ Route::prefix('bet')
 
 // Jenis Rekomendasi
 Route::prefix('recommendations')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(RecommendationController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -203,7 +203,7 @@ Route::prefix('recommendations')
 
 // Jenis Pengawasan
 Route::prefix('observations')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(ObservationController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -215,7 +215,7 @@ Route::prefix('observations')
 
 // Sub Sektor
 Route::prefix('sub-sectors')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(SubSectorController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -227,7 +227,7 @@ Route::prefix('sub-sectors')
 
 // KBLI
 Route::prefix('kblis')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(KbliController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -239,7 +239,7 @@ Route::prefix('kblis')
 
 // Skala Bisnis
 Route::prefix('business-scales')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(BusinessScaleController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -251,7 +251,7 @@ Route::prefix('business-scales')
 
 // Data Provinsi
 Route::prefix('provinces')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(ProvinceController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -260,7 +260,7 @@ Route::prefix('provinces')
 
 // Data Kabupaten
 Route::prefix('districts')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(DistrictController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -269,7 +269,7 @@ Route::prefix('districts')
 
 // Data Kecamatan
 Route::prefix('sub-districts')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(SubDistrictController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -278,7 +278,7 @@ Route::prefix('sub-districts')
 
 // Data Desa
 Route::prefix('villages')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(VillageController::class)
     ->group(function () {
         Route::post('/search', 'search');
@@ -287,7 +287,7 @@ Route::prefix('villages')
 
 // Data Kegiatan
 Route::prefix('activities')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(ActivityController::class)
     ->group(function () {
         Route::post('/', 'create');
@@ -299,7 +299,7 @@ Route::prefix('activities')
 
 // Laporan Kegiatan
 Route::prefix('activity-reports')
-    ->middleware('auth:api')
+    ->middleware('jwt.auth')
     ->controller(ActivityReportController::class)
     ->group(function () {
         Route::post('/', 'create');
