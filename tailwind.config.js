@@ -8,8 +8,8 @@ export default {
     ],
     theme: {
         extend: {
-            backgroundColor: {
-                "primary": {
+            colors: {
+               blue: {
                     '50': '#f0faff',
                     '100': '#dff3ff',
                     '200': '#b8e9ff',
@@ -23,36 +23,6 @@ export default {
                     '950': '#07324a',
                 },
 
-                'forest-green': {
-                    '50': '#edfff4',
-                    '100': '#d6ffe8',
-                    '200': '#afffd3',
-                    '300': '#71ffb2',
-                    '400': '#2dfb89',
-                    '500': '#02e568',
-                    '600': '#00bf53',
-                    '700': '#009142',
-                    '800': '#067539',
-                    '900': '#085f31',
-                    '950': '#003619',
-                },
-
-                'sun-glow': {
-                    '50': '#fefbe8',
-                    '100': '#fef7c3',
-                    '200': '#feec8a',
-                    '300': '#fdd947',
-                    '400': '#fbc92a',
-                    '500': '#ebaa07',
-                    '600': '#cb8203',
-                    '700': '#a15c07',
-                    '800': '#85480e',
-                    '900': '#713b12',
-                    '950': '#421e06',
-                },
-
-            },
-            colors: {
                 primary: {
                     '50': '#f0faff',
                     '100': '#dff3ff',
@@ -67,7 +37,7 @@ export default {
                     '950': '#07324a',
                 },
 
-                'forest-green': {
+                green: {
                     '50': '#edfff4',
                     '100': '#d6ffe8',
                     '200': '#afffd3',
@@ -81,7 +51,7 @@ export default {
                     '950': '#003619',
                 },
 
-                'sun-glow': {
+                yellow: {
                     '50': '#fefbe8',
                     '100': '#fef7c3',
                     '200': '#feec8a',
@@ -95,12 +65,13 @@ export default {
                     '950': '#421e06',
                 },
 
-
-
             }
         },
     },
     plugins: [
-        require('flowbite/plugin')
+        require('flowbite/plugin')({
+            charts: true,
+        }),
+        require('flowbite-typography')
     ],
 }

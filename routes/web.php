@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RankController;
@@ -28,7 +30,6 @@ Route::get('/', fn () => redirect('/login'));
 Route::prefix("/dashboard")
     ->name("dashboard.")
     ->group(function () {
-        Route::get("/", fn () => view("components.dashboard.home"))->name("index");
         Route::prefix('/users')
             ->group(function () {
                 Route::get("/", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
@@ -43,9 +44,9 @@ Route::prefix("/dashboard")
 
         Route::prefix("/data")->name("data.")
             ->group(function() {
-                Route::get("/pangkat", fn () => view("components.dashboard.masterdata.rank"))->name("ranks");
+                Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("comity");
+                Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("ranks");
                 Route::get("/jabatan", fn () => view("components.dashboard.masterdata.position"))->name("position");
-                Route::get("/golongan-ruang", fn () => view("components.dashboard.masterdata.grade-level"))->name("grade-level");
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/instansi", fn () => view("components.dashboard.masterdata.institution"))->name("institution");
@@ -62,6 +63,22 @@ Route::prefix("/dashboard")
 Route::name("auth.")
     ->group(function () {
         Route::get("/login", fn () => view("login"))->name("login");
+        Route::post("/login", function() {
+            $data = ["username" => "admin", "password" => "123456"];
+            $admin = Arr::first($data, fn($d) => $d == request()->input("username"));
+            if ($admin == null ) {
+                return redirect()->back()->with("error", "Username yang anda masukkan salah!");
+            }
+
+            if ($data["password"] != request()->input("password") ) {
+                return redirect()->back()->with("error", "Password yang anda masukkan salah!");
+            }
+
+            Session::put(["isLoged" => true]);
+            Session::put(["token" => "124fj154KL132cI06P541pP20541"]);
+
+            return redirect()->route("dashboard.index");
+        })->name("loginForm");
     });
 
 Route::prefix('roles')
