@@ -50,6 +50,7 @@ Route::prefix("/dashboard")
                 Route::get("/jabatan", fn () => view("pages.masterdata.position"))->name("position");
                 Route::get("/jenis-penanaman-modal", fn () => view("pages.masterdata.investment-type"))->name("investment-type");
                 Route::get("/jenis-pengawasan", fn () => view("pages.masterdata.observation"))->name("observation");
+                Route::get("/kegiatan", fn () => view("pages.masterdata.activity"))->name("observation");
 
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
