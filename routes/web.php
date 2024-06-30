@@ -44,7 +44,7 @@ Route::prefix("/dashboard")
 
         Route::prefix("/data")->name("data.")
             ->group(function() {
-                Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("comity");
+                Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("grade-level");
                 Route::get("/instansi", fn () => view("pages.masterdata.institution"))->name("institution");
                 Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("ranks");
                 Route::get("/jabatan", fn () => view("pages.masterdata.position"))->name("position");
@@ -52,13 +52,9 @@ Route::prefix("/dashboard")
                 Route::get("/jenis-pengawasan", fn () => view("pages.masterdata.observation"))->name("observation");
                 Route::get("/kegiatan", fn () => view("pages.masterdata.activity"))->name("observation");
                 Route::get("/pendidikan", fn () => view("pages.masterdata.education"))->name("education");
-                Route::get("/rekomendasi", fn () => view("pages.masterdata.recommendation"))->name("education");
-                Route::get("/skala-bisnis", fn () => view("pages.masterdata.business-scale"))->name("business-entity");
-
-                Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
-                Route::get("/status-badan-usaha", fn () => view("components.dashboard.masterdata.business-entity-type"))->name("business-entity");
-                Route::get("/tingkat-kepatuhan", fn () => view("components.dashboard.masterdata.recommendation"))->name("recommendation");
-                Route::get("/kbli", fn () => view("components.dashboard.masterdata.kbli"))->name("kbli");
+                Route::get("/rekomendasi", fn () => view("pages.masterdata.recommendation"))->name("recommendation");
+                Route::get("/skala-bisnis", fn () => view("pages.masterdata.business-scale"))->name("business-scale");
+                Route::get("/status-badan-usaha", fn () => view("pages.masterdata.business-entity-type"))->name("business-entity-type");
             });
 
     });
