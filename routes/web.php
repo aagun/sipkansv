@@ -49,12 +49,12 @@ Route::prefix("/dashboard")
                 Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("ranks");
                 Route::get("/jabatan", fn () => view("pages.masterdata.position"))->name("position");
                 Route::get("/jenis-penanaman-modal", fn () => view("pages.masterdata.investment-type"))->name("investment-type");
+                Route::get("/jenis-pengawasan", fn () => view("pages.masterdata.observation"))->name("observation");
 
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/status-badan-usaha", fn () => view("components.dashboard.masterdata.business-entity-type"))->name("business-entity");
                 Route::get("/skala-usaha", fn () => view("components.dashboard.masterdata.business-scale"))->name("business-entity");
-                Route::get("/pengawasan", fn () => view("components.dashboard.masterdata.observation"))->name("observation");
                 Route::get("/tingkat-kepatuhan", fn () => view("components.dashboard.masterdata.recommendation"))->name("recommendation");
                 Route::get("/kbli", fn () => view("components.dashboard.masterdata.kbli"))->name("kbli");
             });
