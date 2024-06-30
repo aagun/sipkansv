@@ -37,7 +37,7 @@ export default {
                     '950': '#07324a',
                 },
 
-                'forest-green': {
+                'green': {
                     '50': '#edfff4',
                     '100': '#d6ffe8',
                     '200': '#afffd3',
@@ -51,7 +51,7 @@ export default {
                     '950': '#003619',
                 },
 
-                'sun-glow': {
+                'yellow': {
                     '50': '#fefbe8',
                     '100': '#fef7c3',
                     '200': '#feec8a',

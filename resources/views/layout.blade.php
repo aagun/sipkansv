@@ -5,11 +5,15 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/x-icon" href={{asset("/assets/img/favicon.ico")}}>
+    <link rel="icon" type="image/x-icon" href="{{asset("assets/img/favicon.ico")}}">
     <title>@yield('title') | SIPKAN</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.css">
+    <script src="{{asset("/assets/js/commons/messages.js")}}"></script>
+    <script src="{{asset("/assets/js/commons/rules.js")}}"></script>
+    <script src="{{asset("/assets/js/commons/commons.js")}}"></script>
     @vite(['resources/css/app.css'])
     @stack('styles')
 </head>
@@ -24,13 +28,49 @@
         <x-navbar :$fullName :$photo :$position/>
         <x-sidebar/>
         <main class="p-4 lg:ml-64 h-auto pt-40 mt-8">
+            <div id="sipkanGlobalMessageSuccess_alert"
+                 class="opacity-0 hidden flex justify-between p-3 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                 role="alert">
+                <div class="ms-3 text-sm font-medium" data-message>
+                </div>
+                <div class="flex items-end align-self-start">
+                    <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8"
+                            data-dismiss-target="#sipkanGlobalMessageSuccess_alert"
+                            aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="sipkanGlobalMessageError_alert"
+                 class="opacity-0 hidden flex justify-between p-3 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                 role="alert">
+                <div class="ms-3 text-sm font-medium" data-message>
+                </div>
+                <div class="flex items-end align-self-start">
+                    <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
+                            data-dismiss-target="#sipkanGlobalMessageError_alert"
+                            aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
             @yield('content')
         </main>
         <x-footer/>
     </div>
 </body>
 
-@vite(['resources/js/app.js', 'resources/js/common.js'])
+@vite(['resources/js/app.js'])
+<script defer src="{{asset("/assets/js/commons/http.js")}}"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.js"></script>
@@ -38,141 +78,3 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 @stack("scripts")
 </html>
-
-
-{{--<!DOCTYPE html>--}}
-{{--<html lang="en">--}}
-{{--<head>--}}
-{{--    <meta charset="UTF-8">--}}
-{{--    <meta name="viewport" content="width=device-width, initial-scale=1.0">--}}
-{{--    <meta http-equiv="X-UA-Compatible" content="ie=edge">--}}
-{{--    @vite(['resources/js/app.js', 'resources/css/app.css'])--}}
-{{--    <link--}}
-{{--        rel="stylesheet"--}}
-{{--        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"--}}
-{{--        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="--}}
-{{--        crossorigin="anonymous"--}}
-{{--        referrerpolicy="no-referrer"--}}
-{{--    />--}}
-{{--    <title>SIPKAN</title>--}}
-{{--</head>--}}
-{{--<body>--}}
-{{--    {{ $slot }}--}}
-{{--    <script>--}}
-{{--        function masterDataHandler(urlCreate, urlRead, urlDelete, urlEdit) {--}}
-{{--             return {--}}
-{{--                name: "",--}}
-{{--                description: "",--}}
-{{--                successMessage: "",--}}
-{{--                deleteMessage: "",--}}
-{{--                editMessage:"",--}}
-{{--                items: [],--}}
-{{--                errors: {},--}}
-{{--                error: "",--}}
-{{--                isDelete: false,--}}
-{{--                itemToDelete: null,--}}
-{{--                itemToEdit: null, --}}
-{{--                isShowForm: false, --}}
-{{--                isShowFormEdit: false, --}}
-{{--                validateForm() {--}}
-{{--                    this.errors = {};--}}
-{{--                    if (!this.name) {--}}
-{{--                        this.errors.name = 'Nama harus diisi.';--}}
-{{--                    } --}}
-{{--                    if (!this.description) {--}}
-{{--                        this.errors.description = 'Deskripsi harus diisi.';--}}
-{{--                    }--}}
-{{--                    return Object.keys(this.errors).length === 0;--}}
-{{--                },--}}
-{{--                //untuk membuat data--}}
-{{--                createSubmit () {--}}
-{{--                    if (!this.validateForm()) {--}}
-{{--                        return;--}}
-{{--                    }--}}
-{{--                     axios.post(urlCreate, {--}}
-{{--                         name: this.name,--}}
-{{--                         description: this.description,--}}
-{{--                     })--}}
-{{--                     .then(response => {--}}
-{{--                        this.successMessage = "Data berhasil ditambah!";--}}
-{{--                        this.name = '';--}}
-{{--                        this.description = '';--}}
-{{--                        this.fetchData();--}}
-{{--                        setTimeout(()=> {--}}
-{{--                            this.successMessage = "";--}}
-{{--                        },4000)--}}
-{{--                     })--}}
-{{--                     .catch(error => {--}}
-{{--                        this.errors = {};--}}
-{{--                        if (error.response.request.status == 400) {--}}
-{{--                            this.errors.name = 'Nama sudah terdaftar.';--}}
-{{--                        }--}}
-{{--                        console.log(error);--}}
-{{--                     })--}}
-{{--                },--}}
-{{--                //untuk ambil data dari database --}}
-{{--                fetchData() {--}}
-{{--                    this.error = "",--}}
-{{--                    axios.post(urlRead)--}}
-{{--                    .then(response => {--}}
-{{--                        this.items = response.data.data;--}}
-{{--                    })--}}
-{{--                    .catch(error => {--}}
-{{--                        this.error = 'Terjadi kesalahan saat mengambil data.';--}}
-{{--                        console.error(error);--}}
-{{--                    })--}}
-{{--                },--}}
-{{--                //fungsi untuk delete--}}
-{{--                confirmDelete(id) {--}}
-{{--                    this.itemToDelete = id;--}}
-{{--                    this.isDelete = true;--}}
-{{--                },--}}
-{{--                 deleteItem() {--}}
-{{--                    if (this.itemToDelete !== null) {--}}
-{{--                        axios.delete(`${urlDelete}/${this.itemToDelete}`)--}}
-{{--                        .then(response => {--}}
-{{--                            this.deleteMessage= "Data berhasil di hapus!";--}}
-{{--                            this.itemToDelete = null;--}}
-{{--                            this.isDelete = false;--}}
-{{--                            this.fetchData();--}}
-{{--                            setTimeout(() => {--}}
-{{--                                this.deleteMessage="";--}}
-{{--                            }, 3000);--}}
-{{--                        })--}}
-{{--                    } --}}
-{{--                 },--}}
-
-{{--                 //fungsi edit --}}
-{{--                 getEditData(id) {--}}
-{{--                        axios.get(`${urlEdit}/${id}`)--}}
-{{--                        .then(response => {--}}
-{{--                            this.itemToEdit= response.data.data;--}}
-{{--                            this.isShowFormEdit= true;--}}
-{{--                            this.errors={};--}}
-{{--                        })--}}
-{{--                 },--}}
-{{--                 editItem() {--}}
-{{--                    axios.put(urlEdit , this.itemToEdit)--}}
-{{--                    .then(response => {--}}
-{{--                        this.editMessage="Data berhasil di ubah!";--}}
-{{--                        this.fetchData();--}}
-{{--                        this.isShowFormEdit=false;--}}
-{{--                        this.itemToEdit= null,--}}
-{{--                        setTimeout(()=> {--}}
-{{--                            this.editMessage="";--}}
-{{--                        }, 3000);--}}
-{{--                        console.log(response);--}}
-{{--                    })--}}
-{{--                    .catch(error => {--}}
-{{--                        this.errors = {};--}}
-{{--                        if (error.response.request.status == 400) {--}}
-{{--                            this.errors.nameEdit = 'Nama sudah terdaftar.';--}}
-{{--                        }--}}
-{{--                        console.log(error);--}}
-{{--                     })--}}
-{{--                 }--}}
-{{--            }--}}
-{{--        }--}}
-{{--     </script>--}}
-{{--</body>--}}
-{{--</html>--}}
