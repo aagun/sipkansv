@@ -51,8 +51,8 @@ Route::prefix("/dashboard")
                 Route::get("/jenis-penanaman-modal", fn () => view("pages.masterdata.investment-type"))->name("investment-type");
                 Route::get("/jenis-pengawasan", fn () => view("pages.masterdata.observation"))->name("observation");
                 Route::get("/kegiatan", fn () => view("pages.masterdata.activity"))->name("observation");
+                Route::get("/pendidikan", fn () => view("pages.masterdata.education"))->name("education");
 
-                Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/status-badan-usaha", fn () => view("components.dashboard.masterdata.business-entity-type"))->name("business-entity");
                 Route::get("/skala-usaha", fn () => view("components.dashboard.masterdata.business-scale"))->name("business-entity");
