@@ -45,11 +45,12 @@ Route::prefix("/dashboard")
         Route::prefix("/data")->name("data.")
             ->group(function() {
                 Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("comity");
+                Route::get("/instansi", fn () => view("pages.masterdata.institution"))->name("institution");
                 Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("ranks");
+
                 Route::get("/jabatan", fn () => view("components.dashboard.masterdata.position"))->name("position");
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
-                Route::get("/instansi", fn () => view("components.dashboard.masterdata.institution"))->name("institution");
                 Route::get("/status-badan-usaha", fn () => view("components.dashboard.masterdata.business-entity-type"))->name("business-entity");
                 Route::get("/skala-usaha", fn () => view("components.dashboard.masterdata.business-scale"))->name("business-entity");
                 Route::get("/status-penanaman-modal", fn () => view("components.dashboard.masterdata.investment-type"))->name("investment-type");

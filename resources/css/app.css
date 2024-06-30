@@ -87,8 +87,4 @@
     .sipkan__has-error > input {
         @apply !border-[3px] !border-red-600 focus:!ring-red-600 focus:!border-red-600
     }
-
-    .filter-control > [type='search'] {
-        border-color: red !important;
-    }
 }

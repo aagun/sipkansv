@@ -10,10 +10,11 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.css">
-    <script src="{{asset("/assets/js/commons/messages.js")}}"></script>
-    <script src="{{asset("/assets/js/commons/rules.js")}}"></script>
-    <script src="{{asset("/assets/js/commons/commons.js")}}"></script>
-    @vite(['resources/css/app.css'])Save function on edit fired
+    <link rel="stylesheet" href="{{asset("assets/css/style.css")}}">
+    <script src="{{asset("assets/js/commons/messages.js")}}"></script>
+    <script src="{{asset("assets/js/commons/rules.js")}}"></script>
+    <script src="{{asset("assets/js/commons/commons.js")}}"></script>
+    @vite(['resources/css/app.css'])
     @stack('styles')
 </head>
 <body>
@@ -69,7 +70,7 @@
 </body>
 
 @vite(['resources/js/app.js'])
-<script defer src="{{asset("/assets/js/commons/http.js")}}"></script>
+<script defer src="{{asset("assets/js/commons/http.js")}}"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.js"></script>

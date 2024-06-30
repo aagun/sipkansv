@@ -1,0 +1,9 @@
+.sipkan__has-error label {
+    color: #E02424;
+}
+
+.sipkan__has-error > input {
+    border: 3px solid #E02424 !important;
+}
+
+
