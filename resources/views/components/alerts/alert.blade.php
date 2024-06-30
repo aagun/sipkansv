@@ -1,4 +1,4 @@
-@props(['alertType' => 'danger', 'id'])
+@props(['alertType' => 'danger', 'id', 'style' => '', 'class' => ''])
 @php
     $alertTypeList = [
         'danger' => 'red',
@@ -9,6 +9,7 @@
 @endphp
 
 <div :id="{{$id}} + '_alert'"
+     style="{{$style}}"
      class="opacity-0 hidden flex justify-between p-3 mb-4 text-{{$alertTypeList[$alertType]}}-800 rounded-lg bg-{{$alertTypeList[$alertType]}}-50 dark:bg-gray-800 dark:text-{{$alertTypeList[$alertType]}}-400"
      role="alert">
     <div class="ms-3 text-sm font-medium" data-message>

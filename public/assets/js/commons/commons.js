@@ -142,9 +142,26 @@ function _sipkan_toggleModal(id) {
     document.querySelector(`[data-modal-toggle="${id}"]`).click();
 }
 
+function _sipkan_cleanInputs(data) {
+    Object.entries(data)
+        .forEach(([key, detail]) => $(`#${detail.id}`).val(''));
+}
+
 function _sipkan_cleanAlert(id) {
     const objParentError = $(`#${id}_alert`)
     $('div[data-message]', objParentError).empty();
+}
+
+function _sipkan_clearAlertList(id) {
+    const alertList = $(`#${id}_alert_list`);
+    alertList.addClass('opacity-0 hidden')
+    $('ul.list-inside', alertList).empty();
+}
+
+function _sipkan_clearAlert(id) {
+    const alertList = $(`#${id}_alert`);
+    alertList.addClass('opacity-0 hidden')
+    $('div[data-message]', alertList).empty();
 }
 
 function _sipkan_closeAlert(id) {

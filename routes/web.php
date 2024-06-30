@@ -45,9 +45,8 @@ Route::prefix("/dashboard")
         Route::prefix("/data")->name("data.")
             ->group(function() {
                 Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("comity");
-                Route::get("/pangkat", fn () => view("components.dashboard.masterdata.rank"))->name("ranks");
+                Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("ranks");
                 Route::get("/jabatan", fn () => view("components.dashboard.masterdata.position"))->name("position");
-                Route::get("/golongan-ruang", fn () => view("components.dashboard.masterdata.comity"))->name("comity");
                 Route::get("/pendidikan", fn () => view("components.dashboard.masterdata.education"))->name("education");
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/instansi", fn () => view("components.dashboard.masterdata.institution"))->name("institution");

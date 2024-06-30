@@ -1,6 +1,6 @@
 @extends('layout');
 
-@section('title', 'Golongan');
+@section('title', 'Pangkat');
 
 @section('content')
     <!-- Breadcrumb -->
@@ -23,21 +23,21 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m1 9 4-4-4-4"/>
                     </svg>
-                    <a href="#" class="breadcrumb__item ms-1 text-sm font-medium text-gray-700 md:ms-2">Golongan</a>
+                    <a href="#" class="breadcrumb__item ms-1 text-sm font-medium text-gray-700 md:ms-2">Pangkat</a>
                 </div>
             </li>
         </ol>
     </nav>
 
     <div x-data>
-            <h2 class="text-3xl md:text-4xl mt-5 mb-5 font-extrabold dark:text-white">Data Master Golongan</h2>
+            <h2 class="text-3xl md:text-4xl mt-5 mb-5 font-extrabold dark:text-white">Data Master Pangkat</h2>
             <div class="mt-2 w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <div class="flex gap-3 justify-center md:justify-start mb-4">
                     <button
-                        @click="() => $store?.gradeLevelStoreCreate?.setOptions()"
+                        @click="() => $store?.rankStoreCreate?.setOptions()"
                         type="button"
-                        data-modal-target="gradeLevelCreate_createModal"
-                        data-modal-show="gradeLevelCreate_createModal"
+                        data-modal-target="rankCreate_createModal"
+                        data-modal-show="rankCreate_createModal"
                         class="w-full md:w-fit px-3 py-2.5 text-sm font-medium text-white flex gap-2 justify-center md:inline-flex md:items-center bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
@@ -45,7 +45,7 @@
                         <span>Tambah Data</span>
                     </button>
                     <button
-                        onclick="gradeLevelRefreshTable()"
+                        onclick="rankResetTable()"
                         type="button"
                         class="w-full md:w-fit px-3 py-2.5 text-sm font-medium text-white flex gap-2 justify-center md:inline-flex md:items-center bg-yellow-500 hover:bg-yellow-600/90 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg text-center">
                         <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -57,7 +57,7 @@
                 <!-- Bootstrap Table -->
                 <div class="grid grid-cols-1 gap-4 mb-4">
                     <table
-                        id="tableGradeLevel"
+                        id="tableRank"
                         data-toggle="table"
                         data-pagination-h-align="right"
                         data-pagination-detail-h-align="left">
@@ -66,16 +66,16 @@
         </div>
 
         <!-- create modal -->
-        <x-modals.create key="gradeLevelStoreCreate"/>
+        <x-modals.create key="rankStoreCreate"/>
 
         <!-- Edit modal -->
-        <x-modals.edit key="gradeLevelStoreEdit"/>
+        <x-modals.edit key="rankStoreEdit"/>
 
         <!-- Delete modal -->
-        <x-modals.delete key="gradeLevelStoreDelete"/>
+        <x-modals.delete key="rankStoreDelete"/>
     </div>
 @endsection
 
 @push('scripts')
-    <script src="{{asset('assets/js/pages/masterdata/grade-level.js')}}"></script>
+    <script src="{{asset('assets/js/pages/masterdata/rank.js')}}"></script>
 @endpush
