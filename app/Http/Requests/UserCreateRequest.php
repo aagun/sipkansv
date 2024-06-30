@@ -54,7 +54,7 @@ class UserCreateRequest extends BaseRequest
                     ->numbers()
             ],
             'nip' => [
-                'nullable',
+                'required',
                 'string',
                 'min:16',
                 'max:18',
@@ -95,12 +95,12 @@ class UserCreateRequest extends BaseRequest
                 Rule::exists('educations', 'id')
             ],
             'department' => [
-                'nullable',
+                'required',
                 'numeric',
                 Rule::exists('departments', 'id')
             ],
             'institution' => [
-                'nullable',
+                'required',
                 'numeric',
                 Rule::exists('institutions', 'id')
             ],

@@ -9,6 +9,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Enums\UserStatus;
 use App\Http\Requests\PageableRequest;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Enums\UserRole;
 
 class UserController extends Controller
 {
@@ -44,6 +45,22 @@ class UserController extends Controller
             __('messages.success.retrieve'),
             $collection
         );
+    }
+
+    public function getListSupervisor(): Response
+    {
+        return $this->getUserByRoleAndPosition(UserRole::RO_OPERATOR, null);
+    }
+
+    public function getListManager(): Response
+    {
+        return $this->getUserByRoleAndPosition(UserRole::RO_SUPERVISOR, null);
+    }
+
+    private function getUserByRoleAndPosition(UserRole $role, mixed $position = null): Response
+    {
+        $collection = $this->userService->findByRoleNameAndPositionId($role, $position);
+        return ok(__('messages.success.retrieve'), $collection);
     }
 
     public function detail(int $id): Response

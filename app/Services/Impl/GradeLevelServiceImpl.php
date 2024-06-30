@@ -44,6 +44,13 @@ class GradeLevelServiceImpl implements GradeLevelService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $search = $filter['search'];
         $order = $filter['order'];
         $permissibleSort = ['name', 'description'];
@@ -51,16 +58,15 @@ class GradeLevelServiceImpl implements GradeLevelService
 
         return GradeLevel::query()
             ->when($search, function(Builder $query, $search) {
-               if (isset($search['name'])) {
-                   $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
-               }
+                if (isset($search['name'])) {
+                    $query->whereRaw("name LIKE CONCAT('%', ?, '%')", [$search['name']]);
+                }
 
-               if (isset($search['description'])) {
-                   $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
-               }
+                if (isset($search['description'])) {
+                    $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
+                }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     public function save(array $gradeLevel): Model | Builder

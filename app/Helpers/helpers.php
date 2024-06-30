@@ -21,7 +21,7 @@ if (!function_exists('validateExistenceDataById')) {
     function validateUniqueDataByName(array $payload, $serviceClass): void
     {
         $model = $serviceClass->findOne($payload['id']);
-        if (isset($payload['name']) && $model->name !== $payload['name']) {
+        if (isset($payload['name']) && strtolower($model->name) !== strtolower($payload['name'])) {
             if ($serviceClass->existsByName($payload['name'])) {
                 exceptionUnique('name');
             }

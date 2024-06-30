@@ -49,6 +49,13 @@ class RecommendationServiceImpl implements RecommendationService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter): Builder
+    {
         $search = $filter['search'];
         $order = $filter['order'];
         $permissibleSort = ['name', 'description'];
@@ -64,8 +71,7 @@ class RecommendationServiceImpl implements RecommendationService
                     $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
                 }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     public function save(array $recommendation): Model | Builder

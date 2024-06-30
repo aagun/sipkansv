@@ -217,5 +217,4 @@ class KbliControllerTest extends TestCase
         self::assertNotNull($kbli->subSector);
 
     }
-
 }

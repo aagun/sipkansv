@@ -122,7 +122,7 @@ class RoleControllerTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $payload = [];
+        $payload = ['limit' => 0];
         $response = $this->post(self::BASE_ENDPOINT . '/search', $payload);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);

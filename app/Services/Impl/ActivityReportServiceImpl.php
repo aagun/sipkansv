@@ -70,6 +70,13 @@ class ActivityReportServiceImpl implements ActivityReportService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $permissibleSort = $this->searchPermissibleSort();
         $permissibleFilter = $this->searchPermissibleFilter();
         $search = $filter['search'];
@@ -84,8 +91,7 @@ class ActivityReportServiceImpl implements ActivityReportService
                 function (Builder $query, array $search) use($permissibleFilter) {
                     $this->searchFilter($query, $search, $permissibleFilter);
                 })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     private function searchFilter(Builder $query, $search, $permissibleFilter): void
@@ -110,33 +116,49 @@ class ActivityReportServiceImpl implements ActivityReportService
     {
         return $query
             ->selectRaw(
-                "activity_reports.bap_number,
-                activities.name as activity,
-                observations.name as observation,
+                "
+                activity_reports.id as activity_report_id,
+                activity_reports.bap_number,
+                activities.id as activity_id,
+                activities.name as activity_name,
+                observations.id as observation_id,
+                observations.name as observation_name,
+                supervisors.id as supervisor_id,
                 supervisors.name as supervisor_name,
                 activity_reports.inspection_date,
                 activity_reports.company_name,
-                business_entity_types.name as business_entity_type,
+                business_entity_types.id as business_entity_type_id,
+                business_entity_types.name as business_entity_type_name,
                 activity_reports.address,
-                villages.name as village,
-                sub_districts.name as sub_district,
-                districts.name as district,
+                villages.id as village_id,
+                villages.name as village_name,
+                sub_districts.id as sub_district_id,
+                sub_districts.name as sub_district_name,
+                districts.id as district_id,
+                districts.name as district_name,
+                provinces.id as province_id,
                 provinces.name as province,
+                managers.id as manager_id,
                 managers.name as manager_name,
-                positions.name as manager_position,
+                positions.id as manager_position_id,
+                positions.name as manager_position_name,
                 managers.phone as manager_phone,
                 activity_reports.nib,
                 activity_reports.effective_date,
                 activity_reports.project_code,
-                sub_sectors.name as sub_sector,
-                kblis.name as kbli,
-                business_scales.name as business_scale,
+                sub_sectors.id as sub_sector_id,
+                sub_sectors.name as sub_sector_name,
+                kblis.id as kbli_id,
+                kblis.name as kbli_name,
+                business_scales.id as business_scale_id,
+                business_scales.name as business_scale_name,
                 activity_reports.persetujuan_kesesuaian_ruang,
                 activity_reports.persetujuan_lingkungan,
                 activity_reports.pbg_slf,
                 activity_reports.pernyataan_mandiri,
                 activity_reports.sertifikat_standar,
-                investment_types.name as investment_type,
+                investment_types.id as investment_type_id,
+                investment_types.name as investment_type_name,
                 activity_reports.latitude,
                 activity_reports.longitude,
                 activity_reports.perizinan_berusaha_atas_kegiatan_usaha,
@@ -156,7 +178,8 @@ class ActivityReportServiceImpl implements ActivityReportService
                 attachments.id as attachment_id,
                 attachments.name as attachment_name,
                 attachments.link as attachment_link,
-                recommendations.name as recommendation
+                recommendations.id as recommendation_id,
+                recommendations.name as recommendation_name
             ");
     }
 
@@ -214,7 +237,9 @@ class ActivityReportServiceImpl implements ActivityReportService
     {
         return $query
             ->selectRaw(
-                "activity_reports.bap_number,
+                "
+                activity_reports.id as activity_report_id,
+                activity_reports.bap_number,
                 activities.name as activity,
                 observations.name as observation,
                 supervisors.name as supervisor_name,
@@ -267,22 +292,22 @@ class ActivityReportServiceImpl implements ActivityReportService
     private function searchJoinTable(Builder $query): Builder
     {
         return $query
-            ->join('activities', 'activities.id', '=', 'activity_reports.activity_id')
-            ->join('observations', 'observations.id', '=', 'activity_reports.observation_id')
-            ->join('users as supervisors', 'supervisors.id', '=', 'activity_reports.supervisor_id')
-            ->join('business_entity_types', 'business_entity_types.id', '=', 'activity_reports.business_entity_type_id')
-            ->join('villages', 'villages.id', '=', 'activity_reports.village_id')
-            ->join('sub_districts', 'sub_districts.id', '=', 'activity_reports.sub_district_id')
-            ->join('districts', 'districts.id', '=', 'activity_reports.district_id')
-            ->join('provinces', 'provinces.id', '=', 'activity_reports.province_id')
-            ->join('users as managers', 'managers.id', '=', 'activity_reports.manager_id')
+            ->leftJoin('activities', 'activities.id', '=', 'activity_reports.activity_id')
+            ->leftJoin('observations', 'observations.id', '=', 'activity_reports.observation_id')
+            ->leftJoin('users as supervisors', 'supervisors.id', '=', 'activity_reports.supervisor_id')
+            ->leftJoin('business_entity_types', 'business_entity_types.id', '=', 'activity_reports.business_entity_type_id')
+            ->leftJoin('villages', 'villages.id', '=', 'activity_reports.village_id')
+            ->leftJoin('sub_districts', 'sub_districts.id', '=', 'activity_reports.sub_district_id')
+            ->leftJoin('districts', 'districts.id', '=', 'activity_reports.district_id')
+            ->leftJoin('provinces', 'provinces.id', '=', 'activity_reports.province_id')
+            ->leftJoin('users as managers', 'managers.id', '=', 'activity_reports.manager_id')
             ->leftJoin('positions', 'positions.id', '=', 'managers.position_id')
-            ->join('kblis', 'kblis.id', '=', 'activity_reports.kbli_id')
-            ->join('sub_sectors', 'sub_sectors.id', '=', 'kblis.sub_sector_id')
-            ->join('business_scales', 'business_scales.id', '=', 'activity_reports.business_scale_id')
-            ->join('investment_types', 'investment_types.id', '=', 'activity_reports.investment_type_id')
-            ->join('attachments', 'attachments.id', '=', 'activity_reports.attachment_id')
-            ->join('recommendations', 'recommendations.id', '=', 'activity_reports.recommendation_id');
+            ->leftJoin('kblis', 'kblis.id', '=', 'activity_reports.kbli_id')
+            ->leftJoin('sub_sectors', 'sub_sectors.id', '=', 'kblis.sub_sector_id')
+            ->leftJoin('business_scales', 'business_scales.id', '=', 'activity_reports.business_scale_id')
+            ->leftJoin('investment_types', 'investment_types.id', '=', 'activity_reports.investment_type_id')
+            ->leftJoin('attachments', 'attachments.id', '=', 'activity_reports.attachment_id')
+            ->leftJoin('recommendations', 'recommendations.id', '=', 'activity_reports.recommendation_id');
     }
 
     private function searchPermissibleFilter(): array

@@ -49,6 +49,16 @@ class DistrictServiceImpl  implements DistrictService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(
+                perPage: $filter['limit'],
+                page: $filter['offset']
+            );
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $permissibleSort = [
             'district_id' => 'districts.id',
             'district_name' => 'districts.name',
@@ -74,11 +84,7 @@ class DistrictServiceImpl  implements DistrictService
                     $query->whereRaw("provinces.id = ?", [$search['province_id']]);
                 }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(
-                perPage: $filter['limit'],
-                page: $filter['offset']
-            );
+            ->orderByRaw("$sort $order");
     }
 
     public function save(array $district): Model | Builder
