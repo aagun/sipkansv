@@ -53,10 +53,10 @@ Route::prefix("/dashboard")
                 Route::get("/kegiatan", fn () => view("pages.masterdata.activity"))->name("observation");
                 Route::get("/pendidikan", fn () => view("pages.masterdata.education"))->name("education");
                 Route::get("/rekomendasi", fn () => view("pages.masterdata.recommendation"))->name("education");
+                Route::get("/skala-bisnis", fn () => view("pages.masterdata.business-scale"))->name("business-entity");
 
                 Route::get("/unit-kerja", fn () => view("components.dashboard.masterdata.department"))->name("department");
                 Route::get("/status-badan-usaha", fn () => view("components.dashboard.masterdata.business-entity-type"))->name("business-entity");
-                Route::get("/skala-usaha", fn () => view("components.dashboard.masterdata.business-scale"))->name("business-entity");
                 Route::get("/tingkat-kepatuhan", fn () => view("components.dashboard.masterdata.recommendation"))->name("recommendation");
                 Route::get("/kbli", fn () => view("components.dashboard.masterdata.kbli"))->name("kbli");
             });
