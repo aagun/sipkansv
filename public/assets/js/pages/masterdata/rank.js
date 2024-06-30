@@ -1,33 +1,64 @@
 /**
- * Grade level global config
+ * Rank global config
  * */
-const GRADE_LEVEL_BASEURL = 'http://localhost:8000';
-const GRADE_LEVEL_BASE_ENDPOINT = '/grade-levels';
-const GRADE_LEVEL_API_SEARCH = `${GRADE_LEVEL_BASEURL}${GRADE_LEVEL_BASE_ENDPOINT}/search`;
-const GRADE_LEVEL_EDIT = 'gradeLevelEdit';
-const GRADE_LEVEL_DELETE = 'gradeLevelDelete';
+const RANK_BASEURL = 'http://localhost:8000';
+const RANK_BASE_ENDPOINT = '/ranks';
+const RANK_API_SEARCH = `${RANK_BASEURL}${RANK_BASE_ENDPOINT}/search`;
+const RANK_EDIT = 'rankEdit';
+const RANK_CREATE = 'rankCreate';
+const RANK_DELETE = 'rankDelete';
+const RANK = 'Pangkat';
+const $rankTable = $('#tableRank');
 
-function gradeLevelCleanAlert(id) {
+function rankCleanAlert(id) {
     _sipkan_closeAlert(id);
     _sipkan_closeAlertList(id);
     _sipkan_cleanAlert(id);
     _sipkan_cleanAlertList(id);
 }
 
+function rankRefreshTable() {
+    $rankTable.bootstrapTable('refresh', {
+        url: RANK_API_SEARCH
+    })
+}
+
 /**
  * Alpine config
  * */
-const GRADE_LEVEL_STORE_EDIT = 'gradeLevelStoreEdit';
-const GRADE_LEVEL_STORE_DELETE= 'gradeLevelStoreDelete';
+const RANK_STORE_EDIT = 'rankStoreEdit';
+const RANK_STORE_CREATE= 'rankStoreCreate';
+const RANK_STORE_DELETE= 'rankStoreDelete';
 
-function gradeLevelEditAlpineConfig() {
-    Alpine.store(GRADE_LEVEL_STORE_EDIT, {
-        prefix: GRADE_LEVEL_EDIT,
-        options: {},
+function rankCreateAlpineConfig() {
+    Alpine.store(RANK_STORE_CREATE, {
+        prefix: RANK_CREATE,
+        options: {
+            modalTitle: "Tambah Data" + RANK,
+            data: {
+                name: {
+                    type: 'text',
+                    id: `${this.prefix}_name`,
+                    name: `name`,
+                    value: '',
+                    label: `${RANK} <span class="text-red-600">*</span>`
+                },
+                description: {
+                    type: 'text',
+                    id: `${this.prefix}_description`,
+                    name: `description`,
+                    value: '',
+                    label: 'Description'
+                }
+            },
+            rules: {
+                name: ['required']
+            },
+        },
         methods: {
             cancel(e, id) {
                 e.preventDefault();
-                const options = _sipkan_getSotreData(GRADE_LEVEL_STORE_EDIT).options;
+                const options = _sipkan_getSotreData(RANK_STORE_CREATE).options;
                 for (const [attribute, item] of Object.entries(options.data)) {
                     console.log({item});
                 }
@@ -47,13 +78,8 @@ function gradeLevelEditAlpineConfig() {
                     return {[key]: item.value }
                 }
 
-                function refreshTable() {
-                    $('#tableGradeLevel').bootstrapTable('refresh', {
-                        url: GRADE_LEVEL_API_SEARCH
-                    })
-                }
 
-                let {data, hasError, objAlertList} = _sipkan_validateFormData(GRADE_LEVEL_STORE_EDIT);
+                let {data, hasError} = _sipkan_validateFormData(RANK_STORE_CREATE);
 
                 if (hasError) return false;
 
@@ -61,23 +87,86 @@ function gradeLevelEditAlpineConfig() {
                     .map(composeFormData)
                     .reduce((item, obj) => ({...item, ...obj}), {});
 
-                _sipkan_http.put(GRADE_LEVEL_BASE_ENDPOINT, data)
+                _sipkan_http.post(RANK_BASE_ENDPOINT, data)
                     .then(response => {
                         if (_sipkan_ok(response)) {
-                            _sipkan_setAlertMessage(GRADE_LEVEL_EDIT, response.data.message);
+                            _sipkan_setAlertMessage(RANK_CREATE, response.data.message);
                             setTimeout(() =>{
-                                _sipkan_closeModal(GRADE_LEVEL_EDIT + '_editModal');
-                                refreshTable();
+                                _sipkan_closeModal(RANK_CREATE + '_createModal');
+                                rankRefreshTable();
                             }, 5_000);
                         }
                     })
                     .catch(error => {
-                        _sipkan_setMessageAlertList(GRADE_LEVEL_EDIT, [_sipkan_messages.error.server]);
+                        _sipkan_setMessageAlertList(RANK_CREATE, [_sipkan_messages.error.server]);
                     })
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            gradeLevelCleanAlert(GRADE_LEVEL_EDIT);
+                            rankCleanAlert(RANK_CREATE);
+                        }, 5_000)
+                    });
+            }
+        },
+        setOptions() {
+            rankCleanAlert(RANK_CREATE);
+            _sipkan_toggleModal(RANK_CREATE + '_createModal')
+        }
+    });
+}
+function rankEditAlpineConfig() {
+    Alpine.store(RANK_STORE_EDIT, {
+        prefix: RANK_EDIT,
+        options: {},
+        methods: {
+            cancel(e, id) {
+                e.preventDefault();
+                const options = _sipkan_getSotreData(RANK_STORE_EDIT).options;
+                for (const [attribute, item] of Object.entries(options.data)) {
+                    console.log({item});
+                }
+            },
+            async save(e) {
+                e.preventDefault();
+                console.log('Save function on edit fired');
+                function cleanMarkErrors(type, id) {
+                    if (type !== 'hidden') {
+                        _sipkan_getElementLabel(id).parent()
+                            .removeClass('sipkan__has-error');
+                    }
+                }
+
+                function composeFormData([key, item]) {
+                    cleanMarkErrors(item.type, item.id);
+                    return {[key]: item.value }
+                }
+
+
+                let {data, hasError, objAlertList} = _sipkan_validateFormData(RANK_STORE_EDIT);
+
+                if (hasError) return false;
+
+                data = Object.entries(data)
+                    .map(composeFormData)
+                    .reduce((item, obj) => ({...item, ...obj}), {});
+
+                _sipkan_http.put(RANK_BASE_ENDPOINT, data)
+                    .then(response => {
+                        if (_sipkan_ok(response)) {
+                            _sipkan_setAlertMessage(RANK_EDIT, response.data.message);
+                            setTimeout(() =>{
+                                _sipkan_closeModal(RANK_EDIT + '_editModal');
+                                rankRefreshTable();
+                            }, 5_000);
+                        }
+                    })
+                    .catch(error => {
+                        _sipkan_setMessageAlertList(RANK_EDIT, [_sipkan_messages.error.server]);
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            console.log('finally');
+                            rankCleanAlert(RANK_EDIT);
                         }, 5_000)
                     });
             }
@@ -115,15 +204,15 @@ function gradeLevelEditAlpineConfig() {
                 },
             };
 
-            gradeLevelCleanAlert(GRADE_LEVEL_EDIT);
-            _sipkan_toggleModal(GRADE_LEVEL_EDIT + '_editModal')
+            rankCleanAlert(RANK_EDIT);
+            _sipkan_toggleModal(RANK_EDIT + '_editModal')
         }
     });
 }
 
-function gradeLevelDeleteAlpineConfig() {
-    Alpine.store(GRADE_LEVEL_STORE_DELETE, {
-        prefix: GRADE_LEVEL_DELETE,
+function rankDeleteAlpineConfig() {
+    Alpine.store(RANK_STORE_DELETE, {
+        prefix: RANK_DELETE,
         options: {},
         methods: {
             cancel(e, id) {
@@ -131,10 +220,9 @@ function gradeLevelDeleteAlpineConfig() {
             },
             async delete() {
                 console.log('Delete function on edit fired');
-                const {data} = _sipkan_getSotreData(GRADE_LEVEL_STORE_DELETE).options;
-                _sipkan_http.delete(`${GRADE_LEVEL_BASE_ENDPOINT}/${data.id.value}`)
+                const {data} = _sipkan_getSotreData(RANK_STORE_DELETE).options;
+                _sipkan_http.delete(`${RANK_BASE_ENDPOINT}/${data.id.value}`)
                     .then(response => {
-                        console.log({response});
                         if (_sipkan_ok(response)) {
                             _sipkan_setGlobalMessageSuccess(response.data.message);
                         } else {
@@ -142,14 +230,14 @@ function gradeLevelDeleteAlpineConfig() {
                         }
                     })
                     .catch(error => {
-                        console.log({error});
                         _sipkan_setGlobalMessageError(_sipkan_messages.error.server);
                     }).finally((params) => {
-                        _sipkan_toggleModal(GRADE_LEVEL_DELETE + '_deleteModal');
+                        _sipkan_toggleModal(RANK_DELETE + '_deleteModal');
+                        rankRefreshTable();
                         setTimeout(() => {
                             _sipkan_clearGolbalMessageSuccess();
                             _sipkan_clearGolbalMessageError();
-                        }, 5_000);
+                        }, 2_000);
                     });
             }
         },
@@ -169,63 +257,78 @@ function gradeLevelDeleteAlpineConfig() {
                     }
                 }
             };
-            _sipkan_toggleModal(GRADE_LEVEL_DELETE + '_deleteModal');
+            _sipkan_toggleModal(RANK_DELETE + '_deleteModal');
         }
     });
 }
 
 document.addEventListener('alpine:init', () => {
-    gradeLevelEditAlpineConfig();
-    gradeLevelDeleteAlpineConfig();
+    rankCreateAlpineConfig();
+    rankEditAlpineConfig();
+    rankDeleteAlpineConfig();
 });
 
 /**
  * Bootstrap table config
  * */
-function tableGradeLevel_params(params) {
+function tableRank_params(params) {
+
+
+    if (Object.hasOwn(params, 'filter')) {
+        const filter = JSON.parse(params.filter);
+        return {
+            limit: params.limit,
+            offset: (params.offset / params.limit) + 1,
+            order: params.order,
+            sort: params.sort,
+            search: filter
+        }
+    }
+
     return {
         ...params,
         offset: (params.offset / params.limit) + 1
     };
 }
 
-function tableGradeLevel_responseHandler(res) {
+function tableRank_responseHandler(res) {
     return {
         rows: res.data.data,
         total: res.data.total
     };
 }
 
-function tableGradeLevel_actions(value, row, index) {
+function tableRank_actions(value, row, index) {
     const data = btoa(JSON.stringify(row));
 
     return `
                 <div class="flex gap-4">
                     <a href="#"
                         type="button"
-                        @click="$store.${GRADE_LEVEL_STORE_EDIT}.setOptions('${data}')"
-                        data-modal-target="${GRADE_LEVEL_EDIT}_editModal"
-                        data-modal-show="${GRADE_LEVEL_EDIT}_editModal"
-                        class="font-medium text-primary-500 dark:text-primary-500 hover:underline">
+                        @click="$store.${RANK_STORE_EDIT}.setOptions('${data}')"
+                        data-modal-target="${RANK_EDIT}_editModal"
+                        data-modal-show="${RANK_EDIT}_editModal"
+                        class="font-medium text-primary-500 dark:text-primary-400 hover:underline">
                         Ubah
                     </a>
                     <a href="#"
                         type="button"
-                         @click="$store.${GRADE_LEVEL_STORE_DELETE}.setOptions('${data}')"
-                        data-modal-target="${GRADE_LEVEL_DELETE}_deleteModal"
-                        data-modal-show="${GRADE_LEVEL_DELETE}_deleteModal"
-                        class="font-medium text-red-600 dark:text-red-500 hover:underline">
+                         @click="$store.${RANK_STORE_DELETE}.setOptions('${data}')"
+                        data-modal-target="${RANK_DELETE}_deleteModal"
+                        data-modal-show="${RANK_DELETE}_deleteModal"
+                        class="font-medium text-red-500 dark:text-red-500 hover:underline">
                         Hapus
                     </a>
                 </div>
                 `
 }
 
-const $gradeLevelTable = $('#tableGradeLevel');
-$gradeLevelTable.bootstrapTable({
-    url: GRADE_LEVEL_API_SEARCH,
+$rankTable.bootstrapTable({
+    url: RANK_API_SEARCH,
     method: 'post',
+    height: 510,
     pagination: true,
+    filterControl: true,
     sidePagination: 'server',
     serverSort: true,
     paginationLoop: true,
@@ -234,8 +337,8 @@ $gradeLevelTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableGradeLevel_params,
-    responseHandler: tableGradeLevel_responseHandler,
+    queryParams: tableRank_params,
+    responseHandler: tableRank_responseHandler,
     columns: [
         {
             title: 'ID',
@@ -247,6 +350,7 @@ $gradeLevelTable.bootstrapTable({
         {
             title: 'Golongan',
             field: 'name',
+            filterControl: 'input',
             sortable: true,
             align: 'center',
         },
@@ -260,7 +364,7 @@ $gradeLevelTable.bootstrapTable({
             title: 'Aksi',
             align: 'center',
             width: 150,
-            formatter: tableGradeLevel_actions
+            formatter: tableRank_actions
         }
     ],
     loadingTemplate: () => `
@@ -273,7 +377,4 @@ $gradeLevelTable.bootstrapTable({
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>`,
-    onLoadSuccess: (...params) => {
-    }
-
 });

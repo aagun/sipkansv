@@ -34,10 +34,10 @@
             <div class="mt-2 w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <div class="flex justify-center md:justify-end mb-4">
                     <button
-                        @click="() => $store?.gradeLevelStoreCreate?.setOptions()"
+                        @click="() => $store?.rankCreate?.setOptions()"
                         type="button"
-                        data-modal-target="gradeLevelCreate_createModal"
-                        data-modal-show="gradeLevelCreate_createModal"
+                        data-modal-target="rankCreate_createModal"
+                        data-modal-show="rankCreate_createModal"
                         class="w-full md:w-fit px-5 py-2.5 text-sm font-medium text-white flex justify-center md:inline-flex md:items-center bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="w-[1rem] h-[1rem] text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="3 2 21 21">
                             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
@@ -48,7 +48,7 @@
                 <!-- Bootstrap Table -->
                 <div class="grid grid-cols-1 gap-4 mb-4">
                     <table
-                        id="tableGradeLevel"
+                        id="tableRank"
                         data-toggle="table"
                         data-pagination-h-align="right"
                         data-pagination-detail-h-align="left">
@@ -57,16 +57,16 @@
         </div>
 
         <!-- create modal -->
-        <x-modals.create key="gradeLevelStoreCreate"/>
+        <x-modals.create key="rankCreate"/>
 
         <!-- Edit modal -->
-        <x-modals.edit key="gradeLevelStoreEdit"/>
+        <x-modals.edit key="rankEdit"/>
 
         <!-- Delete modal -->
-        <x-modals.delete key="gradeLevelStoreDelete"/>
+        <x-modals.delete key="rankDelete"/>
     </div>
 @endsection
 
 @push('scripts')
-    <script src="{{asset('assets/js/masterdata/grade-level.js')}}"></script>
+    <script src="{{asset('assets/js/pages/masterdata/rank.js')}}"></script>
 @endpush
