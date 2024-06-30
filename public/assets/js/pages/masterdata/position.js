@@ -254,7 +254,7 @@ function positionDeleteAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: `Apakah anda yakin ingin menghapus data golongan ${row.name}?`,
+                modalTitle: `Apakah anda yakin ingin menghapus data <strong>${row.name}</strong>?`,
                 data: {
                     id: {
                         attribute: `id`,
@@ -263,7 +263,7 @@ function positionDeleteAlpineConfig() {
                     name: {
                         attribute: `name`,
                         value: row.name,
-                        label: `Golongan`
+                        label: POSITION
                     }
                 }
             };
@@ -357,7 +357,7 @@ $positionTable.bootstrapTable({
             width: 50,
         },
         {
-            title: 'Pangkat',
+            title: POSITION,
             field: 'name',
             filterControl: 'input',
             sortable: true,

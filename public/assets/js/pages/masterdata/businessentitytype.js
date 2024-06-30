@@ -1,5 +1,5 @@
 /**
- * Investment Type global config
+ * Business Entity Type global config
  * */
 const BUSINESS_ENTITY_TYPE_BASEURL = 'http://localhost:8000';
 const BUSINESS_ENTITY_TYPE_BASE_ENDPOINT = '/bet';
@@ -254,7 +254,7 @@ function businessEntityTypeDeleteAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: `Apakah anda yakin ingin menghapus data golongan ${row.name}?`,
+                modalTitle: `Apakah anda yakin ingin menghapus data <strong>${row.name}</strong>?`,
                 data: {
                     id: {
                         attribute: `id`,
@@ -263,7 +263,7 @@ function businessEntityTypeDeleteAlpineConfig() {
                     name: {
                         attribute: `name`,
                         value: row.name,
-                        label: `Golongan`
+                        label: BUSINESS_ENTITY_TYPE
                     }
                 }
             };

@@ -254,7 +254,7 @@ function observationDeleteAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: `Apakah anda yakin ingin menghapus data golongan ${row.name}?`,
+                modalTitle: `Apakah anda yakin ingin menghapus data <strong>${row.name}</strong>?`,
                 data: {
                     id: {
                         attribute: `id`,
@@ -263,7 +263,7 @@ function observationDeleteAlpineConfig() {
                     name: {
                         attribute: `name`,
                         value: row.name,
-                        label: `Golongan`
+                        label: OBSERVATION
                     }
                 }
             };

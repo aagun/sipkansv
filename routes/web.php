@@ -46,15 +46,17 @@ Route::prefix("/dashboard")
             ->group(function() {
                 Route::get("/golongan", fn () => view("pages.masterdata.grade-level"))->name("grade-level");
                 Route::get("/instansi", fn () => view("pages.masterdata.institution"))->name("institution");
-                Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("ranks");
+                Route::get("/pangkat", fn () => view("pages.masterdata.rank"))->name("rank");
                 Route::get("/jabatan", fn () => view("pages.masterdata.position"))->name("position");
                 Route::get("/jenis-penanaman-modal", fn () => view("pages.masterdata.investment-type"))->name("investment-type");
                 Route::get("/jenis-pengawasan", fn () => view("pages.masterdata.observation"))->name("observation");
-                Route::get("/kegiatan", fn () => view("pages.masterdata.activity"))->name("observation");
+                Route::get("/kegiatan", fn () => view("pages.masterdata.activity"))->name("activity");
                 Route::get("/pendidikan", fn () => view("pages.masterdata.education"))->name("education");
                 Route::get("/rekomendasi", fn () => view("pages.masterdata.recommendation"))->name("recommendation");
                 Route::get("/skala-bisnis", fn () => view("pages.masterdata.business-scale"))->name("business-scale");
                 Route::get("/status-badan-usaha", fn () => view("pages.masterdata.business-entity-type"))->name("business-entity-type");
+                Route::get("/sub-sektor", fn () => view("pages.masterdata.sub-sector"))->name("sub-sector");
+                Route::get("/unit-kerja", fn () => view("pages.masterdata.department"))->name("department");
             });
 
     });

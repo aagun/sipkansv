@@ -7,6 +7,7 @@ const GRADE_LEVEL_API_SEARCH = `${GRADE_LEVEL_BASEURL}${GRADE_LEVEL_BASE_ENDPOIN
 const GRADE_LEVEL_EDIT = 'gradeLevelEdit';
 const GRADE_LEVEL_CREATE = 'gradeLevelCreate';
 const GRADE_LEVEL_DELETE = 'gradeLevelDelete';
+const GRADE_LEVEL = 'Golongan';
 const $gradeLevelTable = $('#tableGradeLevel');
 
 function gradeLevelCleanAlert(id) {
@@ -251,7 +252,7 @@ function gradeLevelDeleteAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: `Apakah anda yakin ingin menghapus data golongan ${row.name}?`,
+                modalTitle: `Apakah anda yakin ingin menghapus data <strong>${row.name}</strong>?`,
                 data: {
                     id: {
                         attribute: `id`,
@@ -260,7 +261,7 @@ function gradeLevelDeleteAlpineConfig() {
                     name: {
                         attribute: `name`,
                         value: row.name,
-                        label: `Golongan`
+                        label: GRADE_LEVEL
                     }
                 }
             };
@@ -354,7 +355,7 @@ $gradeLevelTable.bootstrapTable({
             width: 50,
         },
         {
-            title: 'Golongan',
+            title: GRADE_LEVEL,
             field: 'name',
             filterControl: 'input',
             sortable: true,

@@ -184,7 +184,7 @@ function rankEditAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: "Ubah Data Golongan",
+                modalTitle: "Ubah Data " + RANK,
                 data: {
                     id: {
                         type: 'hidden',
@@ -199,7 +199,7 @@ function rankEditAlpineConfig() {
                         id: `${this.prefix}_name`,
                         name: `name`,
                         value: row.name,
-                        label: `Golongan <span class="text-red-600">*</span>`
+                        label: `${RANK} <span class="text-red-600">*</span>`
                     },
                     description: {
                         type: 'text',
@@ -254,7 +254,7 @@ function rankDeleteAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: `Apakah anda yakin ingin menghapus data golongan ${row.name}?`,
+                modalTitle: `Apakah anda yakin ingin menghapus data <strong>${row.name}</strong>?`,
                 data: {
                     id: {
                         attribute: `id`,
@@ -263,7 +263,7 @@ function rankDeleteAlpineConfig() {
                     name: {
                         attribute: `name`,
                         value: row.name,
-                        label: `Golongan`
+                        label: RANK
                     }
                 }
             };

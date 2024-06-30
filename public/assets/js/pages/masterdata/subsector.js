@@ -1,56 +1,56 @@
 /**
- * Investment Type global config
+ * Sub Sector global config
  * */
-const INVESTMENT_TYPE_BASEURL = 'http://localhost:8000';
-const INVESTMENT_TYPE_BASE_ENDPOINT = '/investment-types';
-const INVESTMENT_TYPE_API_SEARCH = `${INVESTMENT_TYPE_BASEURL}${INVESTMENT_TYPE_BASE_ENDPOINT}/search`;
-const INVESTMENT_TYPE_EDIT = 'investmentTypeEdit';
-const INVESTMENT_TYPE_CREATE = 'investmentTypeCreate';
-const INVESTMENT_TYPE_DELETE = 'investmentTypeDelete';
-const INVESTMENT_TYPE = 'Jenis Penanaman Modal';
-const $investmentTypeTable = $('#tableInvestmentType');
+const SUB_SECTOR_BASEURL = 'http://localhost:8000';
+const SUB_SECTOR_BASE_ENDPOINT = '/sub-sectors';
+const SUB_SECTOR_API_SEARCH = `${SUB_SECTOR_BASEURL}${SUB_SECTOR_BASE_ENDPOINT}/search`;
+const SUB_SECTOR_EDIT = 'subSectorEdit';
+const SUB_SECTOR_CREATE = 'subSectorCreate';
+const SUB_SECTOR_DELETE = 'subSectorDelete';
+const SUB_SECTOR = 'Sub Sektor';
+const $subSectorTable = $('#tableSubSector');
 
-function investmentTypeCleanAlert(id) {
+function subSectorCleanAlert(id) {
     _sipkan_clearAlert(id);
     _sipkan_clearAlertList(id);
 }
 
-function investmentTypeCleanUpMessage(id) {
+function subSectorCleanUpMessage(id) {
     _sipkan_cleanAlert(id);
     _sipkan_cleanAlertList(id);
 }
 
-function investmentTypeRefreshTable() {
-    $investmentTypeTable.bootstrapTable('refresh', {
-        url: INVESTMENT_TYPE_API_SEARCH
+function subSectorRefreshTable() {
+    $subSectorTable.bootstrapTable('refresh', {
+        url: SUB_SECTOR_API_SEARCH
     })
 }
 
-function investmentTypeResetTable() {
-    $investmentTypeTable.bootstrapTable('resetSearch', {
-        url: INVESTMENT_TYPE_API_SEARCH
+function subSectorResetTable() {
+    $subSectorTable.bootstrapTable('resetSearch', {
+        url: SUB_SECTOR_API_SEARCH
     })
 }
 
 /**
  * Alpine config
  * */
-const INVESTMENT_TYPE_STORE_EDIT = 'investmentTypeStoreEdit';
-const INVESTMENT_TYPE_STORE_CREATE= 'investmentTypeStoreCreate';
-const INVESTMENT_TYPE_STORE_DELETE= 'investmentTypeStoreDelete';
+const SUB_SECTOR_STORE_EDIT = 'subSectorStoreEdit';
+const SUB_SECTOR_STORE_CREATE= 'subSectorStoreCreate';
+const SUB_SECTOR_STORE_DELETE= 'subSectorStoreDelete';
 
-function investmentTypeCreateAlpineConfig() {
-    Alpine.store(INVESTMENT_TYPE_STORE_CREATE, {
-        prefix: INVESTMENT_TYPE_CREATE,
+function subSectorCreateAlpineConfig() {
+    Alpine.store(SUB_SECTOR_STORE_CREATE, {
+        prefix: SUB_SECTOR_CREATE,
         options: {
-            modalTitle: "Tambah Data " + INVESTMENT_TYPE,
+            modalTitle: "Tambah Data " + SUB_SECTOR,
             data: {
                 name: {
                     type: 'text',
                     id: `${this.prefix}_name`,
                     name: `name`,
                     value: '',
-                    label: `${INVESTMENT_TYPE} <span class="text-red-600">*</span>`
+                    label: `${SUB_SECTOR} <span class="text-red-600">*</span>`
                 },
                 description: {
                     type: 'text',
@@ -67,7 +67,7 @@ function investmentTypeCreateAlpineConfig() {
         methods: {
             cancel(e, id) {
                 e.preventDefault();
-                const options = _sipkan_getSotreData(INVESTMENT_TYPE_STORE_CREATE).options;
+                const options = _sipkan_getSotreData(SUB_SECTOR_STORE_CREATE).options;
                 for (const [attribute, item] of Object.entries(options.data)) {
                     console.log({item});
                 }
@@ -75,7 +75,7 @@ function investmentTypeCreateAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
-                investmentTypeCleanAlert(INVESTMENT_TYPE_CREATE);
+                subSectorCleanAlert(SUB_SECTOR_CREATE);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -88,7 +88,7 @@ function investmentTypeCreateAlpineConfig() {
                     return {[key]: item.value }
                 }
 
-                let {data, hasError} = _sipkan_validateFormData(INVESTMENT_TYPE_STORE_CREATE);
+                let {data, hasError} = _sipkan_validateFormData(SUB_SECTOR_STORE_CREATE);
 
                 if (hasError) return false;
 
@@ -96,42 +96,42 @@ function investmentTypeCreateAlpineConfig() {
                     .map(composeFormData)
                     .reduce((item, obj) => ({...item, ...obj}), {});
 
-                _sipkan_http.post(INVESTMENT_TYPE_BASE_ENDPOINT, data)
+                _sipkan_http.post(SUB_SECTOR_BASE_ENDPOINT, data)
                     .then(response => {
                         if (_sipkan_ok(response)) {
-                            _sipkan_setAlertMessage(INVESTMENT_TYPE_CREATE, response.data.message);
+                            _sipkan_setAlertMessage(SUB_SECTOR_CREATE, response.data.message);
                             setTimeout(() =>{
-                                _sipkan_closeModal(INVESTMENT_TYPE_CREATE + '_createModal');
-                                investmentTypeRefreshTable();
+                                _sipkan_closeModal(SUB_SECTOR_CREATE + '_createModal');
+                                subSectorRefreshTable();
                             }, 5_000);
                         }
                     })
                     .catch(error => {
-                        _sipkan_setMessageAlertList(INVESTMENT_TYPE_CREATE, [_sipkan_messages.error.server]);
+                        _sipkan_setMessageAlertList(SUB_SECTOR_CREATE, [_sipkan_messages.error.server]);
                     })
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            investmentTypeCleanAlert(INVESTMENT_TYPE_CREATE);
+                            subSectorCleanAlert(SUB_SECTOR_CREATE);
                         }, 5_000)
                     });
             }
         },
         setOptions() {
-            investmentTypeCleanAlert(INVESTMENT_TYPE_CREATE);
+            subSectorCleanAlert(SUB_SECTOR_CREATE);
             _sipkan_cleanInputs(this.options.data);
-            _sipkan_toggleModal(INVESTMENT_TYPE_CREATE + '_createModal')
+            _sipkan_toggleModal(SUB_SECTOR_CREATE + '_createModal')
         }
     });
 }
-function investmentTypeEditAlpineConfig() {
-    Alpine.store(INVESTMENT_TYPE_STORE_EDIT, {
-        prefix: INVESTMENT_TYPE_EDIT,
+function subSectorEditAlpineConfig() {
+    Alpine.store(SUB_SECTOR_STORE_EDIT, {
+        prefix: SUB_SECTOR_EDIT,
         options: {},
         methods: {
             cancel(e, id) {
                 e.preventDefault();
-                const options = _sipkan_getSotreData(INVESTMENT_TYPE_STORE_EDIT).options;
+                const options = _sipkan_getSotreData(SUB_SECTOR_STORE_EDIT).options;
                 for (const [attribute, item] of Object.entries(options.data)) {
                     console.log({item});
                 }
@@ -152,7 +152,7 @@ function investmentTypeEditAlpineConfig() {
                 }
 
 
-                let {data, hasError, objAlertList} = _sipkan_validateFormData(INVESTMENT_TYPE_STORE_EDIT);
+                let {data, hasError, objAlertList} = _sipkan_validateFormData(SUB_SECTOR_STORE_EDIT);
 
                 if (hasError) return false;
 
@@ -160,23 +160,23 @@ function investmentTypeEditAlpineConfig() {
                     .map(composeFormData)
                     .reduce((item, obj) => ({...item, ...obj}), {});
 
-                _sipkan_http.put(INVESTMENT_TYPE_BASE_ENDPOINT, data)
+                _sipkan_http.put(SUB_SECTOR_BASE_ENDPOINT, data)
                     .then(response => {
                         if (_sipkan_ok(response)) {
-                            _sipkan_setAlertMessage(INVESTMENT_TYPE_EDIT, response.data.message);
+                            _sipkan_setAlertMessage(SUB_SECTOR_EDIT, response.data.message);
                             setTimeout(() =>{
-                                _sipkan_closeModal(INVESTMENT_TYPE_EDIT + '_editModal');
-                                investmentTypeRefreshTable();
+                                _sipkan_closeModal(SUB_SECTOR_EDIT + '_editModal');
+                                subSectorRefreshTable();
                             }, 5_000);
                         }
                     })
                     .catch(error => {
-                        _sipkan_setMessageAlertList(INVESTMENT_TYPE_EDIT, [_sipkan_messages.error.server]);
+                        _sipkan_setMessageAlertList(SUB_SECTOR_EDIT, [_sipkan_messages.error.server]);
                     })
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            investmentTypeCleanAlert(INVESTMENT_TYPE_EDIT);
+                            subSectorCleanAlert(SUB_SECTOR_EDIT);
                         }, 5_000)
                     });
             }
@@ -184,7 +184,7 @@ function investmentTypeEditAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: "Ubah Data " + INVESTMENT_TYPE,
+                modalTitle: "Ubah Data " + SUB_SECTOR,
                 data: {
                     id: {
                         type: 'hidden',
@@ -199,7 +199,7 @@ function investmentTypeEditAlpineConfig() {
                         id: `${this.prefix}_name`,
                         name: `name`,
                         value: row.name,
-                        label: `${INVESTMENT_TYPE} <span class="text-red-600">*</span>`
+                        label: `${SUB_SECTOR} <span class="text-red-600">*</span>`
                     },
                     description: {
                         type: 'text',
@@ -214,15 +214,15 @@ function investmentTypeEditAlpineConfig() {
                 },
             };
 
-            investmentTypeCleanAlert(INVESTMENT_TYPE_EDIT);
-            _sipkan_toggleModal(INVESTMENT_TYPE_EDIT + '_editModal')
+            subSectorCleanAlert(SUB_SECTOR_EDIT);
+            _sipkan_toggleModal(SUB_SECTOR_EDIT + '_editModal')
         }
     });
 }
 
-function investmentTypeDeleteAlpineConfig() {
-    Alpine.store(INVESTMENT_TYPE_STORE_DELETE, {
-        prefix: INVESTMENT_TYPE_DELETE,
+function subSectorDeleteAlpineConfig() {
+    Alpine.store(SUB_SECTOR_STORE_DELETE, {
+        prefix: SUB_SECTOR_DELETE,
         options: {},
         methods: {
             cancel(e, id) {
@@ -230,8 +230,8 @@ function investmentTypeDeleteAlpineConfig() {
             },
             async delete() {
                 console.log('Delete function on edit fired');
-                const {data} = _sipkan_getSotreData(INVESTMENT_TYPE_STORE_DELETE).options;
-                _sipkan_http.delete(`${INVESTMENT_TYPE_BASE_ENDPOINT}/${data.id.value}`)
+                const {data} = _sipkan_getSotreData(SUB_SECTOR_STORE_DELETE).options;
+                _sipkan_http.delete(`${SUB_SECTOR_BASE_ENDPOINT}/${data.id.value}`)
                     .then(response => {
                         if (_sipkan_ok(response)) {
                             _sipkan_setGlobalMessageSuccess(response.data.message);
@@ -242,8 +242,8 @@ function investmentTypeDeleteAlpineConfig() {
                     .catch(error => {
                         _sipkan_setGlobalMessageError(_sipkan_messages.error.server);
                     }).finally((params) => {
-                    _sipkan_toggleModal(INVESTMENT_TYPE_DELETE + '_deleteModal');
-                    investmentTypeRefreshTable();
+                    _sipkan_toggleModal(SUB_SECTOR_DELETE + '_deleteModal');
+                    subSectorRefreshTable();
                     setTimeout(() => {
                         _sipkan_clearGolbalMessageSuccess();
                         _sipkan_clearGolbalMessageError();
@@ -263,25 +263,25 @@ function investmentTypeDeleteAlpineConfig() {
                     name: {
                         attribute: `name`,
                         value: row.name,
-                        label: INVESTMENT_TYPE
+                        label: `Golongan`
                     }
                 }
             };
-            _sipkan_toggleModal(INVESTMENT_TYPE_DELETE + '_deleteModal');
+            _sipkan_toggleModal(SUB_SECTOR_DELETE + '_deleteModal');
         }
     });
 }
 
 document.addEventListener('alpine:init', () => {
-    investmentTypeCreateAlpineConfig();
-    investmentTypeEditAlpineConfig();
-    investmentTypeDeleteAlpineConfig();
+    subSectorCreateAlpineConfig();
+    subSectorEditAlpineConfig();
+    subSectorDeleteAlpineConfig();
 });
 
 /**
  * Bootstrap table config
  * */
-function tableInvestmentType_params(params) {
+function tableSubSector_params(params) {
     if (Object.hasOwn(params, 'filter')) {
         const filter = JSON.parse(params.filter);
         return {
@@ -299,31 +299,31 @@ function tableInvestmentType_params(params) {
     };
 }
 
-function tableInvestmentType_responseHandler(res) {
+function tableSubSector_responseHandler(res) {
     return {
         rows: res.data.data,
         total: res.data.total
     };
 }
 
-function tableInvestmentType_actions(value, row, index) {
+function tableSubSector_actions(value, row, index) {
     const data = btoa(JSON.stringify(row));
 
     return `
                 <div class="flex gap-4">
                     <a href="#"
                         type="button"
-                        @click="$store.${INVESTMENT_TYPE_STORE_EDIT}.setOptions('${data}')"
-                        data-modal-target="${INVESTMENT_TYPE_EDIT}_editModal"
-                        data-modal-show="${INVESTMENT_TYPE_EDIT}_editModal"
+                        @click="$store.${SUB_SECTOR_STORE_EDIT}.setOptions('${data}')"
+                        data-modal-target="${SUB_SECTOR_EDIT}_editModal"
+                        data-modal-show="${SUB_SECTOR_EDIT}_editModal"
                         class="font-medium text-primary-500 dark:text-primary-400 hover:underline">
                         Ubah
                     </a>
                     <a href="#"
                         type="button"
-                         @click="$store.${INVESTMENT_TYPE_STORE_DELETE}.setOptions('${data}')"
-                        data-modal-target="${INVESTMENT_TYPE_DELETE}_deleteModal"
-                        data-modal-show="${INVESTMENT_TYPE_DELETE}_deleteModal"
+                         @click="$store.${SUB_SECTOR_STORE_DELETE}.setOptions('${data}')"
+                        data-modal-target="${SUB_SECTOR_DELETE}_deleteModal"
+                        data-modal-show="${SUB_SECTOR_DELETE}_deleteModal"
                         class="font-medium text-red-500 dark:text-red-500 hover:underline">
                         Hapus
                     </a>
@@ -331,8 +331,8 @@ function tableInvestmentType_actions(value, row, index) {
                 `
 }
 
-$investmentTypeTable.bootstrapTable({
-    url: INVESTMENT_TYPE_API_SEARCH,
+$subSectorTable.bootstrapTable({
+    url: SUB_SECTOR_API_SEARCH,
     method: 'post',
     height: 510,
     pagination: true,
@@ -345,8 +345,8 @@ $investmentTypeTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableInvestmentType_params,
-    responseHandler: tableInvestmentType_responseHandler,
+    queryParams: tableSubSector_params,
+    responseHandler: tableSubSector_responseHandler,
     columns: [
         {
             title: 'ID',
@@ -357,7 +357,7 @@ $investmentTypeTable.bootstrapTable({
             width: 50,
         },
         {
-            title: INVESTMENT_TYPE,
+            title: SUB_SECTOR,
             field: 'name',
             filterControl: 'input',
             sortable: true,
@@ -376,7 +376,7 @@ $investmentTypeTable.bootstrapTable({
             align: 'center',
             valign: 'middle',
             width: 150,
-            formatter: tableInvestmentType_actions
+            formatter: tableSubSector_actions
         }
     ],
     loadingTemplate: () => `
