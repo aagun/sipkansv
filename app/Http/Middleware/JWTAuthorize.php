@@ -25,6 +25,10 @@ class JWTAuthorize
             return response()->json(['error' => 'Token is missing or invalid'], 401);
         }
 
+        if ($user->role_id !== 1) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         return $next($request);
     }
 }
