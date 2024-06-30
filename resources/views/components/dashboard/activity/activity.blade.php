@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="md:mt-0 mt-[100px]">
-                    <a href="/dashboard/kegiatan/create" class="py-2 px-2  bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-primary-200 text-white w-fit transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">Tambah Laporan</a>
+                    <a href="/dashboard/kegiatan/buat" class="py-2 px-2  bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-primary-200 text-white w-fit transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">Tambah Laporan</a>
                 </div>
                 
             </div>
@@ -64,74 +64,77 @@
                 <table class="table p-4 bg-gray-100 rounded-lg shadow">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nomor (ID BAP)
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nama Kegiatan
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Jenis Pengawasan
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nama Pengawas
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Tanggal Pemeriksaan
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nama Pelaku Usaha / Perusahaan
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Status Badan Usaha
                             </th>
-                            <th colspan="5" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="5" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Lokasi Proyek
                             </th>
-                            <th colspan="3" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="3" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nama dan Kontak Penanggung Jawab
                             </th>
-                            <th colspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nomor dan Tanggal NIB
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nomor Kode Proyek
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Sub Sektor
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 KBLI
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Skala Usaha
                             </th>
-                            <th colspan="4" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="4" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Persyaratan Dasar Perizinan Berusaha
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Sertifikat Standar
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Status Penanaman Modal
                             </th>
-                            <th colspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Titik Koordinat Lokasi Usaha
                             </th>
-                            <th colspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Kepatuhan Teknis
                             </th>
-                            <th colspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th colspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Kepatuhan Administratif
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Tingkat Kepatuhan
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Kategori Kepatuhan
                             </th>
-                            <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Rekomendasi
+                            </th>
+                            <th rowspan="2" class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                                Dokumen Pendukung
                             </th>
 
                             <th rowspan="2" class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
@@ -140,65 +143,65 @@
                         </tr>
                         {{-- table header lv 2 --}}
                         <tr>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Alamat
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Desa/Kel
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Kecamatan
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Kabupaten
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Provinsi
                             </th>
 
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Nama
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Jabatan
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Kontak
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 NIB
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Tanggal Terbit/Perubahan
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Persetujuan Kesesuaian Ruang
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Persetujuan Lingkungan
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 PBG dan SLF
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Pernyataan Mandiri
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Latitude
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Longitude
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Pemenuhan perizinan berusaha atas kegiatan usaha
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Pemenuhan standar pelaksanaan kegiatan usaha
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Penilaian pelaksanaan kegiatan usaha 
                             </th>
-                            <th class="border py-2 px-4 dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
+                            <th class="border py-2 px-4 min-w-[250px] dark:border-dark-5 whitespace-nowrap font-medium text-gray-900">
                                 Riwayat pengenaan sanksi
                             </th>
                         </tr>
@@ -208,80 +211,82 @@
                             <tr class="text-gray-700">
                                 <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.bap_number">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.activity_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.activity">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.observation_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.observation">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.supervisor_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.supervisor_name">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.inspection_date">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="formatDateRead(item.inspection_date)">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.company_name">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.company_name">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.business_entity_type">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.business_entity_type">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.address">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.address">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.village_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.village">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.sub_district_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.sub_district">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.district_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.district">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.province_idr">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.province">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.manager_name">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.manager_name">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.manager_position">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.manager_position">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.manager_phone">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.manager_phone">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.nib">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.nib">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.effective_date">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="formatDateRead(item.effective_date)">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.project_code">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.project_code">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.sub_sector">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.sub_sector">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.kbli_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.kbli">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.business_scale_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.business_scale">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.persetujuan_kesesuaian_ruang">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.persetujuan_kesesuaian_ruang">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.persetujuan_lingkungan">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.persetujuan_lingkungan">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.pbg_slf">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.pbg_slf">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.pernyataan_mandiri">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.pernyataan_mandiri">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.sertifikat_standar">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.sertifikat_standar">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.investment_type_id">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.investment_type">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.latitude">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.latitude">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.longitude">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.longitude">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.perizinan_berusaha_atas_kegiatan_usaha">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.perizinan_berusaha_atas_kegiatan_usaha">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.standar_pelaksanaan_kegiatan_usaha">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.standar_pelaksanaan_kegiatan_usaha">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.pelaksanaan_kegiatan_usaha">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.pelaksanaan_kegiatan_usaha">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.riwayat_pengenaan_sanksi">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.riwayat_pengenaan_sanksi">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="tingkat_kepatuhan_proyek">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.tingkat_kepatuhan_proyek">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="kategory_kepatuhan">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.kategory_kepatuhan">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5" x-text="item.recommendation">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-text="item.recommendation">
                                 </td>
-                                <td class="border px-3 py-1 dark:border-dark-5 flex gap-2">
-                                    <button type="button" class="px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center" x-html="`<a href='${item.attachment_link}' target='_blank' class='text-blue-600 hover:text-indigo-800 active:text-indigo-500' >${item.attachment_name}</a>`">
+                                </td>
+                                <td class="border px-3 py-1 dark:border-dark-5 text-center">
+                                    <a href="/dashboard/kegiatan/ubah" class="px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg mb-[5px]">
                                         Ubah
-                                    </button>
+                                    </a>
                                     <button @click="isDelete = !isDelete" type="button" class=" px-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                         Hapus
                                     </button>

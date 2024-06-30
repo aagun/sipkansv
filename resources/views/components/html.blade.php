@@ -17,6 +17,11 @@
 <body>
     {{ $slot }}
     <script>
+        function formatDateRead(date) {
+                const [year, month, day] = date.split('-');
+                return `${day}-${month}-${year}`;
+        }
+
         function masterDataHandler(urlCreate, urlRead, urlDelete, urlEdit) {
              return {
                 name: "",
@@ -156,16 +161,18 @@
                     axios.post("http://127.0.0.1:8000/districts/search", {limit: 0, offset: 1})
                     .then(response => {
                         this.districtData = response.data.data.data;
-                        console.log(this.districtData);
                     })
                 },
                 fetchActivityData() {
                     axios.post("http://127.0.0.1:8000/activity-reports/search")
                     .then(response=> {
                         this.activityData = response.data.data.data;
-                        console.log(this.activityData);
                     })
                 },
+                formatDateRead(date) {
+                    const [year, month, day] = date.split('-');
+                    return `${day}-${month}-${year}`;
+            },
             }
         }
 
@@ -223,13 +230,19 @@
                 dataNamaPengawas: "",
                 dataStatusBadanUsaha: "",
                 dataProvinsi: "",
+                filterProvinsi: "",
                 dataKabupaten: "",
+                filterKabupaten: "",
                 dataKecamatan: "",
+                filterKecamatan: "",
                 dataDesa: "",
+                filterDesa: "",
                 dataNamaPenanggungJawab: "",
                 dataPenanggungJawab: "",
                 dataSubSektor: "",
                 datakbli: "",
+                datakbliBackup: "",
+                carikbli: "",
                 dataSkalaUsaha: "",
                 dataStatusInvestasi: "",
                 dataKepatuhanProyek: "",
@@ -244,8 +257,23 @@
                     .then(response=> {
                         this[data] = response.data.data.data;
                     })
+
                 },
 
+                fetchDropdownkbli(url, data) {
+                    axios.post(url)
+                    .then(response=> {
+                        this[data] = response.data.data.data;
+                        this.datakbliBackup = this.datakbli;
+                    })
+                },
+                filterkbli() {
+                    if (this.carikbli == "") {
+                        this.datakbli = this.datakbliBackup;
+                        return null;
+                    }
+                    this.datakbli = this.datakbliBackup.filter( item => item.name.toLowerCase().includes(this.carikbli.toLowerCase()) );
+                },  
                 //untuk ambil data dropdown daerah
                 fetchKabupaten() {
                     axios.post(`http://127.0.0.1:8000/districts/search`, {province_id: this.province_id})
@@ -253,7 +281,6 @@
                         this.dataKabupaten = response.data.data.data;
                     })
                     .catch(error => {
-                        console.log(this.province_id);
                     })
                 } ,
                 fetchKecamatan() {
@@ -278,14 +305,37 @@
                     axios.get(`http://127.0.0.1:8000/users/${this.input.manager_id}`)
                     .then(response => {
                         this.dataPenanggungJawab = response.data.data;
-                        console.log(this.dataPenanggungJawab)
                     })
                 },
                 fileHandleChange(event) {
                     this.dokumen_pendukung= event.target.files[0];
                 },
+                formatDate(date) {
+                    const [day, month, year] = date.split('-');
+                    return `${year}-${month}-${day}`;
+                },
+                countKepatuhan() {
+                    if ( this.input.kepatuhan_teknis && this.input.perizinan_berusaha_atas_kegiatan_usaha && this.input.persyaratan_umum_usaha && this.input.persyaratan_khusus_usaha && this.input.sarana && this.input.organisasi_dan_sdm && this.input.pelayanan && this.input.persyaratan_produk && this.input.sistem_manajemen_usaha && this.input.kepatuhan_administratif && this.input.pelaksanaan_kegiatan_usaha && this.input.riwayat_pengenaan_sanksi ) {
+                        let skorKepatuhan = ( Number(this.input.kepatuhan_teknis) + Number(this.input.perizinan_berusaha_atas_kegiatan_usaha) + Number(this.input.persyaratan_umum_usaha) + Number(this.input.persyaratan_khusus_usaha) + Number(this.input.sarana) + Number(this.input.organisasi_dan_sdm) + Number(this.input.pelayanan) + Number(this.input.persyaratan_produk) + Number(this.input.sistem_manajemen_usaha) + Number(this.input.kepatuhan_administratif) + Number(this.input.pelaksanaan_kegiatan_usaha) + Number(this.input.riwayat_pengenaan_sanksi) ) / 12;
+
+                        if (skorKepatuhan > 70) {
+                            this.input.tingkat_kepatuhan_proyek = "Baik Sekali";
+                            this.input.kategory_kepatuhan = "Patuh";
+                        } else if (skorKepatuhan > 49 && skorKepatuhan < 71) {
+                            this.input.tingkat_kepatuhan_proyek = "Baik";
+                            this.input.kategory_kepatuhan = "Patuh";
+                        } else if (skorKepatuhan < 50) {
+                            this.input.tingkat_kepatuhan_proyek = "Kurang Baik";
+                            this.input.kategory_kepatuhan = "TIdak Patuh";
+                        }
+
+                    }
+                },
                 
                 submitHandler() {
+                    this.input.inspection_date = this.formatDate(this.input.inspection_date);
+                    this.input.effective_date = this.formatDate(this.input.effective_date);
+                    
                     let formData = new FormData();
 
                     formData.append("dokumen_pendukung", this.dokumen_pendukung);
@@ -318,13 +368,6 @@
 
             }
         }
-
-
-
-
-
-
-
 
 
 
@@ -407,11 +450,6 @@
           });
         });
        
-     </script>
-
-
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.turbo.min.js">
-         
      </script>
 </body>
 </html>

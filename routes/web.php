@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RankController;
@@ -34,13 +32,13 @@ Route::prefix("/dashboard")
         Route::prefix('/users')
             ->group(function () {
                 Route::get("/", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
-                Route::get("/create", fn () => view("components.dashboard.users.form-users"))->name("users");
+                Route::get("/buat", fn () => view("components.dashboard.users.form-users"))->name("users");
             });
 
         Route::prefix('/kegiatan')
             ->group(function () {
                 Route::get("/", fn () => view("components.dashboard.activity.activity"))->name("index");
-                Route::get("/create", fn () => view("components.dashboard.activity.form-activity"))->name("users");
+                Route::get("/buat", fn () => view("components.dashboard.activity.form-activity"))->name("users");
             });
 
         Route::prefix("/data")->name("data.")
@@ -142,6 +140,8 @@ Route::prefix('users')
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');
+        Route::get('/spv', 'getListSupervisor');
+        Route::get('/mgr', 'getListManager');
         Route::get('/{id}', 'detail');
         Route::delete('/{id}', 'delete');
     });

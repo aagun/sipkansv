@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Enums\UserStatus;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Enums\UserRole;
 
 class UserServiceImpl implements UserService
 {
@@ -19,6 +20,52 @@ class UserServiceImpl implements UserService
     public function findByName(string $name): Builder | Model | null
     {
         return User::query()->where('name', $name)->first();
+    }
+
+    public function findByRoleNameAndPositionId(UserRole $roleName, mixed $positionId = null): LengthAwarePaginator
+    {
+        $search = [
+            'role_nam' => $roleName,
+            'position_id' => $positionId
+        ];
+        return $this
+            ->findByRoleNameAndPositionIdQuery(User::query(), $search)
+            ->paginate(perPage: $this->findByRoleNameAndPositionIdQuery(User::query(), $search)->count());
+    }
+
+    public function findByRoleNameAndPositionIdQuery(Builder $query, $search)
+    {
+        return $query->select([
+                'users.id AS user_id',
+                'users.name AS full_name',
+                'positions.name AS position',
+                'users.nip AS nip',
+                'roles.name AS role',
+                'ranks.name AS rank_name',
+                'grade_levels.name AS grade_level',
+                'educations.name AS education',
+                'departments.name AS department',
+                'institutions.name AS institution',
+                'users.phone AS phone',
+                'users.email AS email',
+                'users.username AS username',
+            ])
+            ->leftJoin('roles', 'roles.id' ,'=', 'users.role_id')
+            ->leftJoin('positions', 'positions.id' ,'=', 'users.position_id')
+            ->leftJoin('ranks', 'ranks.id' ,'=', 'users.rank_id')
+            ->leftJoin('grade_levels', 'grade_levels.id' ,'=', 'users.grade_level_id')
+            ->leftJoin('educations', 'educations.id' ,'=', 'users.education_id')
+            ->leftJoin('departments', 'departments.id' ,'=', 'users.department_id')
+            ->leftJoin('institutions', 'institutions.id' ,'=', 'users.institution_id')
+            ->when($search, function (Builder $query, array $search) {
+                if (isset($search['position_id'])) {
+                    $query->where('users.position_id', $search['position_id']);
+                }
+
+                if (isset($search['role_name'])) {
+                    $query->where('roles.name', $search['role_name']);
+                }
+            });
     }
 
     public function exists(int $id): bool
@@ -57,6 +104,18 @@ class UserServiceImpl implements UserService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        $query = User::query();
+        if ($filter['limit'] == 0) {
+            $filter['limit'] = $this->searchMainQuery($query, $filter)->count();
+        }
+
+        $query = User::query();
+        return $this->searchMainQuery($query, $filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(Builder $query, $filter)
+    {
         $permissibleSort = [
             'full_name' => 'users.name',
             'position' => 'positions.name',
@@ -74,29 +133,28 @@ class UserServiceImpl implements UserService
         $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['full_name']);
         $order = $filter['order'];
 
-        return User::query()
-            ->select([
-                'users.name AS full_name',
-                'users.id AS user_id',
-                'positions.name AS position',
-                'users.nip AS nip',
-                'roles.name AS role',
-                'ranks.name AS rank_name',
-                'grade_levels.name AS grade_level',
-                'educations.name AS education',
-                'departments.name AS department',
-                'institutions.name AS institution',
-                'users.phone AS phone',
-                'users.email AS email',
-                'users.username AS username',
-            ])
-            ->leftJoin('roles', 'roles.id' ,'=', 'users.role_id')
-            ->leftJoin('positions', 'positions.id' ,'=', 'users.position_id')
-            ->leftJoin('ranks', 'ranks.id' ,'=', 'users.rank_id')
-            ->leftJoin('grade_levels', 'grade_levels.id' ,'=', 'users.grade_level_id')
-            ->leftJoin('educations', 'educations.id' ,'=', 'users.education_id')
-            ->leftJoin('departments', 'departments.id' ,'=', 'users.department_id')
-            ->leftJoin('institutions', 'institutions.id' ,'=', 'users.institution_id')
+        return $query->select([
+            'users.id AS user_id',
+            'users.name AS full_name',
+            'positions.name AS position',
+            'users.nip AS nip',
+            'roles.name AS role',
+            'ranks.name AS rank_name',
+            'grade_levels.name AS grade_level',
+            'educations.name AS education',
+            'departments.name AS department',
+            'institutions.name AS institution',
+            'users.phone AS phone',
+            'users.email AS email',
+            'users.username AS username',
+        ])
+            ->leftJoin('roles', 'users.role_id' ,'=', 'roles.id')
+            ->leftJoin('positions', 'users.position_id' ,'=', 'positions.id')
+            ->leftJoin('ranks', 'users.rank_id' ,'=', 'ranks.id')
+            ->leftJoin('grade_levels', 'users.grade_level_id' ,'=', 'grade_levels.id')
+            ->leftJoin('educations', 'users.education_id' ,'=', 'educations.id')
+            ->leftJoin('departments', 'users.department_id' ,'=', 'departments.id')
+            ->leftJoin('institutions', 'users.institution_id' ,'=', 'institutions.id')
             ->when($search, function (Builder $query, array $search) {
                 if (isset($search['status'])) {
                     $query->where('users.status', $search['status']);
@@ -127,8 +185,7 @@ class UserServiceImpl implements UserService
                     $query->where('users.institution_id', $search['institution_id']);
                 }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     public function delete(int $id): bool

@@ -155,51 +155,51 @@ class ActivityReportSeeder extends Seeder
                 ],
                 [
                     'name'     => 'kepatuhan_teknis',
-                    'contents' => 80,
+                    'contents' => 80.22,
                 ],
                 [
                     'name'     => 'perizinan_berusaha_atas_kegiatan_usaha',
-                    'contents' => 80,
+                    'contents' => 80.50,
                 ],
                 [
                     'name'     => 'persyaratan_umum_usaha',
-                    'contents' => 80,
+                    'contents' => 80.64,
                 ],
                 [
                     'name'     => 'persyaratan_khusus_usaha',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'sarana',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'organisasi_dan_sdm',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'pelayanan',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'persyaratan_produk',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'sistem_manajemen_usaha',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'kepatuhan_administratif',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'pelaksanaan_kegiatan_usaha',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'riwayat_pengenaan_sanksi',
-                    'contents' => 80,
+                    'contents' => 80.99,
                 ],
                 [
                     'name'     => 'tingkat_kepatuhan_proyek',

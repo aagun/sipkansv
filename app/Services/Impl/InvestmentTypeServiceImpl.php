@@ -47,6 +47,13 @@ class InvestmentTypeServiceImpl implements InvestmentTypeService
 
     public function search(array $filter): LengthAwarePaginator
     {
+        if ($filter['limit'] == 0) $filter['limit'] = $this->searchMainQuery($filter)->count();
+        return $this->searchMainQuery($filter)
+            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+    }
+
+    private function searchMainQuery(array $filter)
+    {
         $search = $filter['search'];
         $order = $filter['order'];
         $permissibleSort = ['name', 'description'];
@@ -62,8 +69,7 @@ class InvestmentTypeServiceImpl implements InvestmentTypeService
                     $query->whereRaw("description LIKE CONCAT('%', ?, '%')", [$search['description']]);
                 }
             })
-            ->orderByRaw("$sort $order")
-            ->paginate(perPage: $filter['limit'], page: $filter['offset']);
+            ->orderByRaw("$sort $order");
     }
 
     public function save(array $investmentType): Model | Builder

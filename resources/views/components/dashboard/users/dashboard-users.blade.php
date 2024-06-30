@@ -81,7 +81,7 @@
 
         <div class="w-full">
             <div class="mt-[20px] mb-[10px]  flex justify-between">
-                <a href="/dashboard/users/create" class="py-2 px-4  bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-primary-200 text-white w-fit transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">Tambah Pengguna</a>
+                <a href="/dashboard/users/buat" class="py-2 px-4  bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-primary-200 text-white w-fit transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">Tambah Pengguna</a>
             </div>
             <div class="overflow-x-scroll p-[5px]">
                 <table class="table p-4 bg-gray-100 rounded-lg shadow">

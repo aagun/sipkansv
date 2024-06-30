@@ -66,7 +66,7 @@ class ActivityControllerTest extends TestCase
         $model = Activity::query()->first();
         $payload = [
             'id' => $model->id,
-            'name' => $model->name . 'UPDATE_NAME'
+            'name' => $model->name . 'UPDATE_NAME',
         ];
 
         $response = $this->put(self::BASE_ENDPOINT, $payload);
@@ -77,6 +77,7 @@ class ActivityControllerTest extends TestCase
 
         $payload = [
             'id' => $model->id,
+            'name' => $model->name,
             'description' => $model->description . 'UPDATE_NAME'
         ];
 
@@ -167,11 +168,12 @@ class ActivityControllerTest extends TestCase
         $response->assertInvalid(['id' => "The selected id is invalid."]);
     }
 
-    public function testInstitutionDetail()
+    public function testDetail()
     {
         $this->seed(DatabaseSeeder::class);
 
         $response = $this->get(self::BASE_ENDPOINT);
+        var_dump($response->content());
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->where('data', null)
@@ -179,7 +181,7 @@ class ActivityControllerTest extends TestCase
         );
     }
 
-    public function testInstitutionDetailSuccess()
+    public function testDetailSuccess()
     {
         $this->seed(DatabaseSeeder::class);
 

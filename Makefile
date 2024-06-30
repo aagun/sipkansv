@@ -47,3 +47,6 @@ migrate-fresh: ## Drop all tables and re-run migration(s)
 
 seed-fresh: migrate-fresh ##
 	@php artisan db:seed
+
+delog: ## Delete laravel.log file
+	@rm -rf ./storage/logs/laravel.log

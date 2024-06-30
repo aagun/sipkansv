@@ -135,14 +135,7 @@ class RankControllerTest extends TestCase
     {
         $this->seed(RankSeeder::class);
 
-        $response = $this->post(self::BASE_ENDPOINT . '/search',
-            [
-                'search' => [
-                    'name' => 'penata',
-                    'description' => 'muda'
-                ]
-        ]);
-
+        $response = $this->post(self::BASE_ENDPOINT . '/search', ['limit' => 0]);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->where('message', __('messages.success.retrieve'))

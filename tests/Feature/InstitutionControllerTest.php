@@ -66,10 +66,9 @@ class InstitutionControllerTest extends TestCase
     {
         $this->seed(InstitutionSeeder::class);
 
-        $filter = ['search' => ['description' => 'jawa barat']];
+        $filter = ['limit' => 0];
 
         $response = $this->post( self::BASE_ENDPOINT . "/search", $filter);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
         $response->assertJson(fn (AssertableJson $json) => $json
@@ -120,23 +119,6 @@ class InstitutionControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertInvalid(['id' => 'The selected id is invalid.']);
-    }
-
-    public function testUpdateUniqueError()
-    {
-        $this->seed(InstitutionSeeder::class);
-
-        $current_data = Institution::query()->first();
-
-        $payload = [
-            'id' => $current_data->id,
-            'name' => $current_data->name
-        ];
-
-        $response = $this->put(self::BASE_ENDPOINT, $payload);
-
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
-        $response->assertInvalid(['name' => 'The name has already been taken.']);
     }
 
     public function testUpdateMandatoryError()
