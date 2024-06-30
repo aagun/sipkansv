@@ -282,8 +282,6 @@ document.addEventListener('alpine:init', () => {
  * Bootstrap table config
  * */
 function tableInstitution_params(params) {
-
-
     if (Object.hasOwn(params, 'filter')) {
         const filter = JSON.parse(params.filter);
         return {
@@ -355,6 +353,7 @@ $institutionTable.bootstrapTable({
             field: 'id',
             sortable: true,
             align: 'center',
+            valign: 'middle',
             width: 50,
         },
         {
@@ -363,16 +362,19 @@ $institutionTable.bootstrapTable({
             filterControl: 'input',
             sortable: true,
             align: 'center',
+            valign: 'middle',
         },
         {
             title: 'Deskripsi',
             field: 'description',
             sortable: true,
             align: 'center',
+            valign: 'middle',
         },
         {
             title: 'Aksi',
             align: 'center',
+            valign: 'middle',
             width: 150,
             formatter: tableInstitution_actions
         }

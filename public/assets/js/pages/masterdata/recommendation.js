@@ -1,56 +1,56 @@
 /**
- * Rank global config
+ * Recommendation global config
  * */
-const RANK_BASEURL = 'http://localhost:8000';
-const RANK_BASE_ENDPOINT = '/ranks';
-const RANK_API_SEARCH = `${RANK_BASEURL}${RANK_BASE_ENDPOINT}/search`;
-const RANK_EDIT = 'rankEdit';
-const RANK_CREATE = 'rankCreate';
-const RANK_DELETE = 'rankDelete';
-const RANK = 'Pangkat';
-const $rankTable = $('#tableRank');
+const RECOMMENDATION_BASEURL = 'http://localhost:8000';
+const RECOMMENDATION_BASE_ENDPOINT = '/recommendations';
+const RECOMMENDATION_API_SEARCH = `${RECOMMENDATION_BASEURL}${RECOMMENDATION_BASE_ENDPOINT}/search`;
+const RECOMMENDATION_EDIT = 'recommendationEdit';
+const RECOMMENDATION_CREATE = 'recommendationCreate';
+const RECOMMENDATION_DELETE = 'recommendationDelete';
+const RECOMMENDATION = 'Rekomendasi';
+const $recommendationTable = $('#tableRecommendation');
 
-function rankCleanAlert(id) {
+function recommendationCleanAlert(id) {
     _sipkan_clearAlert(id);
     _sipkan_clearAlertList(id);
 }
 
-function rankCleanUpMessage(id) {
+function recommendationCleanUpMessage(id) {
     _sipkan_cleanAlert(id);
     _sipkan_cleanAlertList(id);
 }
 
-function rankRefreshTable() {
-    $rankTable.bootstrapTable('refresh', {
-        url: RANK_API_SEARCH
+function recommendationRefreshTable() {
+    $recommendationTable.bootstrapTable('refresh', {
+        url: RECOMMENDATION_API_SEARCH
     })
 }
 
-function rankResetTable() {
-    $rankTable.bootstrapTable('resetSearch', {
-        url: RANK_API_SEARCH
+function recommendationResetTable() {
+    $recommendationTable.bootstrapTable('resetSearch', {
+        url: RECOMMENDATION_API_SEARCH
     })
 }
 
 /**
  * Alpine config
  * */
-const RANK_STORE_EDIT = 'rankStoreEdit';
-const RANK_STORE_CREATE= 'rankStoreCreate';
-const RANK_STORE_DELETE= 'rankStoreDelete';
+const RECOMMENDATION_STORE_EDIT = 'recommendationStoreEdit';
+const RECOMMENDATION_STORE_CREATE= 'recommendationStoreCreate';
+const RECOMMENDATION_STORE_DELETE= 'recommendationStoreDelete';
 
-function rankCreateAlpineConfig() {
-    Alpine.store(RANK_STORE_CREATE, {
-        prefix: RANK_CREATE,
+function recommendationCreateAlpineConfig() {
+    Alpine.store(RECOMMENDATION_STORE_CREATE, {
+        prefix: RECOMMENDATION_CREATE,
         options: {
-            modalTitle: "Tambah Data " + RANK,
+            modalTitle: "Tambah Data " + RECOMMENDATION,
             data: {
                 name: {
                     type: 'text',
                     id: `${this.prefix}_name`,
                     name: `name`,
                     value: '',
-                    label: `${RANK} <span class="text-red-600">*</span>`
+                    label: `${RECOMMENDATION} <span class="text-red-600">*</span>`
                 },
                 description: {
                     type: 'text',
@@ -67,7 +67,7 @@ function rankCreateAlpineConfig() {
         methods: {
             cancel(e, id) {
                 e.preventDefault();
-                const options = _sipkan_getSotreData(RANK_STORE_CREATE).options;
+                const options = _sipkan_getSotreData(RECOMMENDATION_STORE_CREATE).options;
                 for (const [attribute, item] of Object.entries(options.data)) {
                     console.log({item});
                 }
@@ -75,7 +75,7 @@ function rankCreateAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
-                rankCleanAlert(RANK_CREATE);
+                recommendationCleanAlert(RECOMMENDATION_CREATE);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -88,7 +88,7 @@ function rankCreateAlpineConfig() {
                     return {[key]: item.value }
                 }
 
-                let {data, hasError} = _sipkan_validateFormData(RANK_STORE_CREATE);
+                let {data, hasError} = _sipkan_validateFormData(RECOMMENDATION_STORE_CREATE);
 
                 if (hasError) return false;
 
@@ -96,42 +96,42 @@ function rankCreateAlpineConfig() {
                     .map(composeFormData)
                     .reduce((item, obj) => ({...item, ...obj}), {});
 
-                _sipkan_http.post(RANK_BASE_ENDPOINT, data)
+                _sipkan_http.post(RECOMMENDATION_BASE_ENDPOINT, data)
                     .then(response => {
                         if (_sipkan_ok(response)) {
-                            _sipkan_setAlertMessage(RANK_CREATE, response.data.message);
+                            _sipkan_setAlertMessage(RECOMMENDATION_CREATE, response.data.message);
                             setTimeout(() =>{
-                                _sipkan_closeModal(RANK_CREATE + '_createModal');
-                                rankRefreshTable();
+                                _sipkan_closeModal(RECOMMENDATION_CREATE + '_createModal');
+                                recommendationRefreshTable();
                             }, 5_000);
                         }
                     })
                     .catch(error => {
-                        _sipkan_setMessageAlertList(RANK_CREATE, [_sipkan_messages.error.server]);
+                        _sipkan_setMessageAlertList(RECOMMENDATION_CREATE, [_sipkan_messages.error.server]);
                     })
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            rankCleanAlert(RANK_CREATE);
+                            recommendationCleanAlert(RECOMMENDATION_CREATE);
                         }, 5_000)
                     });
             }
         },
         setOptions() {
-            rankCleanAlert(RANK_CREATE);
+            recommendationCleanAlert(RECOMMENDATION_CREATE);
             _sipkan_cleanInputs(this.options.data);
-            _sipkan_toggleModal(RANK_CREATE + '_createModal')
+            _sipkan_toggleModal(RECOMMENDATION_CREATE + '_createModal')
         }
     });
 }
-function rankEditAlpineConfig() {
-    Alpine.store(RANK_STORE_EDIT, {
-        prefix: RANK_EDIT,
+function recommendationEditAlpineConfig() {
+    Alpine.store(RECOMMENDATION_STORE_EDIT, {
+        prefix: RECOMMENDATION_EDIT,
         options: {},
         methods: {
             cancel(e, id) {
                 e.preventDefault();
-                const options = _sipkan_getSotreData(RANK_STORE_EDIT).options;
+                const options = _sipkan_getSotreData(RECOMMENDATION_STORE_EDIT).options;
                 for (const [attribute, item] of Object.entries(options.data)) {
                     console.log({item});
                 }
@@ -152,7 +152,7 @@ function rankEditAlpineConfig() {
                 }
 
 
-                let {data, hasError, objAlertList} = _sipkan_validateFormData(RANK_STORE_EDIT);
+                let {data, hasError, objAlertList} = _sipkan_validateFormData(RECOMMENDATION_STORE_EDIT);
 
                 if (hasError) return false;
 
@@ -160,23 +160,23 @@ function rankEditAlpineConfig() {
                     .map(composeFormData)
                     .reduce((item, obj) => ({...item, ...obj}), {});
 
-                _sipkan_http.put(RANK_BASE_ENDPOINT, data)
+                _sipkan_http.put(RECOMMENDATION_BASE_ENDPOINT, data)
                     .then(response => {
                         if (_sipkan_ok(response)) {
-                            _sipkan_setAlertMessage(RANK_EDIT, response.data.message);
+                            _sipkan_setAlertMessage(RECOMMENDATION_EDIT, response.data.message);
                             setTimeout(() =>{
-                                _sipkan_closeModal(RANK_EDIT + '_editModal');
-                                rankRefreshTable();
+                                _sipkan_closeModal(RECOMMENDATION_EDIT + '_editModal');
+                                recommendationRefreshTable();
                             }, 5_000);
                         }
                     })
                     .catch(error => {
-                        _sipkan_setMessageAlertList(RANK_EDIT, [_sipkan_messages.error.server]);
+                        _sipkan_setMessageAlertList(RECOMMENDATION_EDIT, [_sipkan_messages.error.server]);
                     })
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            rankCleanAlert(RANK_EDIT);
+                            recommendationCleanAlert(RECOMMENDATION_EDIT);
                         }, 5_000)
                     });
             }
@@ -184,7 +184,7 @@ function rankEditAlpineConfig() {
         setOptions(data) {
             const row = JSON.parse(atob(data));
             this.options = {
-                modalTitle: "Ubah Data Golongan",
+                modalTitle: "Ubah Data " + RECOMMENDATION,
                 data: {
                     id: {
                         type: 'hidden',
@@ -199,7 +199,7 @@ function rankEditAlpineConfig() {
                         id: `${this.prefix}_name`,
                         name: `name`,
                         value: row.name,
-                        label: `Golongan <span class="text-red-600">*</span>`
+                        label: `${RECOMMENDATION} <span class="text-red-600">*</span>`
                     },
                     description: {
                         type: 'text',
@@ -214,15 +214,15 @@ function rankEditAlpineConfig() {
                 },
             };
 
-            rankCleanAlert(RANK_EDIT);
-            _sipkan_toggleModal(RANK_EDIT + '_editModal')
+            recommendationCleanAlert(RECOMMENDATION_EDIT);
+            _sipkan_toggleModal(RECOMMENDATION_EDIT + '_editModal')
         }
     });
 }
 
-function rankDeleteAlpineConfig() {
-    Alpine.store(RANK_STORE_DELETE, {
-        prefix: RANK_DELETE,
+function recommendationDeleteAlpineConfig() {
+    Alpine.store(RECOMMENDATION_STORE_DELETE, {
+        prefix: RECOMMENDATION_DELETE,
         options: {},
         methods: {
             cancel(e, id) {
@@ -230,8 +230,8 @@ function rankDeleteAlpineConfig() {
             },
             async delete() {
                 console.log('Delete function on edit fired');
-                const {data} = _sipkan_getSotreData(RANK_STORE_DELETE).options;
-                _sipkan_http.delete(`${RANK_BASE_ENDPOINT}/${data.id.value}`)
+                const {data} = _sipkan_getSotreData(RECOMMENDATION_STORE_DELETE).options;
+                _sipkan_http.delete(`${RECOMMENDATION_BASE_ENDPOINT}/${data.id.value}`)
                     .then(response => {
                         if (_sipkan_ok(response)) {
                             _sipkan_setGlobalMessageSuccess(response.data.message);
@@ -242,13 +242,13 @@ function rankDeleteAlpineConfig() {
                     .catch(error => {
                         _sipkan_setGlobalMessageError(_sipkan_messages.error.server);
                     }).finally((params) => {
-                        _sipkan_toggleModal(RANK_DELETE + '_deleteModal');
-                        rankRefreshTable();
-                        setTimeout(() => {
-                            _sipkan_clearGolbalMessageSuccess();
-                            _sipkan_clearGolbalMessageError();
-                        }, 2_000);
-                    });
+                    _sipkan_toggleModal(RECOMMENDATION_DELETE + '_deleteModal');
+                    recommendationRefreshTable();
+                    setTimeout(() => {
+                        _sipkan_clearGolbalMessageSuccess();
+                        _sipkan_clearGolbalMessageError();
+                    }, 2_000);
+                });
             }
         },
         setOptions(data) {
@@ -267,21 +267,21 @@ function rankDeleteAlpineConfig() {
                     }
                 }
             };
-            _sipkan_toggleModal(RANK_DELETE + '_deleteModal');
+            _sipkan_toggleModal(RECOMMENDATION_DELETE + '_deleteModal');
         }
     });
 }
 
 document.addEventListener('alpine:init', () => {
-    rankCreateAlpineConfig();
-    rankEditAlpineConfig();
-    rankDeleteAlpineConfig();
+    recommendationCreateAlpineConfig();
+    recommendationEditAlpineConfig();
+    recommendationDeleteAlpineConfig();
 });
 
 /**
  * Bootstrap table config
  * */
-function tableRank_params(params) {
+function tableRecommendation_params(params) {
     if (Object.hasOwn(params, 'filter')) {
         const filter = JSON.parse(params.filter);
         return {
@@ -299,31 +299,31 @@ function tableRank_params(params) {
     };
 }
 
-function tableRank_responseHandler(res) {
+function tableRecommendation_responseHandler(res) {
     return {
         rows: res.data.data,
         total: res.data.total
     };
 }
 
-function tableRank_actions(value, row, index) {
+function tableRecommendation_actions(value, row, index) {
     const data = btoa(JSON.stringify(row));
 
     return `
                 <div class="flex gap-4">
                     <a href="#"
                         type="button"
-                        @click="$store.${RANK_STORE_EDIT}.setOptions('${data}')"
-                        data-modal-target="${RANK_EDIT}_editModal"
-                        data-modal-show="${RANK_EDIT}_editModal"
+                        @click="$store.${RECOMMENDATION_STORE_EDIT}.setOptions('${data}')"
+                        data-modal-target="${RECOMMENDATION_EDIT}_editModal"
+                        data-modal-show="${RECOMMENDATION_EDIT}_editModal"
                         class="font-medium text-primary-500 dark:text-primary-400 hover:underline">
                         Ubah
                     </a>
                     <a href="#"
                         type="button"
-                         @click="$store.${RANK_STORE_DELETE}.setOptions('${data}')"
-                        data-modal-target="${RANK_DELETE}_deleteModal"
-                        data-modal-show="${RANK_DELETE}_deleteModal"
+                         @click="$store.${RECOMMENDATION_STORE_DELETE}.setOptions('${data}')"
+                        data-modal-target="${RECOMMENDATION_DELETE}_deleteModal"
+                        data-modal-show="${RECOMMENDATION_DELETE}_deleteModal"
                         class="font-medium text-red-500 dark:text-red-500 hover:underline">
                         Hapus
                     </a>
@@ -331,8 +331,8 @@ function tableRank_actions(value, row, index) {
                 `
 }
 
-$rankTable.bootstrapTable({
-    url: RANK_API_SEARCH,
+$recommendationTable.bootstrapTable({
+    url: RECOMMENDATION_API_SEARCH,
     method: 'post',
     height: 510,
     pagination: true,
@@ -345,19 +345,19 @@ $rankTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableRank_params,
-    responseHandler: tableRank_responseHandler,
+    queryParams: tableRecommendation_params,
+    responseHandler: tableRecommendation_responseHandler,
     columns: [
         {
             title: 'ID',
             field: 'id',
             sortable: true,
             align: 'center',
-            valign: 'middle',
             width: 50,
+            valign: 'middle',
         },
         {
-            title: 'Pangkat',
+            title: RECOMMENDATION,
             field: 'name',
             filterControl: 'input',
             sortable: true,
@@ -376,7 +376,7 @@ $rankTable.bootstrapTable({
             align: 'center',
             valign: 'middle',
             width: 150,
-            formatter: tableRank_actions
+            formatter: tableRecommendation_actions
         }
     ],
     loadingTemplate: () => `

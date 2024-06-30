@@ -279,8 +279,6 @@ document.addEventListener('alpine:init', () => {
  * Bootstrap table config
  * */
 function tableGradeLevel_params(params) {
-
-
     if (Object.hasOwn(params, 'filter')) {
         const filter = JSON.parse(params.filter);
         return {
@@ -352,6 +350,7 @@ $gradeLevelTable.bootstrapTable({
             field: 'id',
             sortable: true,
             align: 'center',
+            valign: 'middle',
             width: 50,
         },
         {
@@ -360,16 +359,19 @@ $gradeLevelTable.bootstrapTable({
             filterControl: 'input',
             sortable: true,
             align: 'center',
+            valign: 'middle',
         },
         {
             title: 'Deskripsi',
             field: 'description',
             sortable: true,
             align: 'center',
+            valign: 'middle',
         },
         {
             title: 'Aksi',
             align: 'center',
+            valign: 'middle',
             width: 150,
             formatter: tableGradeLevel_actions
         }
