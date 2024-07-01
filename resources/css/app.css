@@ -41,7 +41,7 @@
     }
 
     .active {
-        @apply bg-primary-50 text-primary-500
+        @apply bg-primary-50 !text-primary-500
     }
 
     .active svg {
@@ -87,4 +87,5 @@
     .sipkan__has-error > input {
         @apply !border-[3px] !border-red-600 focus:!ring-red-600 focus:!border-red-600
     }
+
 }

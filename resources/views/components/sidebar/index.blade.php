@@ -29,7 +29,7 @@
                 </svg>
             </x-sidebar.list.item>
             <li>
-                <x-sidebar.nested.toggle target="dropdown-master-data">
+                <x-sidebar.nested.toggle target="dropdown-master-data" active="{{request()->routeIs('dashboard.data.*')}}">
                     <svg
                         aria-hidden="true"
                         class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 sidebar__item__icon-hover"
@@ -53,20 +53,76 @@
                     </svg>
                 </x-sidebar.nested.toggle>
                 <x-sidebar.nested.list id="dropdown-master-data">
-                    <x-sidebar.nested.list.item>Golongan</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Instansi</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Jabatan</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Jenis Penanaman Modal</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Jenis Pengawasan</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>KBLI</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Kegiatan</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Pangkat</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Pendidikan</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Rekomendasi</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Skala Bisnis</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Status Badan Usaha</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Sub Sektor</x-sidebar.nested.list.item>
-                    <x-sidebar.nested.list.item>Unit Kerja</x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.grade-level')}}"
+                        active="{{request()->routeIs('dashboard.data.grade-level')}}">
+                        Golongan
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.institution')}}"
+                        active="{{request()->routeIs('dashboard.data.institution')}}">
+                        Instansi
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.position')}}"
+                        active="{{request()->routeIs('dashboard.data.position')}}">
+                        Jabatan
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.investment-type')}}"
+                        active="{{request()->routeIs('dashboard.data.investment-type')}}">
+                        Jenis Penanaman Modal
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.observation')}}"
+                        active="{{request()->routeIs('dashboard.data.observation')}}">
+                        Jenis Pengawasan
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.kbli')}}"
+                        active="{{request()->routeIs('dashboard.data.kbli')}}">
+                        KBLI
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.activity')}}"
+                        active="{{request()->routeIs('dashboard.data.activity')}}">
+                        Kegiatan
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.rank')}}"
+                        active="{{request()->routeIs('dashboard.data.rank')}}">
+                        Pangkat
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.education')}}"
+                        active="{{request()->routeIs('dashboard.data.education')}}">
+                        Pendidikan
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.recommendation')}}"
+                        active="{{request()->routeIs('dashboard.data.recommendation')}}">
+                        Rekomendasi
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.business-scale')}}"
+                        active="{{request()->routeIs('dashboard.data.business-scale')}}">
+                        Skala Bisnis
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.business-entity-type')}}"
+                        active="{{request()->routeIs('dashboard.data.business-entity-type')}}">
+                        Status Badan Usaha
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.sub-sector')}}"
+                        active="{{request()->Is('dashboard.data.sub-sector')}}">
+                        Sub Sektor
+                    </x-sidebar.nested.list.item>
+                    <x-sidebar.nested.list.item
+                        href="{{route('dashboard.data.department')}}"
+                        active="{{request()->routeIs('dashboard.data.department')}}">
+                        Unit Kerja
+                    </x-sidebar.nested.list.item>
                 </x-sidebar.nested.list>
             </li>
             <x-sidebar.list.item label="Laporan Kegiatan">

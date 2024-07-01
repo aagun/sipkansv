@@ -106,16 +106,20 @@ class ActivityReportController extends Controller
         $complianceCategory = $this->getComplianceCategory($complianceCategoryScore);
 
         if (strtolower($payload[ 'tingkat_kepatuhan_proyek' ]) !== strtolower($complianceRate->value)) {
+            $errors = ['tingkat_kepatuhan_proyek' => [__('validation.exists', ['attribute' => 'tingkat_kepatuhan_proyek'])]];
             return error(
                 null,
-                __('validation.exists', ['attribute' => 'tingkat_kepatuhan_proyek'])
+                null,
+                $errors
             );
         }
 
         if (strtolower($payload[ 'kategory_kepatuhan' ]) !== strtolower($complianceCategory->value)) {
+            $errors = ['kategory_kepatuhan' => [__('validation.exists', ['attribute' => 'kategory_kepatuhan'])]];
             return error(
                 null,
-                __('validation.exists', ['attribute' => 'kategory_kepatuhan'])
+                null,
+                $errors
             );
         };
 
@@ -138,12 +142,13 @@ class ActivityReportController extends Controller
     {
         $payload = $request->validated();
 
-        
-
+        // validate sub sector
         if (isset($payload[ 'sub_sector_id' ]) && !$this->kbliService->existsBySubSectorId($payload[ 'sub_sector_id' ])) {
+            $errors = ['sub_sector_id' => [__('validation.exists', ['attribute' => 'sub_sector_id'])]];
             return error(
                 null,
-                __('validation.exists', ['attribute' => 'sub_sector_id'])
+                null,
+                $errors
             );
         }
 
@@ -161,7 +166,6 @@ class ActivityReportController extends Controller
                 'name' => $filename,
                 'link' => $link,
             ]);
-
         }
 
 

@@ -57,6 +57,7 @@ Route::prefix("/dashboard")
                 Route::get("/status-badan-usaha", fn () => view("pages.masterdata.business-entity-type"))->name("business-entity-type");
                 Route::get("/sub-sektor", fn () => view("pages.masterdata.sub-sector"))->name("sub-sector");
                 Route::get("/unit-kerja", fn () => view("pages.masterdata.department"))->name("department");
+                Route::get("/kbli", fn () => view("pages.masterdata.kbli"))->name("kbli");
             });
 
     });

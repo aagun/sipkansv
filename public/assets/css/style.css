@@ -6,4 +6,12 @@
     border: 3px solid #E02424 !important;
 }
 
+.sipkan__has-error > select {
+    border: 3px solid #E02424 !important;
+}
+
+[name="clearSearch"] {
+    display: none;
+}
+
 

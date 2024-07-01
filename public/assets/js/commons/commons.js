@@ -1,3 +1,5 @@
+// noinspection t
+
 function _sipkan_getSotreData($storeKey) {
     return Alpine.store($storeKey);
 }
@@ -20,7 +22,7 @@ function _sipkan_getElementLabelText(id) {
     return label.replace('*', '').trim();
 
 }
-function _sipkan_getErrorMessage(rule, attribute, elementId) {
+function _sipkan_getErrorMessage(rule, elementId) {
     let label = _sipkan_getElementLabelText(elementId);
     return _sipkan_messages.error[rule](label)
 }
@@ -35,7 +37,6 @@ function _sipkan_setMessageAlertList(id, messages) {
 
     objErrorList.empty();
     objParentErrorList.removeClass('opacity-0 hidden');
-
 
     if (typeof messages === 'string') {
         objErrorList.append(messages);
@@ -112,12 +113,17 @@ function _sipkan_validateFormData(storeKey) {
     if (options?.rules) {
         for (const [attribute, rules] of Object.entries(options.rules)) {
             for (const rule of rules) {
-                const value = data[attribute].value;
-                const elementId = data[attribute].id;
+                const values = data[attribute];
+                const elementId = values.id;
+                const value = values.value;
+
+                _sipkan_getElementLabel(elementId).parent()
+                    .removeClass('sipkan__has-error')
+
                 if (!_sipkan_isValidInput(rule, value)) {
                     errors.push({
                         objParent: _sipkan_getElementLabel(elementId).parent(),
-                        message: `<li>${_sipkan_getErrorMessage(rule, attribute, elementId)}</li>`
+                        message: `<li>${_sipkan_getErrorMessage(rule, elementId)}</li>`
                     });
                 }
             }
@@ -179,4 +185,8 @@ function _sipkan_closeAlertList(id) {
 
 function _sipkan_ok(response) {
     return response.data.status === 'success';
+}
+
+function _sipkan_clearFilterBootstrapTable() {
+    $('[name="clearSearch"]').click();
 }

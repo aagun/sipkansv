@@ -69,9 +69,10 @@ class KbliServiceImpl implements KbliService
         $search = $filter['search'];
         $order = $filter['order'];
         $permissibleSort = [
+            'id' => 'kblis.id',
             'code' => 'kblis.code',
             'name' => 'kblis.name',
-            'sub_sector' => 'sub_sectors.name'
+            'sub_sector_name' => 'sub_sectors.name'
         ];
         $sort = validateObjectSort($filter, $permissibleSort, $permissibleSort['code']);
         return Kbli::query()
@@ -93,8 +94,12 @@ class KbliServiceImpl implements KbliService
                     $query->whereRaw("kblis.name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
 
-                if (isset($search['sub_sector'])) {
-                    $query->whereRaw("sub_sectors.id = ? ", [$search['sub_sector']]);
+                if (isset($search['sub_sector_id'])) {
+                    $query->whereRaw("sub_sectors.id = ? ", [$search['sub_sector_id']]);
+                }
+
+                if (isset($search['sub_sector_name'])) {
+                    $query->whereRaw("sub_sectors.name LIKE CONCAT('%', ?, '%') ", [$search['sub_sector_name']]);
                 }
             })
             ->orderByRaw("$sort $order");

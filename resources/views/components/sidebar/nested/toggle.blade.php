@@ -1,4 +1,8 @@
-@props(['target' => 'item-drop', 'label' => "Item"])
+@props(['target' => 'item-drop', 'label' => "Item", 'active' => 0])
+
+@php
+    $active = $active == 1 ? 'true' : 'false';
+@endphp
 
 <button
     type="button"
@@ -7,3 +11,15 @@
     data-collapse-toggle="{{$target}}">
     {{$slot}}
 </button>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if ({{$active}}) {
+            setTimeout(() => {
+                const target = '{{$target }}';
+                console.log({target});
+                document.querySelector(`[data-collapse-toggle="${target}"]`).click();
+            }, 500);
+        }
+    });
+</script>
