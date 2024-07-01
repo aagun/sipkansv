@@ -27,9 +27,7 @@ function subSectorRefreshTable() {
 }
 
 function subSectorResetTable() {
-    $subSectorTable.bootstrapTable('resetSearch', {
-        url: SUB_SECTOR_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -278,25 +276,37 @@ document.addEventListener('alpine:init', () => {
     subSectorDeleteAlpineConfig();
 });
 
+function tableSubSector_setupOffsetTable(params) {
+    if (!Object.hasOwn(params, 'offset') || params.offset === 0) {
+        return 0;
+    }
+
+    return (params.offset / params.limit) + 1;
+}
+
 /**
  * Bootstrap table config
  * */
 function tableSubSector_params(params) {
     if (Object.hasOwn(params, 'filter')) {
-        const filter = JSON.parse(params.filter);
-        return {
-            limit: params.limit,
-            offset: (params.offset / params.limit) + 1,
-            order: params.order,
-            sort: params.sort,
-            search: filter
-        }
+        let filter = JSON.parse(params.filter);
+        params.filter = filter ? filter : {};
     }
 
-    return {
-        ...params,
-        offset: (params.offset / params.limit) + 1
-    };
+    if (Object.hasOwn(params, 'search')) {
+        let search = params.search;
+        params.search = search ? search : {};
+    }
+
+    return  {
+        limit: params.limit,
+        offset: tableSubSector_setupOffsetTable(params),
+        order: params.order,
+        sort: params.sort,
+        search: {
+            ...params.filter,
+        }
+    }
 }
 
 function tableSubSector_responseHandler(res) {
@@ -345,7 +355,8 @@ $subSectorTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableSubSector_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableSubSector_responseHandler,
     columns: [
         {

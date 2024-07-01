@@ -27,9 +27,7 @@ function institutionRefreshTable() {
 }
 
 function institutionResetTable() {
-    $institutionTable.bootstrapTable('resetSearch', {
-        url: INSTITUTION_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -139,6 +137,7 @@ function institutionEditAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
+                institutionCleanAlert(INSTITUTION_EDIT);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -281,23 +280,6 @@ document.addEventListener('alpine:init', () => {
 /**
  * Bootstrap table config
  * */
-function tableInstitution_params(params) {
-    if (Object.hasOwn(params, 'filter')) {
-        const filter = JSON.parse(params.filter);
-        return {
-            limit: params.limit,
-            offset: (params.offset / params.limit) + 1,
-            order: params.order,
-            sort: params.sort,
-            search: filter
-        }
-    }
-
-    return {
-        ...params,
-        offset: (params.offset / params.limit) + 1
-    };
-}
 
 function tableInstitution_responseHandler(res) {
     return {
@@ -345,7 +327,8 @@ $institutionTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableInstitution_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableInstitution_responseHandler,
     columns: [
         {

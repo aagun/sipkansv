@@ -27,9 +27,7 @@ function departmentRefreshTable() {
 }
 
 function departmentResetTable() {
-    $departmentTable.bootstrapTable('resetSearch', {
-        url: DEPARTMENT_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -139,6 +137,7 @@ function departmentEditAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
+                departmentCleanAlert(DEPARTMENT_EDIT);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -345,7 +344,8 @@ $departmentTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableDepartment_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableDepartment_responseHandler,
     columns: [
         {

@@ -17,14 +17,15 @@ function gradeLevelCleanAlert(id) {
 
 function gradeLevelRefreshTable() {
     $gradeLevelTable.bootstrapTable('refresh', {
-        url: RANK_API_SEARCH
+        url: GRADE_LEVEL_API_SEARCH
     })
 }
 
 function gradeLevelResetTable() {
-    $gradeLevelTable.bootstrapTable('resetSearch', {
-        url: RANK_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
+    // $gradeLevelTable.bootstrapTable('resetSearch', {
+    //     url: GRADE_LEVEL_API_SEARCH
+    // })
 }
 
 /**
@@ -71,7 +72,7 @@ function gradeLevelCreateAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
-                gradeLevelCleanAlert
+                gradeLevelCleanAlert(GRADE_LEVEL_CREATE);
 
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
@@ -91,7 +92,7 @@ function gradeLevelCreateAlpineConfig() {
                 if (hasError) return false;
 
                 data = Object.entries(data)
-                    .map(composeFormData)
+                    .map((item) => composeFormData(item))
                     .reduce((item, obj) => ({...item, ...obj}), {});
 
                 _sipkan_http.post(GRADE_LEVEL_BASE_ENDPOINT, data)
@@ -110,7 +111,7 @@ function gradeLevelCreateAlpineConfig() {
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            gradeLevelCleanAlert(GRADE_LEVEL_CREATE);
+                            // gradeLevelCleanAlert(GRADE_LEVEL_CREATE);
                         }, 5_000)
                     });
             }
@@ -137,6 +138,7 @@ function gradeLevelEditAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
+                gradeLevelCleanAlert(GRADE_LEVEL_EDIT)
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -174,7 +176,7 @@ function gradeLevelEditAlpineConfig() {
                     .finally(() => {
                         setTimeout(() => {
                             console.log('finally');
-                            gradeLevelCleanAlert(GRADE_LEVEL_EDIT);
+                            // gradeLevelCleanAlert(GRADE_LEVEL_EDIT);
                         }, 5_000)
                     });
             }
@@ -279,24 +281,6 @@ document.addEventListener('alpine:init', () => {
 /**
  * Bootstrap table config
  * */
-function tableGradeLevel_params(params) {
-    if (Object.hasOwn(params, 'filter')) {
-        const filter = JSON.parse(params.filter);
-        return {
-            limit: params.limit,
-            offset: (params.offset / params.limit) + 1,
-            order: params.order,
-            sort: params.sort,
-            search: filter
-        }
-    }
-
-    return {
-        ...params,
-        offset: (params.offset / params.limit) + 1
-    };
-}
-
 function tableGradeLevel_responseHandler(res) {
     return {
         rows: res.data.data,
@@ -343,7 +327,8 @@ $gradeLevelTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableGradeLevel_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableGradeLevel_responseHandler,
     columns: [
         {

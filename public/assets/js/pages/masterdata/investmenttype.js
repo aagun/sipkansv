@@ -27,9 +27,7 @@ function investmentTypeRefreshTable() {
 }
 
 function investmentTypeResetTable() {
-    $investmentTypeTable.bootstrapTable('resetSearch', {
-        url: INVESTMENT_TYPE_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable()
 }
 
 /**
@@ -139,6 +137,7 @@ function investmentTypeEditAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
+                investmentTypeCleanAlert(INVESTMENT_TYPE_EDIT);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -281,24 +280,6 @@ document.addEventListener('alpine:init', () => {
 /**
  * Bootstrap table config
  * */
-function tableInvestmentType_params(params) {
-    if (Object.hasOwn(params, 'filter')) {
-        const filter = JSON.parse(params.filter);
-        return {
-            limit: params.limit,
-            offset: (params.offset / params.limit) + 1,
-            order: params.order,
-            sort: params.sort,
-            search: filter
-        }
-    }
-
-    return {
-        ...params,
-        offset: (params.offset / params.limit) + 1
-    };
-}
-
 function tableInvestmentType_responseHandler(res) {
     return {
         rows: res.data.data,
@@ -345,7 +326,8 @@ $investmentTypeTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableInvestmentType_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableInvestmentType_responseHandler,
     columns: [
         {

@@ -27,9 +27,7 @@ function educationRefreshTable() {
 }
 
 function educationResetTable() {
-    $educationTable.bootstrapTable('resetSearch', {
-        url: EDUCATION_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -345,7 +343,8 @@ $educationTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableEducation_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableEducation_responseHandler,
     columns: [
         {

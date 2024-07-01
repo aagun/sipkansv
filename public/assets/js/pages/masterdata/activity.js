@@ -27,9 +27,7 @@ function activityRefreshTable() {
 }
 
 function activityResetTable() {
-    $activityTable.bootstrapTable('resetSearch', {
-        url: ACTIVITY_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -345,7 +343,8 @@ $activityTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableActivity_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableActivity_responseHandler,
     columns: [
         {

@@ -281,24 +281,6 @@ document.addEventListener('alpine:init', () => {
 /**
  * Bootstrap table config
  * */
-function tableRecommendation_params(params) {
-    if (Object.hasOwn(params, 'filter')) {
-        const filter = JSON.parse(params.filter);
-        return {
-            limit: params.limit,
-            offset: (params.offset / params.limit) + 1,
-            order: params.order,
-            sort: params.sort,
-            search: filter
-        }
-    }
-
-    return {
-        ...params,
-        offset: (params.offset / params.limit) + 1
-    };
-}
-
 function tableRecommendation_responseHandler(res) {
     return {
         rows: res.data.data,
@@ -345,7 +327,8 @@ $recommendationTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableRecommendation_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableRecommendation_responseHandler,
     columns: [
         {

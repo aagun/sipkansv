@@ -27,9 +27,7 @@ function businessScaleRefreshTable() {
 }
 
 function businessScaleResetTable() {
-    $businessScaleTable.bootstrapTable('resetSearch', {
-        url: BUSINESS_SCALE_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -139,6 +137,7 @@ function businessScaleEditAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
+                businessScaleCleanAlert(BUSINESS_SCALE_EDIT);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -344,8 +343,8 @@ $businessScaleTable.bootstrapTable({
     paginationSuccessivelySize: 3,
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
-    sortOrder: 'asc',
-    queryParams: tableBusinessScale_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableBusinessScale_responseHandler,
     columns: [
         {

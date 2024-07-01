@@ -27,9 +27,7 @@ function businessEntityTypeRefreshTable() {
 }
 
 function businessEntityTypeResetTable() {
-    $businessEntityTypeTable.bootstrapTable('resetSearch', {
-        url: BUSINESS_ENTITY_TYPE_API_SEARCH
-    })
+    _sipkan_clearFilterBootstrapTable();
 }
 
 /**
@@ -139,6 +137,7 @@ function businessEntityTypeEditAlpineConfig() {
             async save(e) {
                 e.preventDefault();
                 console.log('Save function on edit fired');
+                businessEntityTypeCleanAlert(BUSINESS_ENTITY_TYPE_EDIT);
                 function cleanMarkErrors(type, id) {
                     if (type !== 'hidden') {
                         _sipkan_getElementLabel(id).parent()
@@ -345,7 +344,8 @@ $businessEntityTypeTable.bootstrapTable({
     pageList: [5, 10, 25, 50, 100],
     sortName: 'id',
     sortOrder: 'asc',
-    queryParams: tableBusinessEntityType_params,
+    showSearchClearButton: true,
+    queryParams: _sipakan_queryParams,
     responseHandler: tableBusinessEntityType_responseHandler,
     columns: [
         {

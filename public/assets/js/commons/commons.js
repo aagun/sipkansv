@@ -190,3 +190,36 @@ function _sipkan_ok(response) {
 function _sipkan_clearFilterBootstrapTable() {
     $('[name="clearSearch"]').click();
 }
+
+function _sipakan_queryParamsSetupOffsetTable(params) {
+    if (!Object.hasOwn(params, 'offset') || params.offset === 0) {
+        return 0;
+    }
+
+    return (params.offset / params.limit) + 1;
+}
+
+/**
+ * Bootstrap table config
+ * */
+function _sipakan_queryParams(params) {
+    if (Object.hasOwn(params, 'filter')) {
+        let filter = JSON.parse(params.filter);
+        params.filter = filter ? filter : {};
+    }
+
+    if (Object.hasOwn(params, 'search')) {
+        let search = params.search;
+        params.search = search ? search : {};
+    }
+
+    return  {
+        limit: params.limit,
+        offset: _sipakan_queryParamsSetupOffsetTable(params),
+        order: params.order,
+        sort: params.sort,
+        search: {
+            ...params.filter,
+        }
+    }
+}

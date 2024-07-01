@@ -45,7 +45,7 @@
                         <span>Tambah Data</span>
                     </button>
                     <button
-                        onclick="gradeLevelRefreshTable()"
+                        onclick="gradeLevelResetTable()"
                         type="button"
                         class="w-full md:w-fit px-3 py-2.5 text-sm font-medium text-white flex gap-2 justify-center md:inline-flex md:items-center bg-yellow-500 hover:bg-yellow-600/90 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg text-center">
                         <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
