@@ -32,14 +32,15 @@ Route::prefix("/dashboard")
     ->group(function () {
         Route::prefix('/users')
             ->group(function () {
-                Route::get("/", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
-                Route::get("/create", fn () => view("components.dashboard.users.form-users"))->name("users");
+                Route::get("/", fn () =>view("components.users.dashboard-users"))->name("users");
+                Route::get("/buat", fn () => view("components.users.form-users"))->name("form-users");
             });
 
         Route::prefix('/kegiatan')
             ->group(function () {
-                Route::get("/", fn () => view("components.dashboard.activity.activity"))->name("index");
-                Route::get("/create", fn () => view("components.dashboard.activity.form-activity"))->name("users");
+                Route::get("/", fn () => view("pages.activity.activity"))->name("index");
+                Route::get("/buat", fn () => view("pages.activity.form-activity"))->name("create-activity");
+                Route::get("/ubah/{id}", fn () => view("pages.activity.form-edit-activity"))->name("edit-activity");
             });
 
         Route::prefix("/data")->name("data.")
@@ -62,7 +63,7 @@ Route::prefix("/dashboard")
 
 Route::name("auth.")
     ->group(function () {
-        Route::get("/login", fn () => view("login"))->name("login");
+        Route::get("/login", fn () => view("pages.login"))->name("login");
         Route::post("/login", function() {
             $data = ["username" => "admin", "password" => "123456"];
             $admin = Arr::first($data, fn($d) => $d == request()->input("username"));

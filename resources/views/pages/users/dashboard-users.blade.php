@@ -1,4 +1,10 @@
 @extends("pages.dashboard")
+
+@section("title", "Users")
+
+@push('styles')
+@endpush
+
 @section("content")
     <div class="w-full" x-data="{isShowSearch: true, isDelete:false}">
         <div class="absolute w-full top-[-50px] left-0 right-0 bottom-0 bg-[rgba(243,244,246,0.7)] z-[100]"
@@ -213,3 +219,7 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{asset('assets/js/pages/user.js')}}"></script>
+@endpush

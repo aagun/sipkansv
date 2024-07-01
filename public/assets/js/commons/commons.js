@@ -163,3 +163,13 @@ function _sipkan_closeAlertList(id) {
 function _sipkan_ok(response) {
     return response.data.status === 'success';
 }
+
+function _sipkan_onlyNumberKey(evt) {
+    let ASCIICode = (evt.which) ? evt.which : evt.keyCode
+
+    if (ASCIICode === 190) return true;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+    return true;
+}

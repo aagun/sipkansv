@@ -93,8 +93,8 @@ class KbliServiceImpl implements KbliService
                     $query->whereRaw("kblis.name LIKE CONCAT('%', ?, '%')", [$search['name']]);
                 }
 
-                if (isset($search['sub_sector'])) {
-                    $query->whereRaw("sub_sectors.id = ? ", [$search['sub_sector']]);
+                if (isset($search['sub_sector_id'])) {
+                    $query->whereRaw("sub_sectors.id = ? ", [$search['sub_sector_id']]);
                 }
             })
             ->orderByRaw("$sort $order");
