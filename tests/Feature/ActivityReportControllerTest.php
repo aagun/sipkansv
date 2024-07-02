@@ -41,6 +41,12 @@ class ActivityReportControllerTest extends TestCase
         $this->app->make(ActivityReportService::class);
     }
 
+    public function testStatisticCountPatroli() {
+        $this->seed(DatabaseSeeder::class);
+        $response = $this->get(self::BASE_ENDPOINT . "/stats/count/patroli");
+        $response->assertJsonFragment(['message' => __('messages.success.retrieve')]);
+    }
+
     public function testCreateSuccess()
     {
         $this->seed(DatabaseSeeder::class);

@@ -5,7 +5,10 @@
 >
     <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
         <ul class="space-y-2">
-            <x-sidebar.list.item label="Beranda">
+            <x-sidebar.list.item
+                label="Beranda"
+                href="{{route('dashboard.index')}}"
+                active="{{request()->routeIs('dashboard.index')}}">
                 <svg
                     aria-hidden="true"
                     class="w-6 h-6 text-gray-500 transition duration-75 sidebar__item__icon-hover"

@@ -1,11 +1,28 @@
+function sumChartSeriesData(data) {
+    return data.reduce((prev, curr) => prev + Number(curr), 0)
+}
+
+function doUpdateDataChart(chart, chartConfig, displayConfig, data) {
+    const totalData = sumChartSeriesData(data);
+    $(`#${displayConfig.subTitle.id}`).text(totalData);
+    chart.updateSeries([{
+        name: displayConfig.title.value,
+        data,
+        color: chartConfig.color.primary
+    }]);
+}
+
 /**
  *
  * @param chartConfig object {tooltipSeries, data, color: {primary, secondary}}
  * @param displayConfig object {idCanvas, idTitle, idSubTitle}
  * @returns {*}
  */
-function apexAreaChart(chartConfig, displayConfig) {
+function apexAreaChartCountPivot(chartConfig, displayConfig) {
     const options = {
+        noData: {
+            text: 'Memuat data...'
+        },
         chart: {
             height: "100%",
             maxWidth: "100%",
@@ -57,9 +74,18 @@ function apexAreaChart(chartConfig, displayConfig) {
         ],
         xaxis: {
             categories: [
-                'Januari', 'Februari', 'Maret', 'April',
-                'Mei', 'Juni', 'Juli', 'Agustus',
-                'September', 'Oktober', 'November', 'Desember'
+                'Januari ' + new Date().getFullYear(),
+                'Februari ' + new Date().getFullYear(),
+                'Maret ' + new Date().getFullYear(),
+                'April ' + new Date().getFullYear(),
+                'Mei ' + new Date().getFullYear(),
+                'Juni ' + new Date().getFullYear(),
+                'Juli ' + new Date().getFullYear(),
+                'Agustus ' + new Date().getFullYear(),
+                'September ' + new Date().getFullYear(),
+                'Oktober ' + new Date().getFullYear(),
+                'November ' + new Date().getFullYear(),
+                'Desember ' + new Date().getFullYear()
             ],
             labels: {
                 show: false,
@@ -84,9 +110,10 @@ function apexAreaChart(chartConfig, displayConfig) {
     if (canvas && typeof ApexCharts !== 'undefined') {
         const chart = new ApexCharts(canvas, options);
         chart.render();
-        return chart;
+        return {chart, canvas};
     }
 
+    return {canvas, chart: null};
 }
 
 function chartPengawasanRutin() {
@@ -109,7 +136,13 @@ function chartPengawasanRutin() {
         }
     }
 
-    return apexAreaChart(chartConfig, displayConfig);
+    const {chart} = apexAreaChartCountPivot(chartConfig, displayConfig);
+
+    _sipkan_http.get('/activity-reports/stats/count/rutin')
+        .then(response => {
+            const data = Object.values(response.data.data);
+            doUpdateDataChart(chart, chartConfig, displayConfig, data);
+        });
 
 }
 
@@ -133,7 +166,13 @@ function chartPengawasanInsidental() {
         }
     }
 
-    return apexAreaChart(chartConfig, displayConfig);
+    const {chart} = apexAreaChartCountPivot(chartConfig, displayConfig);
+
+    _sipkan_http.get('/activity-reports/stats/count/insidental')
+        .then(response => {
+            const data = Object.values(response.data.data);
+            doUpdateDataChart(chart, chartConfig, displayConfig, data);
+        });
 }
 
 function chartPengawasanPatroli() {
@@ -149,16 +188,24 @@ function chartPengawasanPatroli() {
 
     const chartConfig = {
         id: "canvasPengawasanPatroli",
-        data: [15, 1, 20, 3, 1, 5, 1, 2, 4, 10, 11, 4],
+        data: [],
         color: {
             primary: "#02e568",
             secondary: "#02e568"
         }
     }
 
-    return apexAreaChart(chartConfig, displayConfig);
+    const {chart} = apexAreaChartCountPivot(chartConfig, displayConfig);
+
+    _sipkan_http.get('/activity-reports/stats/count/patroli')
+        .then(response => {
+            const data = Object.values(response.data.data);
+            doUpdateDataChart(chart, chartConfig, displayConfig, data);
+        });
 }
 
-chartPengawasanRutin();
-chartPengawasanInsidental();
-chartPengawasanPatroli();
+$(document).ready(function() {
+    chartPengawasanRutin();
+    chartPengawasanInsidental();
+    chartPengawasanPatroli();
+});

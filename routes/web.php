@@ -30,6 +30,8 @@ Route::get('/', fn () => redirect('/login'));
 Route::prefix("/dashboard")
     ->name("dashboard.")
     ->group(function () {
+        Route::get("/", fn () => view("pages.dashboard"))->name("index");
+
         Route::prefix('/users')
             ->group(function () {
                 Route::get("/", fn () =>view("components.dashboard.users.dashboard-users"))->name("users");
@@ -289,6 +291,13 @@ Route::prefix('activities')
 Route::prefix('activity-reports')
     ->controller(ActivityReportController::class)
     ->group(function () {
+        Route::prefix('/stats/')
+            ->group(function () {
+                Route::get('/count/patroli', 'pivotCountPatroliDanPerondaan');
+                Route::get('/count/insidental', 'pivotCountInsidental');
+                Route::get('/count/rutin', 'pivotCountRutin');
+            });
+
         Route::post('/', 'create');
         Route::post('/search', 'search');
         Route::put('/', 'update');

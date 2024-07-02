@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use App\Services\ObservationService;
 use App\Services\DistrictService;
+use App\Enums\ObservationType;
 
 class ActivityReportController extends Controller
 {
@@ -236,5 +237,32 @@ class ActivityReportController extends Controller
         if ($complianceCategoryScore < 50.00) return ComplianceCategory::NON_COMPLIANT;
 
         return ComplianceCategory::COMPLIANT;
+    }
+
+    /**
+     * Statistics
+    */
+    public function pivotCountPatroliDanPerondaan(): Response
+    {
+        $observationId = $this->observationService->findByName(ObservationType::PATROLI_ATAU_PERONDAAN->value)->id;
+        $result = $this->activityReportService
+            ->pivotTableByObservationNameAndUserDepartmentId($observationId);
+        return ok(__('messages.success.retrieve'), $result);
+    }
+
+    public function pivotCountInsidental(): Response
+    {
+        $observationId = $this->observationService->findByName(ObservationType::PENGAWASAN_INSIDENTAL->value)->id;
+        $result = $this->activityReportService
+            ->pivotTableByObservationNameAndUserDepartmentId($observationId);
+        return ok(__('messages.success.retrieve'), $result);
+    }
+
+    public function pivotCountRutin(): Response
+    {
+        $observationId = $this->observationService->findByName(ObservationType::PENGAWASAN_RUTIN->value)->id;
+        $result = $this->activityReportService
+            ->pivotTableByObservationNameAndUserDepartmentId($observationId);
+        return ok(__('messages.success.retrieve'), $result);
     }
 }

@@ -20,4 +20,6 @@ interface ActivityReportService
     public function exists(int $id): bool;
 
     public function export(array $filter): Collection;
+
+    public function pivotTableByObservationNameAndUserDepartmentId(int $observationId, ?int $departmentId = null): Model | Builder | null;
 }

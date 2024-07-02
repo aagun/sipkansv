@@ -12,6 +12,30 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ActivityReportServiceImpl implements ActivityReportService
 {
+    public function pivotTableByObservationNameAndUserDepartmentId(int $observationId, ?int $departmentId = null): Model | Builder | null
+    {
+        return ActivityReport::query()
+                ->selectRaw("
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 0, 1, 0)) as jan,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 1, 1, 0)) as feb,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 2, 1, 0)) as mar,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 3, 1, 0)) as apr,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 4, 1, 0)) as may,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 5, 1, 0)) as jun,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 6, 1, 0)) as jul,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 7, 1, 0)) as aug,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 8, 1, 0)) as sep,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 9, 1, 0)) as oct,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 10, 1, 0)) as nov,
+                    SUM(IF((MONTH(activity_reports.inspection_date) - 1) = 11, 1, 0)) as december")
+                ->leftJoin('users', 'activity_reports.supervisor_id', '=', 'users.id')
+                ->leftJoin('departments', 'users.department_id', '=', 'departments.id')
+                ->leftJoin('observations', 'activity_reports.observation_id', '=', 'observations.id')
+                ->whereRaw('YEAR(activity_reports.inspection_date) = YEAR(CURRENT_DATE) and activity_reports.observation_id = ? AND (? is null OR users.department_id = ?)', [$observationId, $departmentId, $departmentId])
+                ->groupByRaw("(MONTH(activity_reports.inspection_date) - 1)")
+                ->first();
+    }
+
     public function exists(int $id): bool
     {
         return ActivityReport::query()->where('id', $id)->exists();
